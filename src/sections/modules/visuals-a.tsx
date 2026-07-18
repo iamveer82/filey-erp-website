@@ -23,10 +23,10 @@ const SPARK = [
 ]
 
 const OVERVIEW_KPIS = [
-  { label: 'Revenue (Jul)', value: 'AED 48,250', delta: '▲ 12.4%', tone: 'text-mint-400' },
+  { label: 'Revenue (Jul)', value: 'AED 48,250', delta: '▲ 12.4%', tone: 'text-emerald-400' },
   { label: 'Open orders', value: '132', delta: '▲ 8', tone: 'text-sky-400' },
   { label: 'Low stock', value: '7', delta: '2 critical', tone: 'text-amber-400' },
-  { label: 'Suppliers', value: '36', delta: '▲ 2', tone: 'text-mint-400' },
+  { label: 'Suppliers', value: '36', delta: '▲ 2', tone: 'text-emerald-400' },
 ]
 
 /** 01 — Overview: 2×2 mini KPI grid + sparkline area chart + mono footnote. */
@@ -55,14 +55,15 @@ export function OverviewVisual() {
               <AreaChart data={SPARK} margin={{ top: 4, right: 0, bottom: 0, left: 0 }}>
                 <defs>
                   <linearGradient id="mx-spark-rev" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#34D399" stopOpacity={0.3} />
-                    <stop offset="100%" stopColor="#34D399" stopOpacity={0} />
+                    <stop offset="0%" stopColor="#FBBF24" stopOpacity={0.3} />
+                    <stop offset="100%" stopColor="#FBBF24" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <Area
                   type="monotone"
                   dataKey="exp"
-                  stroke="#FBBF24"
+                  stroke="#FAFAFA"
+                  strokeOpacity={0.5}
                   strokeWidth={1.5}
                   fill="none"
                   isAnimationActive
@@ -71,7 +72,7 @@ export function OverviewVisual() {
                 <Area
                   type="monotone"
                   dataKey="rev"
-                  stroke="#34D399"
+                  stroke="#FBBF24"
                   strokeWidth={2}
                   fill="url(#mx-spark-rev)"
                   isAnimationActive
@@ -93,14 +94,14 @@ export function OverviewVisual() {
 
 type StockStatus = 'In stock' | 'Low' | 'Reorder'
 
-const STOCK_TONE: Record<StockStatus, 'mint' | 'amber' | 'rose'> = {
-  'In stock': 'mint',
+const STOCK_TONE: Record<StockStatus, 'emerald' | 'amber' | 'rose'> = {
+  'In stock': 'emerald',
   Low: 'amber',
   Reorder: 'rose',
 }
 
 const STOCK_BAR: Record<StockStatus, string> = {
-  'In stock': 'bg-mint-400',
+  'In stock': 'bg-emerald-400',
   Low: 'bg-amber-400',
   Reorder: 'bg-rose-400',
 }
@@ -187,12 +188,12 @@ export function InventoryVisual() {
           {INVENTORY_ROWS.map((row) => (
             <div
               key={row.sku}
-              className="flex items-center gap-3 py-2.5 transition-colors duration-200 hover:bg-mint-400/5"
+              className="flex items-center gap-3 py-2.5 transition-colors duration-200 hover:bg-amber-400/5"
             >
               <StockRow {...row} />
             </div>
           ))}
-          <div className="flex items-center gap-3 py-2.5 transition-colors duration-200 hover:bg-mint-400/5">
+          <div className="flex items-center gap-3 py-2.5 transition-colors duration-200 hover:bg-amber-400/5">
             <AnimatedWrapRow />
           </div>
         </MiniTile>
@@ -209,7 +210,7 @@ export function InventoryVisual() {
 const FULFILMENT_STEPS = ['Placed', 'Packed', 'Shipped', 'Fulfilled']
 
 const ORDER_ROWS = [
-  { id: 'SO-1042', customer: 'Al Noor Hardware', total: 'AED 8,750', status: 'Fulfilled', tone: 'mint' as const },
+  { id: 'SO-1042', customer: 'Al Noor Hardware', total: 'AED 8,750', status: 'Fulfilled', tone: 'emerald' as const },
   { id: 'SO-1043', customer: 'Desert Rose Catering', total: 'AED 2,300', status: 'Shipped', tone: 'sky' as const },
   { id: 'SO-1044', customer: 'Gulf Print Works', total: 'AED 15,200', status: 'Packed', tone: 'amber' as const },
 ]
@@ -227,7 +228,7 @@ export function OrdersVisual() {
           <div className="relative mt-5">
             <div className="absolute left-0 right-0 top-1/2 h-0.5 -translate-y-1/2 rounded-full bg-ink-700" />
             <motion.div
-              className="absolute left-0 top-1/2 h-0.5 origin-left -translate-y-1/2 rounded-full bg-mint-400"
+              className="absolute left-0 top-1/2 h-0.5 origin-left -translate-y-1/2 rounded-full bg-amber-400"
               initial={{ scaleX: 0 }}
               animate={{ scaleX: 1 }}
               style={{ width: '66.7%' }}
@@ -242,7 +243,7 @@ export function OrdersVisual() {
                     <span
                       className={cn(
                         'flex h-5 w-5 items-center justify-center rounded-full border',
-                        done && 'border-mint-400 bg-mint-400 text-ink-950',
+                        done && 'border-emerald-400 bg-emerald-400 text-ink-950',
                         current && 'border-sky-400 bg-ink-900 text-sky-400 shadow-[0_0_10px_rgba(56,189,248,0.4)]',
                         !done && !current && 'border-ink-600 bg-ink-900 text-faint',
                       )}
@@ -264,7 +265,7 @@ export function OrdersVisual() {
           {ORDER_ROWS.map((order) => (
             <div
               key={order.id}
-              className="flex items-center gap-3 py-2.5 transition-colors duration-200 hover:bg-mint-400/5"
+              className="flex items-center gap-3 py-2.5 transition-colors duration-200 hover:bg-amber-400/5"
             >
               <span className="w-[72px] shrink-0 font-mono text-[11px] text-faint">{order.id}</span>
               <span className="min-w-0 flex-1 truncate text-[12.5px] text-fg">{order.customer}</span>
@@ -321,12 +322,12 @@ export function InvoicingVisual() {
             <span className="font-mono text-[15px] font-bold tabular-nums">AED 4,567.50</span>
           </div>
         </div>
-        {/* 10 template dots — one mint */}
+        {/* 10 template dots — one amber */}
         <div className="mt-3 flex items-center justify-center gap-1.5">
           {Array.from({ length: 10 }, (_, i) => (
             <span
               key={i}
-              className={cn('h-1.5 w-1.5 rounded-full', i === 1 ? 'bg-[#10B981]' : 'bg-paper-ink/20')}
+              className={cn('h-1.5 w-1.5 rounded-full', i === 1 ? 'bg-amber-500' : 'bg-paper-ink/20')}
             />
           ))}
         </div>
@@ -335,7 +336,7 @@ export function InvoicingVisual() {
           initial={{ scale: 2.2, opacity: 0, rotate: -12 }}
           animate={{ scale: 1, opacity: 1, rotate: -12 }}
           transition={{ duration: 0.35, ease: EASE_BACK, delay: 0.5 }}
-          className="absolute right-3 top-[38%] rounded border-2 border-amber-500/90 px-2 py-0.5 font-mono text-[13px] font-bold tracking-[0.2em] text-amber-600"
+          className="absolute right-3 top-[38%] rounded border-2 border-emerald-400/90 px-2 py-0.5 font-mono text-[13px] font-bold tracking-[0.2em] text-emerald-400"
         >
           PAID
         </motion.span>
@@ -373,8 +374,8 @@ export function QuotationsVisual() {
               <div key={line.item} className="flex items-center gap-2 py-2 text-[12px]">
                 <span className="min-w-0 flex-1 truncate text-fg">{line.item}</span>
                 <span className="w-12 text-right font-mono text-[11px] text-faint">{line.qty}</span>
-                <span className="w-10 text-right font-mono text-[11px] text-mint-300">{line.disc}</span>
-                <span className="w-14 text-right font-mono text-[11px] text-amber-300">{line.tax}</span>
+                <span className="w-10 text-right font-mono text-[11px] text-amber-300">{line.disc}</span>
+                <span className="w-14 text-right font-mono text-[11px] text-muted-foreground">{line.tax}</span>
                 <span className="w-20 text-right font-mono text-[11px] tabular-nums text-fg">{line.amount}</span>
               </div>
             ))}
@@ -386,7 +387,7 @@ export function QuotationsVisual() {
         </MiniTile>
       </motion.div>
       <motion.div variants={riseItem} className="mt-3 flex justify-end">
-        <span className="inline-flex cursor-default items-center gap-1.5 rounded-lg border border-ink-600 px-3.5 py-2 text-[12.5px] font-medium text-fg transition-all duration-200 hover:border-mint-400/50 hover:bg-mint-400/5 hover:shadow-[0_0_20px_rgba(52,211,153,0.15)]">
+        <span className="inline-flex cursor-default items-center gap-1.5 rounded-lg border border-ink-600 px-3.5 py-2 text-[12.5px] font-medium text-fg transition-all duration-200 hover:border-amber-400/50 hover:bg-amber-400/5 hover:shadow-[0_0_20px_rgba(251,191,36,0.15)]">
           Convert to invoice →
         </span>
       </motion.div>
