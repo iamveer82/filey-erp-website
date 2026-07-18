@@ -317,7 +317,7 @@ export default function DemoInvoicing() {
           type="button"
           onClick={addLine}
           disabled={lines.length >= CATALOG.length}
-          className="mt-2 flex h-8 w-full items-center justify-center gap-1.5 rounded-md border border-dashed border-ink-600 font-mono text-[11px] text-muted-foreground transition-colors duration-200 hover:border-mint-400/50 hover:text-mint-400 disabled:pointer-events-none disabled:opacity-40"
+          className="mt-2 flex h-8 w-full items-center justify-center gap-1.5 rounded-md border border-dashed border-ink-600 font-mono text-[11px] text-muted-foreground transition-colors duration-200 hover:border-amber-400/50 hover:text-amber-400 disabled:pointer-events-none disabled:opacity-40"
         >
           <Plus className="h-3.5 w-3.5" /> Add line
         </button>
@@ -360,7 +360,7 @@ export default function DemoInvoicing() {
               className={cn(
                 'flex flex-col items-center gap-1.5 rounded-lg border p-2 transition-all duration-200',
                 template === t.id
-                  ? 'border-mint-400/60 bg-mint-400/5'
+                  ? 'border-amber-400/60 bg-amber-400/5'
                   : 'border-ink-600 hover:border-ink-600/80 hover:bg-ink-800',
               )}
             >
@@ -372,7 +372,7 @@ export default function DemoInvoicing() {
                 <span className="mx-1 mt-1 h-px w-2/3 bg-paper-ink/30" />
                 <span className="mx-1 mt-auto mb-1 h-1 w-1/2 rounded-full" style={{ background: t.id === 'mono' ? '#1A2330' : t.accent }} />
               </span>
-              <span className={cn('font-mono text-[9.5px] leading-none', template === t.id ? 'text-mint-400' : 'text-faint')}>
+              <span className={cn('font-mono text-[9.5px] leading-none', template === t.id ? 'text-amber-400' : 'text-faint')}>
                 {t.name}
               </span>
             </button>
@@ -408,14 +408,14 @@ export default function DemoInvoicing() {
           <button
             type="button"
             onClick={pdfToast}
-            className="inline-flex h-10 flex-1 items-center justify-center gap-2 rounded-lg bg-mint-400 text-[13.5px] font-semibold text-ink-950 transition-all duration-200 hover:bg-mint-300 hover:shadow-[0_0_24px_rgba(52,211,153,0.25)] active:scale-[0.98] active:bg-mint-500"
+            className="btn-gradient inline-flex h-10 flex-1 items-center justify-center gap-2 rounded-lg text-[13.5px] font-semibold text-[#1A1206] transition-all duration-200 hover:shadow-[0_0_24px_rgba(251,191,36,0.25)] active:scale-[0.98]"
           >
             <Download className="h-4 w-4" /> Download PDF
           </button>
           <button
             type="button"
             onClick={pdfToast}
-            className="inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-ink-600 px-4 text-[13.5px] font-semibold text-fg transition-colors duration-200 hover:border-mint-400/50 hover:bg-mint-400/5 active:scale-[0.98]"
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-ink-600 px-4 text-[13.5px] font-semibold text-fg transition-colors duration-200 hover:border-amber-400/50 hover:bg-amber-400/5 active:scale-[0.98]"
           >
             <Printer className="h-4 w-4" /> Print
           </button>
