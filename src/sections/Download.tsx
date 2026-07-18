@@ -1,6 +1,5 @@
-import { memo, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import type { ReactNode } from 'react'
-import { motion, useReducedMotion } from 'framer-motion'
 import { useGSAP } from '@gsap/react'
 import { Command, Download as DownloadIcon, Monitor, Terminal } from 'lucide-react'
 import { toast } from 'sonner'
@@ -19,8 +18,6 @@ import type { OS } from '@/lib/constants'
 import { detectOS } from '@/lib/os'
 import { cn } from '@/lib/utils'
 
-const MASCOT_SRC = `${import.meta.env.BASE_URL}mascot.png`
-
 const RELEASE_BULLETS = [
   'Reports module rebuilt from the ground up',
   'CRM board gets the new kanban look',
@@ -28,50 +25,6 @@ const RELEASE_BULLETS = [
   '6 new receipt templates',
   'Mascot branding across the app',
 ]
-
-/* ------------------------- mascot peek + sway loop ------------------------ */
-
-const MascotPeek = memo(function MascotPeek() {
-  const reduced = useReducedMotion()
-  if (reduced) {
-    return (
-      <div className="pointer-events-none absolute -top-[64px] right-3 z-0" aria-hidden>
-        <img
-          src={MASCOT_SRC}
-          alt=""
-          width={120}
-          height={120}
-          loading="lazy"
-          className="h-[120px] w-[120px] rotate-6 drop-shadow-[0_10px_24px_rgba(0,0,0,0.55)]"
-        />
-      </div>
-    )
-  }
-  return (
-    <motion.div
-      className="pointer-events-none absolute -top-[64px] right-3 z-0"
-      aria-hidden
-      initial={{ y: 24, rotate: 12, opacity: 0 }}
-      whileInView={{ y: 0, rotate: 6, opacity: 1 }}
-      viewport={{ once: true, amount: 0.4 }}
-      transition={{ type: 'spring', stiffness: 140, damping: 15 }}
-    >
-      <motion.div
-        animate={{ rotate: [-2, 2] }}
-        transition={{ duration: 2.5, repeat: Infinity, repeatType: 'mirror', ease: 'easeInOut' }}
-      >
-        <img
-          src={MASCOT_SRC}
-          alt=""
-          width={120}
-          height={120}
-          loading="lazy"
-          className="h-[120px] w-[120px] drop-shadow-[0_10px_24px_rgba(0,0,0,0.55)]"
-        />
-      </motion.div>
-    </motion.div>
-  )
-})
 
 /* ------------------------------ button pieces ----------------------------- */
 
@@ -87,7 +40,7 @@ function PrimaryDownloadLink({ href, label, size }: { href: string; label: strin
       rel="noopener noreferrer"
       download
       onClick={() => toastDownload(size)}
-      className="dl-primary inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-mint-400 px-4 text-sm font-semibold text-ink-950 transition-colors duration-200 hover:bg-mint-300 active:scale-[0.98] active:bg-mint-500"
+      className="dl-primary btn-gradient inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg px-4 text-sm font-semibold text-[#1A1206] transition-all duration-200 active:scale-[0.98]"
     >
       <DownloadIcon className="h-4 w-4" />
       {label} — {size}
@@ -114,7 +67,7 @@ function GhostDownloadLink({
       download
       onClick={() => toastDownload(size)}
       className={cn(
-        'inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg border border-ink-600 px-4 text-sm font-semibold text-fg transition-colors duration-200 hover:border-mint-400/50 hover:bg-mint-400/5 active:scale-[0.98]',
+        'inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg border border-ink-600 px-4 text-sm font-semibold text-fg transition-colors duration-200 hover:border-amber-400/50 hover:bg-amber-400/5 active:scale-[0.98]',
         className,
       )}
     >
@@ -133,11 +86,9 @@ interface OsCardShellProps {
   caption: string
   children: ReactNode
   className?: string
-  /** Decorative element rendered behind the card (e.g. the peeking mascot). */
-  decor?: ReactNode
 }
 
-function OsCardShell({ os, recommended, icon, name, caption, children, className, decor }: OsCardShellProps) {
+function OsCardShell({ os, recommended, icon, name, caption, children, className }: OsCardShellProps) {
   const isRec = os === recommended
   return (
     <div
@@ -148,28 +99,27 @@ function OsCardShell({ os, recommended, icon, name, caption, children, className
       )}
     >
       {isRec && (
-        <span className="absolute -top-3 left-1/2 z-20 -translate-x-1/2 whitespace-nowrap rounded-full bg-mint-400 px-3 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.12em] text-ink-950">
+        <span className="btn-gradient absolute -top-3 left-1/2 z-20 -translate-x-1/2 whitespace-nowrap rounded-full px-3 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.12em] text-[#1A1206]">
           Recommended for you
         </span>
       )}
-      {decor}
       <div
         className={cn(
           'relative z-10 flex h-full flex-col rounded-xl border bg-ink-850 p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition-colors duration-200',
           isRec
-            ? 'border-mint-400/50 shadow-[0_0_50px_rgba(52,211,153,0.12),inset_0_1px_0_rgba(255,255,255,0.04)]'
+            ? 'border-amber-400/50 shadow-[0_0_50px_rgba(251,191,36,0.12),inset_0_1px_0_rgba(255,255,255,0.04)]'
             : 'border-ink-700/70 hover:border-ink-600',
         )}
       >
         <div className="flex items-center gap-3">
-          <span className="flex h-11 w-11 items-center justify-center rounded-lg border border-ink-700 bg-ink-800 text-mint-400">
+          <span className="flex h-11 w-11 items-center justify-center rounded-lg border border-ink-700 bg-ink-800 text-amber-400">
             {icon}
           </span>
           <div>
             <h3 className="font-display text-[22px] font-semibold leading-tight text-fg">{name}</h3>
             <p className="mt-0.5 font-mono text-[11px] text-faint">{caption}</p>
           </div>
-          <span className="ml-auto self-start rounded-full border border-mint-400/40 px-2 py-0.5 font-mono text-[10px] text-mint-400">
+          <span className="ml-auto self-start rounded-full border border-amber-400/40 px-2 py-0.5 font-mono text-[10px] text-amber-400">
             {RELEASE_TAG}
           </span>
         </div>
@@ -206,9 +156,9 @@ export default function Download() {
       // Primary buttons pulse-glow ×2 once the cards are in
       tl.fromTo(
         '.dl-primary',
-        { boxShadow: '0 0 0px rgba(52,211,153,0)' },
+        { boxShadow: '0 0 0px rgba(251,191,36,0)' },
         {
-          boxShadow: '0 0 26px rgba(52,211,153,0.4)',
+          boxShadow: '0 0 26px rgba(251,191,36,0.4)',
           duration: 0.45,
           ease: 'sine.inOut',
           repeat: 3,
@@ -226,11 +176,11 @@ export default function Download() {
       ref={sectionRef}
       className="relative border-t border-ink-700/60 py-28 lg:py-40"
     >
-      {/* soft mint glow behind the cards */}
+      {/* soft amber glow behind the cards */}
       <div
         aria-hidden
         className="pointer-events-none absolute left-1/2 top-24 h-[480px] w-[900px] -translate-x-1/2 rounded-full"
-        style={{ background: 'radial-gradient(closest-side, rgba(52,211,153,0.06), transparent 70%)' }}
+        style={{ background: 'radial-gradient(closest-side, rgba(251,191,36,0.06), transparent 70%)' }}
       />
       <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
         <SectionHeader
@@ -238,12 +188,7 @@ export default function Download() {
           label="download"
           title="Download Filey ERP."
           align="center"
-          lead={
-            <>
-              {RELEASE_TAG} &ldquo;{RELEASE_CODENAME}&rdquo; · released July 18, 2026 · signed,
-              auto-updating desktop builds · free forever under AGPL-3.0.
-            </>
-          }
+          lead="Free plan included — 20 invoices a month, offline. Upgrade to Pro inside the app whenever you're ready."
         />
 
         {/* OS cards */}
@@ -275,15 +220,13 @@ export default function Download() {
             </div>
           </OsCardShell>
 
-          {/* macOS — build from source, mascot peeking over the corner */}
+          {/* macOS — build from source */}
           <OsCardShell
             os="macos"
             recommended={recommended}
             icon={<Command className="h-5 w-5" />}
             name="macOS"
             caption="Apple Silicon & Intel — build from source"
-            className="mt-[64px] lg:mt-0"
-            decor={<MascotPeek />}
           >
             <p className="text-sm leading-relaxed text-muted-foreground">
               Signed macOS builds are on the roadmap. Today, build your own in ~5 minutes with the
@@ -301,7 +244,7 @@ export default function Download() {
               href={REPO_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex items-center gap-1.5 self-start font-mono text-[13px] text-muted-foreground transition-colors duration-200 hover:text-mint-400"
+              className="group inline-flex items-center gap-1.5 self-start font-mono text-[13px] text-muted-foreground transition-colors duration-200 hover:text-amber-400"
             >
               Open the repo
               <span aria-hidden className="transition-transform duration-200 group-hover:translate-x-1">
@@ -320,7 +263,7 @@ export default function Download() {
                   What&rsquo;s new in {RELEASE_TAG}
                 </h3>
                 <div className="mt-3 flex flex-wrap items-center gap-3">
-                  <span className="rounded-full border border-mint-400/40 bg-mint-400/10 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.12em] text-mint-400">
+                  <span className="rounded-full border border-amber-400/40 bg-amber-400/10 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.12em] text-amber-400">
                     {RELEASE_CODENAME}
                   </span>
                   <span className="font-mono text-[11px] text-faint">2026-07-18</span>
@@ -330,7 +273,7 @@ export default function Download() {
                 <ul className="grid gap-2.5 sm:grid-cols-2">
                   {RELEASE_BULLETS.map((b) => (
                     <li key={b} className="flex items-start gap-2.5 text-sm text-muted-foreground">
-                      <span aria-hidden className="mt-px text-mint-400">
+                      <span aria-hidden className="mt-px text-amber-400">
                         ▸
                       </span>
                       {b}
@@ -342,7 +285,7 @@ export default function Download() {
                     href={RELEASES_URL}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group inline-flex items-center gap-1.5 font-mono text-[13px] text-muted-foreground transition-colors duration-200 hover:text-mint-400"
+                    className="group inline-flex items-center gap-1.5 font-mono text-[13px] text-muted-foreground transition-colors duration-200 hover:text-amber-400"
                   >
                     Full release notes
                     <span aria-hidden className="transition-transform duration-200 group-hover:translate-x-1">
@@ -353,7 +296,7 @@ export default function Download() {
                     href={RELEASES_URL}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group inline-flex items-center gap-1.5 font-mono text-[13px] text-muted-foreground transition-colors duration-200 hover:text-mint-400"
+                    className="group inline-flex items-center gap-1.5 font-mono text-[13px] text-muted-foreground transition-colors duration-200 hover:text-amber-400"
                   >
                     All releases
                     <span aria-hidden className="transition-transform duration-200 group-hover:translate-x-1">
@@ -364,8 +307,9 @@ export default function Download() {
               </div>
             </div>
             <p className="mt-6 border-t border-ink-700/60 pt-4 font-mono text-[11px] text-faint">
-              Builds are signed and auto-updating <span className="mx-2 text-ink-600">·</span> No account
-              or internet required <span className="mx-2 text-ink-600">·</span> 100% free under AGPL-3.0
+              Builds are signed and auto-updating <span className="mx-2 text-ink-600">·</span> Works
+              fully offline <span className="mx-2 text-ink-600">·</span> Free plan included — Pro is a
+              one-time $49 upgrade
             </p>
           </div>
         </Reveal>
