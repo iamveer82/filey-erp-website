@@ -3,28 +3,13 @@ import type { ReactNode } from 'react'
 import { useGSAP } from '@gsap/react'
 import { Command, Download as DownloadIcon, Monitor, Terminal } from 'lucide-react'
 import { toast } from 'sonner'
-import SectionHeader from '@/components/SectionHeader'
 import TerminalCard from '@/components/TerminalCard'
 import Reveal from '@/components/Reveal'
 import { gsap, prefersReducedMotion } from '@/lib/scroll'
-import {
-  DOWNLOAD_URLS,
-  RELEASES_URL,
-  RELEASE_CODENAME,
-  RELEASE_TAG,
-  REPO_URL,
-} from '@/lib/constants'
+import { DOWNLOAD_URLS, RELEASE_TAG, REPO_URL } from '@/lib/constants'
 import type { OS } from '@/lib/constants'
 import { detectOS } from '@/lib/os'
 import { cn } from '@/lib/utils'
-
-const RELEASE_BULLETS = [
-  'Reports module rebuilt from the ground up',
-  'CRM board gets the new kanban look',
-  'Statement of account with 6 templates',
-  '6 new receipt templates',
-  'Mascot branding across the app',
-]
 
 /* ------------------------------ button pieces ----------------------------- */
 
@@ -67,11 +52,11 @@ function GhostDownloadLink({
       download
       onClick={() => toastDownload(size)}
       className={cn(
-        'inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg border border-ink-600 px-4 text-sm font-semibold text-fg transition-colors duration-200 hover:border-amber-400/50 hover:bg-amber-400/5 active:scale-[0.98]',
+        'inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg border border-zinc-300 px-4 text-sm font-semibold text-zinc-900 transition-colors duration-200 hover:border-amber-500 hover:bg-amber-50 active:scale-[0.98]',
         className,
       )}
     >
-      {label} — {size}
+      {label} <span className="font-mono text-xs font-normal text-zinc-400">— {size}</span>
     </a>
   )
 }
@@ -105,21 +90,21 @@ function OsCardShell({ os, recommended, icon, name, caption, children, className
       )}
       <div
         className={cn(
-          'relative z-10 flex h-full flex-col rounded-xl border bg-ink-850 p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition-colors duration-200',
+          'relative z-10 flex h-full flex-col rounded-xl border bg-white p-6 transition-colors duration-200',
           isRec
-            ? 'border-amber-400/50 shadow-[0_0_50px_rgba(251,191,36,0.12),inset_0_1px_0_rgba(255,255,255,0.04)]'
-            : 'border-ink-700/70 hover:border-ink-600',
+            ? 'border-amber-400 shadow-[0_8px_40px_-12px_rgba(245,158,11,0.25)]'
+            : 'border-zinc-200 shadow-[0_1px_2px_rgba(0,0,0,0.04)] hover:border-amber-400',
         )}
       >
         <div className="flex items-center gap-3">
-          <span className="flex h-11 w-11 items-center justify-center rounded-lg border border-ink-700 bg-ink-800 text-amber-400">
+          <span className="flex h-11 w-11 items-center justify-center rounded-lg border border-zinc-200 bg-amber-50 text-amber-600">
             {icon}
           </span>
           <div>
-            <h3 className="font-display text-[22px] font-semibold leading-tight text-fg">{name}</h3>
-            <p className="mt-0.5 font-mono text-[11px] text-faint">{caption}</p>
+            <h3 className="font-display text-[22px] font-semibold leading-tight text-zinc-900">{name}</h3>
+            <p className="mt-0.5 font-mono text-[11px] text-zinc-400">{caption}</p>
           </div>
-          <span className="ml-auto self-start rounded-full border border-amber-400/40 px-2 py-0.5 font-mono text-[10px] text-amber-400">
+          <span className="ml-auto self-start rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 font-mono text-[10px] text-amber-700">
             {RELEASE_TAG}
           </span>
         </div>
@@ -174,22 +159,22 @@ export default function Download() {
     <section
       id="download"
       ref={sectionRef}
-      className="relative border-t border-ink-700/60 py-28 lg:py-40"
+      className="relative border-t border-zinc-200 py-28 lg:py-40"
     >
-      {/* soft amber glow behind the cards */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute left-1/2 top-24 h-[480px] w-[900px] -translate-x-1/2 rounded-full"
-        style={{ background: 'radial-gradient(closest-side, rgba(251,191,36,0.06), transparent 70%)' }}
-      />
       <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
-        <SectionHeader
-          index="05"
-          label="download"
-          title="Download Filey ERP."
-          align="center"
-          lead="Free plan included — 20 invoices a month, offline. Upgrade to Pro inside the app whenever you're ready."
-        />
+        {/* centered header — SectionHeader rhythm, light */}
+        <Reveal className="mx-auto mb-14 max-w-3xl text-center lg:mb-20" y={24} duration={0.9} start="top 80%">
+          <p className="font-mono text-xs font-medium uppercase tracking-[0.18em] text-amber-600">
+            {'// '}04 — download
+          </p>
+          <h2 className="mt-4 font-display text-[clamp(2.25rem,5vw,4rem)] font-semibold leading-[1.0] tracking-[-0.03em] text-zinc-900">
+            Download Filey ERP.
+          </h2>
+          <p className="mx-auto mt-5 max-w-2xl text-[clamp(1.0625rem,1.4vw,1.25rem)] leading-[1.6] text-zinc-600">
+            Free plan included — 20 invoices a month, offline. Upgrade to Pro inside the app
+            whenever you&rsquo;re ready.
+          </p>
+        </Reveal>
 
         {/* OS cards */}
         <div className="dl-grid mx-auto grid max-w-6xl grid-cols-1 gap-5 lg:grid-cols-3">
@@ -228,7 +213,7 @@ export default function Download() {
             name="macOS"
             caption="Apple Silicon & Intel — build from source"
           >
-            <p className="text-sm leading-relaxed text-muted-foreground">
+            <p className="text-sm leading-relaxed text-zinc-600">
               Signed macOS builds are on the roadmap. Today, build your own in ~5 minutes with the
               Tauri toolchain:
             </p>
@@ -244,7 +229,7 @@ export default function Download() {
               href={REPO_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex items-center gap-1.5 self-start font-mono text-[13px] text-muted-foreground transition-colors duration-200 hover:text-amber-400"
+              className="group inline-flex items-center gap-1.5 self-start font-mono text-[13px] text-zinc-600 transition-colors duration-200 hover:text-amber-600"
             >
               Open the repo
               <span aria-hidden className="transition-transform duration-200 group-hover:translate-x-1">
@@ -253,66 +238,6 @@ export default function Download() {
             </a>
           </OsCardShell>
         </div>
-
-        {/* release notes strip */}
-        <Reveal delay={0.2} className="mx-auto mt-12 max-w-6xl">
-          <div className="rounded-xl border border-ink-700/70 bg-ink-850 p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] lg:p-8">
-            <div className="grid gap-8 lg:grid-cols-[280px_1fr]">
-              <div>
-                <h3 className="font-display text-xl font-semibold text-fg">
-                  What&rsquo;s new in {RELEASE_TAG}
-                </h3>
-                <div className="mt-3 flex flex-wrap items-center gap-3">
-                  <span className="rounded-full border border-amber-400/40 bg-amber-400/10 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.12em] text-amber-400">
-                    {RELEASE_CODENAME}
-                  </span>
-                  <span className="font-mono text-[11px] text-faint">2026-07-18</span>
-                </div>
-              </div>
-              <div>
-                <ul className="grid gap-2.5 sm:grid-cols-2">
-                  {RELEASE_BULLETS.map((b) => (
-                    <li key={b} className="flex items-start gap-2.5 text-sm text-muted-foreground">
-                      <span aria-hidden className="mt-px text-amber-400">
-                        ▸
-                      </span>
-                      {b}
-                    </li>
-                  ))}
-                </ul>
-                <div className="mt-5 flex flex-wrap gap-x-8 gap-y-2">
-                  <a
-                    href={RELEASES_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group inline-flex items-center gap-1.5 font-mono text-[13px] text-muted-foreground transition-colors duration-200 hover:text-amber-400"
-                  >
-                    Full release notes
-                    <span aria-hidden className="transition-transform duration-200 group-hover:translate-x-1">
-                      →
-                    </span>
-                  </a>
-                  <a
-                    href={RELEASES_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group inline-flex items-center gap-1.5 font-mono text-[13px] text-muted-foreground transition-colors duration-200 hover:text-amber-400"
-                  >
-                    All releases
-                    <span aria-hidden className="transition-transform duration-200 group-hover:translate-x-1">
-                      →
-                    </span>
-                  </a>
-                </div>
-              </div>
-            </div>
-            <p className="mt-6 border-t border-ink-700/60 pt-4 font-mono text-[11px] text-faint">
-              Builds are signed and auto-updating <span className="mx-2 text-ink-600">·</span> Works
-              fully offline <span className="mx-2 text-ink-600">·</span> Free plan included — Pro is a
-              one-time $49 upgrade
-            </p>
-          </div>
-        </Reveal>
       </div>
     </section>
   )

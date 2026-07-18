@@ -2,9 +2,9 @@ import { useRef, useState } from 'react'
 import { useReducedMotion } from 'framer-motion'
 import { useGSAP } from '@gsap/react'
 import { BookOpen } from 'lucide-react'
-import SectionHeader from '@/components/SectionHeader'
 import TerminalCard from '@/components/TerminalCard'
 import type { TerminalLine } from '@/components/TerminalCard'
+import Reveal from '@/components/Reveal'
 import { gsap, ScrollTrigger, prefersReducedMotion } from '@/lib/scroll'
 import { REPO_URL } from '@/lib/constants'
 import { cn } from '@/lib/utils'
@@ -86,7 +86,7 @@ function RunItTerminal() {
   return (
     <div>
       <div
-          className="mb-2.5 inline-flex items-center gap-1 rounded-lg border border-ink-700 bg-ink-900 p-1"
+          className="mb-2.5 inline-flex items-center gap-1 rounded-lg border border-zinc-200 bg-zinc-50 p-1"
           role="tablist"
           aria-label="Run variant"
         >
@@ -98,8 +98,10 @@ function RunItTerminal() {
               aria-selected={variant === v}
               onClick={() => setVariant(v)}
               className={cn(
-                'rounded-md px-3 py-1 font-mono text-[11px] uppercase tracking-[0.12em] transition-colors duration-200',
-                variant === v ? 'bg-amber-400/10 text-amber-400' : 'text-faint hover:text-muted-foreground',
+                'rounded-md border px-3 py-1 font-mono text-[11px] uppercase tracking-[0.12em] transition-colors duration-200',
+                variant === v
+                  ? 'border-zinc-300 bg-white text-zinc-900 shadow-sm'
+                  : 'border-transparent text-zinc-500 hover:text-zinc-900',
               )}
             >
               {v}
@@ -174,27 +176,33 @@ export default function RunLocally() {
     <section
       id="run-locally"
       ref={sectionRef}
-      className="relative border-t border-ink-700/60 py-28 lg:py-40"
+      className="relative border-t border-zinc-200 py-28 lg:py-40"
     >
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-5 sm:px-8 lg:grid-cols-12 lg:gap-10">
         {/* ------------------------------ left (sticky) ----------------------------- */}
         <div className="lg:col-span-4">
           <div className="lg:sticky lg:top-28 lg:self-start">
-            <SectionHeader
-              index="06"
-              label="run locally"
-              title="From git clone to first invoice in ~5 minutes."
-              lead="Prefer the source? Filey is a standard React + Tauri project. Node 20, a free Supabase project, and five commands is all it takes."
-              className="mb-8 lg:mb-8"
-            />
-            <p className="mb-5 text-sm leading-[1.6] text-faint">
+            {/* SectionHeader rhythm, light */}
+            <Reveal className="mb-8 lg:mb-8" y={24} duration={0.9} start="top 80%">
+              <p className="font-mono text-xs font-medium uppercase tracking-[0.18em] text-amber-600">
+                {'// '}05 — run locally
+              </p>
+              <h2 className="mt-4 font-display text-[clamp(2.25rem,5vw,4rem)] font-semibold leading-[1.0] tracking-[-0.03em] text-zinc-900">
+                From git clone to first invoice in ~5 minutes.
+              </h2>
+              <p className="mt-5 max-w-2xl text-[clamp(1.0625rem,1.4vw,1.25rem)] leading-[1.6] text-zinc-600">
+                Prefer the source? Filey is a standard React + Tauri project. Node 20, a free
+                Supabase project, and five commands is all it takes.
+              </p>
+            </Reveal>
+            <p className="mb-5 text-sm leading-[1.6] text-zinc-500">
               For developers who want to self-host or contribute.
             </p>
             <div className="flex flex-wrap gap-2">
               {PREREQS.map((p) => (
                 <span
                   key={p}
-                  className="rounded-full border border-ink-600 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.12em] text-muted-foreground"
+                  className="rounded-full border border-zinc-200 bg-white px-3 py-1 font-mono text-[11px] uppercase tracking-[0.12em] text-zinc-600"
                 >
                   {p}
                 </span>
@@ -204,9 +212,9 @@ export default function RunLocally() {
               href={REPO_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="group mt-6 inline-flex h-11 items-center gap-2 rounded-lg border border-ink-600 px-6 text-[15px] font-semibold text-fg transition-colors duration-200 hover:border-amber-400/50 hover:bg-amber-400/5 active:scale-[0.98]"
+              className="group mt-6 inline-flex h-11 items-center gap-2 rounded-lg border border-zinc-300 px-6 text-[15px] font-semibold text-zinc-900 transition-colors duration-200 hover:border-amber-500 hover:bg-amber-50 active:scale-[0.98]"
             >
-              <BookOpen className="h-4 w-4 text-amber-400" />
+              <BookOpen className="h-4 w-4 text-amber-600" />
               Read the README
               <span aria-hidden className="transition-transform duration-200 group-hover:translate-x-1">
                 →
@@ -218,7 +226,7 @@ export default function RunLocally() {
         {/* ------------------------------ right (steps) ----------------------------- */}
         <div ref={stepsRef} className="relative lg:col-span-8">
           {/* rail + scroll-progress fill (hidden < md) */}
-          <div aria-hidden className="absolute bottom-4 left-0 top-4 hidden w-px bg-ink-700 md:block">
+          <div aria-hidden className="absolute bottom-4 left-0 top-4 hidden w-px bg-zinc-200 md:block">
             <div
               ref={fillRef}
               className="h-full w-full origin-top bg-amber-400"
@@ -234,22 +242,22 @@ export default function RunLocally() {
                   aria-hidden
                   className={cn(
                     'rl-dot absolute -left-[52.5px] top-7 hidden h-2.5 w-2.5 rounded-full border md:block',
-                    reduced ? 'border-amber-400 bg-amber-400' : 'border-ink-600 bg-ink-950',
+                    reduced ? 'border-amber-400 bg-amber-400' : 'border-zinc-300 bg-white',
                   )}
                   style={reduced ? { boxShadow: '0 0 0 6px rgba(251,191,36,0.15)' } : undefined}
                 />
-                <div className="rounded-xl border border-ink-700/70 bg-ink-850 p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+                <div className="rounded-xl border border-zinc-200 bg-white p-6 shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
                   <div className="flex items-baseline gap-3">
-                    <span className="font-mono text-xs text-faint">{step.num}</span>
-                    <h3 className="font-display text-[17px] font-semibold text-fg">{step.title}</h3>
+                    <span className="font-mono text-xs text-amber-600">{step.num}</span>
+                    <h3 className="font-display text-[17px] font-semibold text-zinc-900">{step.title}</h3>
                     {step.chip && (
-                      <span className="ml-auto hidden rounded-full border border-amber-400/40 bg-amber-400/10 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.12em] text-amber-400 sm:inline-block">
+                      <span className="ml-auto hidden rounded-full border border-amber-200 bg-amber-50 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.12em] text-amber-700 sm:inline-block">
                         {step.chip}
                       </span>
                     )}
                   </div>
                   {step.body && (
-                    <p className="mt-3 text-sm leading-[1.6] text-muted-foreground">{step.body}</p>
+                    <p className="mt-3 text-sm leading-[1.6] text-zinc-600">{step.body}</p>
                   )}
                   <div className="mt-4">
                     {step.num === '04' ? (
@@ -263,7 +271,7 @@ export default function RunLocally() {
                     )}
                   </div>
                   {step.chip && (
-                    <span className="mt-3 inline-block rounded-full border border-amber-400/40 bg-amber-400/10 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.12em] text-amber-400 sm:hidden">
+                    <span className="mt-3 inline-block rounded-full border border-amber-200 bg-amber-50 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.12em] text-amber-700 sm:hidden">
                       {step.chip}
                     </span>
                   )}
