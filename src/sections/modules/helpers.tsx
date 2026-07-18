@@ -22,11 +22,11 @@ export const riseItem: Variants = {
   show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: EASE_EXPO } },
 }
 
-export type Tone = 'mint' | 'amber' | 'rose' | 'sky' | 'violet' | 'neutral'
+export type Tone = 'amber' | 'emerald' | 'rose' | 'sky' | 'violet' | 'neutral'
 
 const TONE_CLASSES: Record<Tone, string> = {
-  mint: 'border-mint-400/40 bg-mint-400/10 text-mint-300',
   amber: 'border-amber-400/40 bg-amber-400/10 text-amber-300',
+  emerald: 'border-emerald-400/40 bg-emerald-400/10 text-emerald-400',
   rose: 'border-rose-400/40 bg-rose-400/10 text-rose-400',
   sky: 'border-sky-400/40 bg-sky-400/10 text-sky-400',
   violet: 'border-violet-400/40 bg-violet-400/10 text-violet-400',

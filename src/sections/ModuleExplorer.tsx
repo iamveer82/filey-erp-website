@@ -174,7 +174,7 @@ export default function ModuleExplorer() {
           index="01"
           label="modules"
           title="Everything under one roof."
-          lead="Nine business modules plus a module registry — enable only what you use, Odoo-style. Click through the stack:"
+          lead="Invoicing, quoting, CRM, inventory, purchasing, reports and a local PDF toolkit — every module included, no plugins to buy."
         />
 
         <div className="grid gap-10 lg:grid-cols-12">
@@ -194,7 +194,7 @@ export default function ModuleExplorer() {
                   className={cn(
                     'shrink-0 snap-start rounded-full border px-3.5 py-1.5 font-mono text-[11px] transition-colors duration-200',
                     active === i
-                      ? 'border-mint-400/50 bg-mint-400/10 text-mint-300'
+                      ? 'border-amber-400/50 bg-amber-400/10 text-amber-300'
                       : 'border-ink-700 text-muted-foreground hover:border-ink-600 hover:text-fg',
                   )}
                 >
@@ -219,21 +219,21 @@ export default function ModuleExplorer() {
                     className={cn(
                       'relative flex w-full items-center gap-4 overflow-hidden rounded-lg border px-4 py-3 text-left transition-colors duration-200',
                       isActive
-                        ? 'border-mint-400/50 bg-mint-400/5'
+                        ? 'border-amber-400/50 bg-amber-400/5'
                         : 'border-ink-700/70 hover:border-ink-600 hover:bg-ink-800/40',
                     )}
                   >
                     {isActive && (
                       <motion.span
                         layoutId="module-tab-bar"
-                        className="absolute bottom-2 left-0 top-2 w-0.5 rounded-full bg-mint-400"
+                        className="absolute bottom-2 left-0 top-2 w-0.5 rounded-full bg-amber-400"
                         transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                       />
                     )}
                     <span
                       className={cn(
                         'w-6 shrink-0 font-mono text-[11px] transition-colors duration-200',
-                        isActive ? 'text-mint-400' : 'text-faint',
+                        isActive ? 'text-amber-400' : 'text-faint',
                       )}
                     >
                       {indexLabel(i)}
@@ -264,7 +264,7 @@ export default function ModuleExplorer() {
                 >
                   {/* Panel header: mono index + name + role */}
                   <div className="flex items-baseline gap-3 border-b border-ink-700/60 pb-4">
-                    <span className="font-mono text-[11px] text-mint-400">{indexLabel(active)}</span>
+                    <span className="font-mono text-[11px] text-amber-400">{indexLabel(active)}</span>
                     <h3 className="font-display text-[22px] font-semibold leading-none tracking-[-0.015em] text-fg">
                       {mod.name}
                     </h3>
@@ -285,7 +285,7 @@ export default function ModuleExplorer() {
                   >
                     {mod.bullets.map((b) => (
                       <motion.li key={b} variants={riseItem} className="flex items-baseline text-sm text-muted-foreground">
-                        <span className="mr-2 text-mint-400">▸</span>
+                        <span className="mr-2 text-amber-400">▸</span>
                         {b}
                       </motion.li>
                     ))}
