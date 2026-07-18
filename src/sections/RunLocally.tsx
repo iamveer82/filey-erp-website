@@ -99,7 +99,7 @@ function RunItTerminal() {
               onClick={() => setVariant(v)}
               className={cn(
                 'rounded-md px-3 py-1 font-mono text-[11px] uppercase tracking-[0.12em] transition-colors duration-200',
-                variant === v ? 'bg-mint-400/10 text-mint-400' : 'text-faint hover:text-muted-foreground',
+                variant === v ? 'bg-amber-400/10 text-amber-400' : 'text-faint hover:text-muted-foreground',
               )}
             >
               {v}
@@ -148,7 +148,7 @@ export default function RunLocally() {
         },
       )
 
-      // Node dots light mint when their card enters
+      // Node dots light amber when their card enters
       gsap.utils.toArray<HTMLElement>('.rl-step').forEach((step) => {
         const dot = step.querySelector('.rl-dot')
         if (!dot) return
@@ -158,9 +158,9 @@ export default function RunLocally() {
           once: true,
           onEnter: () =>
             gsap.to(dot, {
-              backgroundColor: '#34D399',
-              borderColor: '#34D399',
-              boxShadow: '0 0 0 6px rgba(52,211,153,0.15)',
+              backgroundColor: '#FBBF24',
+              borderColor: '#FBBF24',
+              boxShadow: '0 0 0 6px rgba(251,191,36,0.15)',
               duration: 0.4,
               ease: 'power2.out',
             }),
@@ -187,6 +187,9 @@ export default function RunLocally() {
               lead="Prefer the source? Filey is a standard React + Tauri project. Node 20, a free Supabase project, and five commands is all it takes."
               className="mb-8 lg:mb-8"
             />
+            <p className="mb-5 text-sm leading-[1.6] text-faint">
+              For developers who want to self-host or contribute.
+            </p>
             <div className="flex flex-wrap gap-2">
               {PREREQS.map((p) => (
                 <span
@@ -201,9 +204,9 @@ export default function RunLocally() {
               href={REPO_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="group mt-6 inline-flex h-11 items-center gap-2 rounded-lg border border-ink-600 px-6 text-[15px] font-semibold text-fg transition-colors duration-200 hover:border-mint-400/50 hover:bg-mint-400/5 active:scale-[0.98]"
+              className="group mt-6 inline-flex h-11 items-center gap-2 rounded-lg border border-ink-600 px-6 text-[15px] font-semibold text-fg transition-colors duration-200 hover:border-amber-400/50 hover:bg-amber-400/5 active:scale-[0.98]"
             >
-              <BookOpen className="h-4 w-4 text-mint-400" />
+              <BookOpen className="h-4 w-4 text-amber-400" />
               Read the README
               <span aria-hidden className="transition-transform duration-200 group-hover:translate-x-1">
                 →
@@ -218,7 +221,7 @@ export default function RunLocally() {
           <div aria-hidden className="absolute bottom-4 left-0 top-4 hidden w-px bg-ink-700 md:block">
             <div
               ref={fillRef}
-              className="h-full w-full origin-top bg-mint-400"
+              className="h-full w-full origin-top bg-amber-400"
               style={{ transform: reduced ? 'scaleY(1)' : 'scaleY(0)' }}
             />
           </div>
@@ -231,16 +234,16 @@ export default function RunLocally() {
                   aria-hidden
                   className={cn(
                     'rl-dot absolute -left-[52.5px] top-7 hidden h-2.5 w-2.5 rounded-full border md:block',
-                    reduced ? 'border-mint-400 bg-mint-400' : 'border-ink-600 bg-ink-950',
+                    reduced ? 'border-amber-400 bg-amber-400' : 'border-ink-600 bg-ink-950',
                   )}
-                  style={reduced ? { boxShadow: '0 0 0 6px rgba(52,211,153,0.15)' } : undefined}
+                  style={reduced ? { boxShadow: '0 0 0 6px rgba(251,191,36,0.15)' } : undefined}
                 />
                 <div className="rounded-xl border border-ink-700/70 bg-ink-850 p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
                   <div className="flex items-baseline gap-3">
                     <span className="font-mono text-xs text-faint">{step.num}</span>
                     <h3 className="font-display text-[17px] font-semibold text-fg">{step.title}</h3>
                     {step.chip && (
-                      <span className="ml-auto hidden rounded-full border border-mint-400/40 bg-mint-400/10 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.12em] text-mint-400 sm:inline-block">
+                      <span className="ml-auto hidden rounded-full border border-amber-400/40 bg-amber-400/10 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.12em] text-amber-400 sm:inline-block">
                         {step.chip}
                       </span>
                     )}
@@ -260,7 +263,7 @@ export default function RunLocally() {
                     )}
                   </div>
                   {step.chip && (
-                    <span className="mt-3 inline-block rounded-full border border-mint-400/40 bg-mint-400/10 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.12em] text-mint-400 sm:hidden">
+                    <span className="mt-3 inline-block rounded-full border border-amber-400/40 bg-amber-400/10 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.12em] text-amber-400 sm:hidden">
                       {step.chip}
                     </span>
                   )}

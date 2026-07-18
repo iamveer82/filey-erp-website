@@ -2,46 +2,34 @@ import SectionHeader from '@/components/SectionHeader'
 import Reveal from '@/components/Reveal'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 
-const MASCOT_SRC = `${import.meta.env.BASE_URL}mascot.png`
-
 const QA = [
   {
-    q: 'Is Filey ERP really free?',
-    a: "Yes. It's AGPL-3.0 open source: no subscriptions, no seat limits, no feature gates, no telemetry. You can use it commercially, modify it, and self-host it forever.",
+    q: 'Is Filey ERP a subscription?',
+    a: 'No. The Free plan costs nothing forever — 20 invoices a month with offline mode. Pro is a single one-time payment: pay once and own your license forever, updates included.',
+  },
+  {
+    q: 'What happens when I hit 20 invoices in a month?',
+    a: "Nothing scary — your data stays put and everything keeps working; you just can't create new invoices until the month rolls over or you upgrade to Pro for unlimited invoicing.",
   },
   {
     q: 'Does it work without internet?',
-    a: 'Fully. The desktop app runs on a local SQLite database — invoicing, inventory, CRM and the PDF toolkit all work offline. Supabase cloud sync is optional, for teams that want multi-user access.',
+    a: 'Yes. Filey is offline-first: your data lives in a local database on your machine and every core feature works with no connection at all.',
   },
   {
     q: 'Is there a macOS version?',
-    a: 'Not as a prebuilt download yet. Because Filey is a standard Tauri project, macOS users can build a signed .dmg from source in about five minutes: git clone, npm ci, npm run tauri build. Signed macOS builds are on the public roadmap.',
+    a: 'We ship signed Windows and Linux installers. On macOS you can build from source in about ten minutes — the Run locally section above walks through it.',
   },
   {
-    q: 'Where does my data live?',
-    a: 'On your machine. Your database is a local file, and the PDF toolkit processes documents locally — files never leave your device. If you enable Supabase, your data lives in your own Supabase project, which you control.',
-  },
-  {
-    q: 'Can I use it for my business / modify it?',
-    a: "Yes — AGPL-3.0 explicitly allows commercial use and modification. If you distribute a modified version, you must share its source under the same license. That's the whole deal.",
+    q: 'Is my data private?',
+    a: 'Completely. Your business data never leaves your device unless you choose to connect your own cloud workspace. The PDF toolkit processes files 100% locally.',
   },
 ]
 
 export default function Faq() {
   return (
     <section id="faq" className="relative border-t border-ink-700/60 py-28 lg:py-40">
-      {/* mascot, mirrored, left of the header (xl only) */}
-      <img
-        src={MASCOT_SRC}
-        alt=""
-        width={100}
-        height={100}
-        loading="lazy"
-        aria-hidden
-        className="pointer-events-none absolute left-[max(2rem,calc(50%-44rem))] top-28 hidden h-[100px] w-[100px] -scale-x-100 drop-shadow-[0_10px_24px_rgba(0,0,0,0.5)] xl:block"
-      />
       <div className="mx-auto max-w-3xl px-5 sm:px-8">
-        <SectionHeader index="08" label="faq" title="Fair questions." align="center" className="mb-10 lg:mb-12" />
+        <SectionHeader index="07" label="faq" title="Fair questions." align="center" className="mb-10 lg:mb-12" />
         <Accordion type="single" collapsible>
           {QA.map((item, i) => (
             <Reveal key={item.q} delay={i * 0.08} y={24} duration={0.6}>
