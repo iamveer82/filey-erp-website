@@ -1,4 +1,3 @@
-import SectionHeader from '@/components/SectionHeader'
 import Reveal from '@/components/Reveal'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 
@@ -27,17 +26,28 @@ const QA = [
 
 export default function Faq() {
   return (
-    <section id="faq" className="relative border-t border-ink-700/60 py-28 lg:py-40">
+    <section id="faq" className="relative border-t border-zinc-200 py-28 lg:py-40">
       <div className="mx-auto max-w-3xl px-5 sm:px-8">
-        <SectionHeader index="07" label="faq" title="Fair questions." align="center" className="mb-10 lg:mb-12" />
+        {/* centered header — SectionHeader rhythm, light */}
+        <Reveal className="mx-auto mb-10 max-w-3xl text-center lg:mb-12" y={24} duration={0.9} start="top 80%">
+          <p className="font-mono text-xs font-medium uppercase tracking-[0.18em] text-amber-600">
+            {'// '}06 — faq
+          </p>
+          <h2 className="mt-4 font-display text-[clamp(2.25rem,5vw,4rem)] font-semibold leading-[1.0] tracking-[-0.03em] text-zinc-900">
+            Fair questions.
+          </h2>
+        </Reveal>
         <Accordion type="single" collapsible>
           {QA.map((item, i) => (
             <Reveal key={item.q} delay={i * 0.08} y={24} duration={0.6}>
-              <AccordionItem value={`item-${i}`} className="border-ink-700/60">
-                <AccordionTrigger className="py-5 font-display text-[17px] font-semibold text-fg hover:no-underline">
+              <AccordionItem
+                value={`item-${i}`}
+                className="rounded-lg border-zinc-200 px-4 transition-colors duration-200 data-[state=open]:bg-white"
+              >
+                <AccordionTrigger className="py-5 font-display text-[17px] font-semibold text-zinc-900 hover:no-underline">
                   {item.q}
                 </AccordionTrigger>
-                <AccordionContent className="pb-6 text-[15px] leading-[1.65] text-muted-foreground">
+                <AccordionContent className="pb-6 text-[15px] leading-[1.65] text-zinc-600">
                   {item.a}
                 </AccordionContent>
               </AccordionItem>
