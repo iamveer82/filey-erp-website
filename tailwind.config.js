@@ -48,26 +48,33 @@ module.exports = {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
-        // Filey "Local Ledger" palette
+        // Filey minimal palette — neutral zincs + amber brand accent
         ink: {
-          950: "#070B11",
-          900: "#0C121C",
-          850: "#0F1724",
-          800: "#14202F",
-          700: "#1E2C40",
-          600: "#33445C",
-        },
-        mint: {
-          300: "#6EE7B7",
-          400: "#34D399",
-          500: "#10B981",
+          950: "#0A0A0B",
+          900: "#101012",
+          850: "#141416",
+          800: "#1A1A1D",
+          700: "#26262A",
+          600: "#3A3A40",
         },
         amber: {
           300: "#FCD34D",
           400: "#FBBF24",
+          500: "#F59E0B",
+          600: "#D97706",
+        },
+        orange: {
+          400: "#FB923C",
+          500: "#F97316",
         },
         rose: {
           400: "#FB7185",
+        },
+        red: {
+          400: "#F87171",
+        },
+        emerald: {
+          400: "#34D399",
         },
         sky: {
           400: "#38BDF8",
@@ -79,14 +86,14 @@ module.exports = {
           DEFAULT: "#F5F1E6",
           ink: "#1A2330",
         },
-        fg: "#E8EEF4",
-        faint: "#5A6B80",
+        fg: "#FAFAFA",
+        faint: "#5C5C63",
       },
       fontFamily: {
-        display: ["Space Grotesk", "ui-sans-serif", "system-ui", "sans-serif"],
+        display: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
         sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
         mono: ["JetBrains Mono", "ui-monospace", "SFMono-Regular", "monospace"],
-        serif: ["Instrument Serif", "ui-serif", "Georgia", "serif"],
+        serif: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
       },
       borderRadius: {
         xl: "calc(var(--radius) + 4px)",
