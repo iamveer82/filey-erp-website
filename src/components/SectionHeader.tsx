@@ -42,17 +42,17 @@ export default function SectionHeader({
       duration={0.9}
       start="top 80%"
     >
-      <p className="font-mono text-xs font-medium uppercase tracking-[0.18em] text-amber-400">
+      <p className="font-mono text-xs font-medium uppercase tracking-[0.18em] text-amber-600">
         {'// '}
         {index} — {label}
       </p>
       <div className={cn('mt-4 flex flex-wrap items-end gap-x-8 gap-y-4', centered && 'justify-center')}>
-        <h2 className="font-display text-[clamp(2.25rem,5vw,4rem)] font-semibold leading-[1.0] tracking-[-0.03em] text-fg">
+        <h2 className="font-display text-[clamp(2.25rem,5vw,4rem)] font-semibold leading-[1.0] tracking-[-0.03em] text-zinc-900">
           {title}
           {accent ? (
             <>
               {' '}
-              <span className="font-semibold text-amber-400">{accent}</span>
+              <span className="font-semibold text-amber-600">{accent}</span>
             </>
           ) : null}
         </h2>
@@ -61,7 +61,7 @@ export default function SectionHeader({
       {lead ? (
         <p
           className={cn(
-            'mt-5 max-w-2xl text-[clamp(1.0625rem,1.4vw,1.25rem)] leading-[1.6] text-muted-foreground',
+            'mt-5 max-w-2xl text-[clamp(1.0625rem,1.4vw,1.25rem)] leading-[1.6] text-zinc-600',
             centered && 'mx-auto',
           )}
         >

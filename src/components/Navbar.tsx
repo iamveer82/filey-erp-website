@@ -90,7 +90,7 @@ export default function Navbar() {
         className={cn(
           'fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,backdrop-filter] duration-300',
           scrolled || open
-            ? 'border-b border-ink-700/60 bg-ink-950/80 backdrop-blur-xl'
+            ? 'border-b border-zinc-200 bg-white/80 backdrop-blur-xl'
             : 'border-b border-transparent bg-transparent',
         )}
       >
@@ -104,10 +104,10 @@ export default function Navbar() {
           >
             <img src={LOGO_SRC} alt="" className="h-7 w-7" width={28} height={28} />
             <span className="font-display text-[17px]">
-              <span className="font-bold text-fg">Filey</span>{' '}
-              <span className="font-medium text-amber-400">ERP</span>
+              <span className="font-bold text-zinc-900">Filey</span>{' '}
+              <span className="font-medium text-amber-600">ERP</span>
             </span>
-            <span className="hidden rounded-full border border-amber-400/40 px-2 py-0.5 font-mono text-[10px] text-amber-400 sm:inline-block">
+            <span className="hidden rounded-full border border-amber-500/40 bg-amber-50 px-2 py-0.5 font-mono text-[10px] text-amber-600 sm:inline-block">
               {RELEASE_TAG}
             </span>
           </a>
@@ -123,13 +123,13 @@ export default function Navbar() {
                   onClick={(e) => handleAnchor(e, hash)}
                   className={cn(
                     'relative flex items-center font-mono text-xs uppercase tracking-[0.12em] transition-colors duration-200',
-                    isActive ? 'text-fg' : 'text-muted-foreground hover:text-fg',
+                    isActive ? 'text-zinc-900' : 'text-zinc-600 hover:text-zinc-900',
                   )}
                 >
                   {isActive && (
                     <motion.span
                       layoutId="nav-dot"
-                      className="absolute -left-3 h-1 w-1 rounded-full bg-amber-400"
+                      className="absolute -left-3 h-1 w-1 rounded-full bg-amber-500"
                       transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                     />
                   )}
@@ -147,7 +147,7 @@ export default function Navbar() {
               rel="noopener noreferrer"
               aria-label="GitHub repository"
               title="Source code on GitHub"
-              className="hidden h-10 w-10 items-center justify-center rounded-lg border border-ink-600 text-muted-foreground transition-colors duration-200 hover:border-amber-400/50 hover:text-fg sm:flex"
+              className="hidden h-10 w-10 items-center justify-center rounded-lg border border-zinc-200 text-zinc-500 transition-colors duration-200 hover:text-zinc-900 sm:flex"
             >
               <Github className="h-[18px] w-[18px]" />
             </a>
@@ -161,7 +161,7 @@ export default function Navbar() {
             </a>
             <button
               type="button"
-              className="flex h-10 w-10 items-center justify-center rounded-lg border border-ink-600 text-muted-foreground transition-colors duration-200 hover:text-fg lg:hidden"
+              className="flex h-10 w-10 items-center justify-center rounded-lg border border-zinc-200 text-zinc-500 transition-colors duration-200 hover:text-zinc-900 lg:hidden"
               aria-label={open ? 'Close menu' : 'Open menu'}
               aria-expanded={open}
               onClick={() => setOpen((v) => !v)}
@@ -180,7 +180,7 @@ export default function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-40 flex flex-col justify-center bg-ink-950/[0.97] px-8 backdrop-blur-2xl lg:hidden"
+            className="fixed inset-0 z-40 flex flex-col justify-center bg-white/95 px-8 backdrop-blur-2xl lg:hidden"
           >
             <nav className="flex flex-col gap-6" aria-label="Mobile">
               {NAV_LINKS.map(({ label, hash }, i) => (
@@ -192,9 +192,9 @@ export default function Navbar() {
                   animate={{ y: 0, opacity: 1 }}
                   exit={{ y: 12, opacity: 0 }}
                   transition={{ delay: 0.05 * i, duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                  className="font-display text-[32px] font-semibold tracking-tight text-fg"
+                  className="font-display text-[32px] font-semibold tracking-tight text-zinc-900"
                 >
-                  <span className="mr-3 font-mono text-sm text-amber-400">0{i + 1}</span>
+                  <span className="mr-3 font-mono text-sm text-amber-600">0{i + 1}</span>
                   {label}
                 </motion.a>
               ))}
@@ -219,7 +219,7 @@ export default function Navbar() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="GitHub repository"
-                className="flex h-11 w-11 items-center justify-center rounded-lg border border-ink-600 text-muted-foreground transition-colors duration-200 hover:text-fg"
+                className="flex h-11 w-11 items-center justify-center rounded-lg border border-zinc-200 text-zinc-500 transition-colors duration-200 hover:text-zinc-900"
               >
                 <Github className="h-5 w-5" />
               </a>

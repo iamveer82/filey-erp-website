@@ -13,7 +13,7 @@ function AnchorLink({ hash, children }: { hash: string; children: ReactNode }) {
     <a
       href={hash}
       onClick={onClick}
-      className="text-sm text-muted-foreground transition-colors duration-200 hover:text-fg"
+      className="text-sm text-zinc-500 transition-colors duration-200 hover:text-zinc-900"
     >
       {children}
     </a>
@@ -26,7 +26,7 @@ function ExtLink({ href, children }: { href: string; children: ReactNode }) {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="text-sm text-muted-foreground transition-colors duration-200 hover:text-fg"
+      className="text-sm text-zinc-500 transition-colors duration-200 hover:text-zinc-900"
     >
       {children}
     </a>
@@ -36,7 +36,7 @@ function ExtLink({ href, children }: { href: string; children: ReactNode }) {
 function Column({ title, children }: { title: string; children: ReactNode }) {
   return (
     <div>
-      <h3 className="font-mono text-xs uppercase tracking-[0.14em] text-faint">{title}</h3>
+      <h3 className="font-mono text-xs uppercase tracking-[0.14em] text-zinc-900">{title}</h3>
       <ul className="mt-4 space-y-2.5">{children}</ul>
     </div>
   )
@@ -44,13 +44,9 @@ function Column({ title, children }: { title: string; children: ReactNode }) {
 
 export default function Footer() {
   return (
-    <footer className="relative bg-ink-900">
+    <footer className="relative bg-white">
       {/* hairline divider */}
-      <div
-        className="h-px w-full"
-        style={{ background: 'linear-gradient(90deg, transparent, #26262A, transparent)' }}
-        aria-hidden
-      />
+      <div className="h-px w-full bg-zinc-200" aria-hidden />
       <Reveal y={24} className="mx-auto max-w-7xl px-5 py-16 sm:px-8">
         <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
           {/* Brand column */}
@@ -71,11 +67,11 @@ export default function Footer() {
                 height={28}
               />
               <span className="font-display text-[17px]">
-                <span className="font-bold text-fg">Filey</span>{' '}
-                <span className="font-medium text-amber-400">ERP</span>
+                <span className="font-bold text-zinc-900">Filey</span>{' '}
+                <span className="font-medium text-amber-600">ERP</span>
               </span>
             </a>
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted-foreground">
+            <p className="mt-4 max-w-xs text-sm leading-relaxed text-zinc-600">
               Offline-first desktop ERP &amp; CRM for small businesses — FTA-compliant invoicing,
               inventory and sales in one app. Free to start.
             </p>
@@ -86,11 +82,11 @@ export default function Footer() {
                 rel="noopener noreferrer"
                 aria-label="Source code on GitHub"
                 title="Source code"
-                className="flex h-10 w-10 items-center justify-center rounded-lg border border-ink-600 text-muted-foreground transition-colors duration-200 hover:border-amber-400/50 hover:text-fg"
+                className="flex h-10 w-10 items-center justify-center rounded-lg border border-zinc-200 text-zinc-500 transition-colors duration-200 hover:text-zinc-900"
               >
                 <Github className="h-[18px] w-[18px]" />
               </a>
-              <span className="rounded-full border border-amber-400/40 px-2.5 py-1 font-mono text-[10px] text-amber-400">
+              <span className="rounded-full border border-amber-500/40 bg-amber-50 px-2.5 py-1 font-mono text-[10px] text-amber-600">
                 {RELEASE_TAG}
               </span>
             </div>
@@ -119,8 +115,8 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-14 border-t border-ink-700/60 pt-6">
-          <p className="text-[13px] text-faint">© 2026 Filey ERP. All rights reserved.</p>
+        <div className="mt-14 border-t border-zinc-200 pt-6">
+          <p className="text-[13px] text-zinc-400">© 2026 Filey ERP. All rights reserved.</p>
         </div>
       </Reveal>
     </footer>
