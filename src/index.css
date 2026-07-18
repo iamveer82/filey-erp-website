@@ -4,33 +4,33 @@
 
 @layer base {
   :root {
-    --background: 240 6% 4%;
-    --foreground: 0 0% 98%;
-    --card: 240 5% 7%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 5% 7%;
-    --popover-foreground: 0 0% 98%;
+    --background: 45 20% 98%;
+    --foreground: 240 6% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 6% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 6% 10%;
     --primary: 38 92% 50%;
     --primary-foreground: 30 60% 6%;
-    --secondary: 240 4% 10%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 4% 10%;
-    --muted-foreground: 240 5% 65%;
-    --accent: 240 4% 12%;
-    --accent-foreground: 38 92% 50%;
-    --destructive: 0 72% 63%;
+    --secondary: 240 5% 95%;
+    --secondary-foreground: 240 6% 10%;
+    --muted: 240 5% 95%;
+    --muted-foreground: 240 4% 40%;
+    --accent: 38 92% 95%;
+    --accent-foreground: 30 80% 35%;
+    --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 4% 14%;
-    --input: 240 4% 14%;
+    --border: 240 6% 90%;
+    --input: 240 6% 90%;
     --ring: 38 92% 50%;
     --radius: 0.625rem;
-    --sidebar-background: 240 6% 5%;
-    --sidebar-foreground: 0 0% 98%;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 240 6% 10%;
     --sidebar-primary: 38 92% 50%;
     --sidebar-primary-foreground: 30 60% 6%;
-    --sidebar-accent: 240 4% 12%;
-    --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 240 4% 14%;
+    --sidebar-accent: 240 5% 95%;
+    --sidebar-accent-foreground: 240 6% 10%;
+    --sidebar-border: 240 6% 90%;
     --sidebar-ring: 38 92% 50%;
   }
 }
@@ -46,7 +46,7 @@
     text-rendering: optimizeLegibility;
   }
 
-  /* Minimal vignette — barely-there warm glow at top, nothing else */
+  /* Minimal warm paper — faint amber glow at top, nothing else */
   body::before {
     content: "";
     position: fixed;
@@ -54,13 +54,13 @@
     z-index: -1;
     pointer-events: none;
     background:
-      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(245, 158, 11, 0.05), transparent 70%),
-      #0a0a0b;
+      radial-gradient(ellipse 70% 45% at 50% -10%, rgba(245, 158, 11, 0.06), transparent 70%),
+      #fafafa;
   }
 
   ::selection {
-    background: rgba(245, 158, 11, 0.3);
-    color: #fafafa;
+    background: rgba(245, 158, 11, 0.25);
+    color: #18181b;
   }
 
   ::-webkit-scrollbar {
@@ -68,19 +68,19 @@
     height: 10px;
   }
   ::-webkit-scrollbar-track {
-    background: #0a0a0b;
+    background: #fafafa;
   }
   ::-webkit-scrollbar-thumb {
-    background: #26262a;
+    background: #d4d4d8;
     border-radius: 8px;
-    border: 2px solid #0a0a0b;
+    border: 2px solid #fafafa;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #3a3a40;
+    background: #a1a1aa;
   }
 
   :focus-visible {
-    outline: 2px solid rgba(245, 158, 11, 0.6);
+    outline: 2px solid rgba(217, 119, 6, 0.5);
     outline-offset: 2px;
   }
 }

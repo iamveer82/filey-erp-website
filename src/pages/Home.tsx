@@ -1,6 +1,5 @@
 import Hero from '@/sections/Hero'
-import ModuleExplorer from '@/sections/ModuleExplorer'
-import DashboardPreview from '@/sections/DashboardPreview'
+import Features from '@/sections/Features'
 import LiveDemo from '@/sections/LiveDemo'
 import Pricing from '@/sections/Pricing'
 import Download from '@/sections/Download'
@@ -12,8 +11,7 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <ModuleExplorer />
-      <DashboardPreview />
+      <Features />
       <LiveDemo />
       <Pricing />
       <Download />
