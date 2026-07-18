@@ -14,7 +14,7 @@ function DealCard({ company, value, moving = false }: { company: string; value: 
       transition={SPRING}
       className={cn(
         'rounded-md border bg-ink-900 p-2 text-left',
-        moving ? 'z-10 border-mint-400/50 shadow-[0_8px_24px_-8px_rgba(52,211,153,0.35)]' : 'border-ink-700',
+        moving ? 'z-10 border-amber-400/50 shadow-[0_8px_24px_-8px_rgba(251,191,36,0.35)]' : 'border-ink-700',
       )}
     >
       <p className="truncate text-[11px] font-semibold text-fg">{company}</p>
@@ -71,10 +71,10 @@ export function CrmVisual() {
           </div>
         </MiniTile>
         {/* Won */}
-        <MiniTile className={cn('p-2 transition-colors duration-300', moved && 'border-mint-400/40')}>
+        <MiniTile className={cn('p-2 transition-colors duration-300', moved && 'border-emerald-400/40')}>
           <div className="mb-2 flex items-center justify-between px-0.5">
-            <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-mint-400">Won</p>
-            <span className="font-mono text-[10px] tabular-nums text-mint-300">
+            <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-emerald-400">Won</p>
+            <span className="font-mono text-[10px] tabular-nums text-emerald-400">
               <WonTotal moved={moved} />
             </span>
           </div>
@@ -106,17 +106,17 @@ export function SuppliersVisual() {
       <motion.div variants={riseItem}>
         <MiniTile className="divide-y divide-ink-700/60 px-3.5">
           {SUPPLIERS.map((s, i) => (
-            <div key={s.name} className="py-2.5 transition-colors duration-200 hover:bg-mint-400/5">
+            <div key={s.name} className="py-2.5 transition-colors duration-200 hover:bg-amber-400/5">
               <div className="flex items-center gap-3">
                 <span className="min-w-0 flex-1 truncate text-[12.5px] font-medium text-fg">{s.name}</span>
-                <StatusChip tone={i === 0 ? 'mint' : 'neutral'}>{s.category}</StatusChip>
+                <StatusChip tone={i === 0 ? 'amber' : 'neutral'}>{s.category}</StatusChip>
                 <span className="shrink-0 font-mono text-[11.5px] tabular-nums text-fg">
                   AED {s.spend.toLocaleString('en-US')}
                 </span>
               </div>
               <div className="mt-2 h-1 overflow-hidden rounded-full bg-ink-700">
                 <motion.div
-                  className="h-full rounded-full bg-mint-400"
+                  className="h-full rounded-full bg-amber-400"
                   initial={{ width: 0 }}
                   animate={{ width: `${s.pct}%` }}
                   transition={{ duration: 1, ease: EASE_EXPO, delay: 0.25 + i * 0.12 }}
@@ -163,13 +163,13 @@ export function ReportsVisual() {
             ))}
             <div className="flex items-baseline justify-between pt-2.5">
               <span className="text-[13px] font-semibold text-fg">Net profit</span>
-              <span className="font-mono text-[16px] font-semibold tabular-nums text-mint-300">AED 94,883.50</span>
+              <span className="font-mono text-[16px] font-semibold tabular-nums text-emerald-400">AED 94,883.50</span>
             </div>
           </div>
         </MiniTile>
       </motion.div>
       <motion.div variants={riseItem} className="mt-3 flex justify-center">
-        <StatusChip tone="mint" className="normal-case tracking-[0.04em]">
+        <StatusChip tone="amber" className="normal-case tracking-[0.04em]">
           Statement of account · 6 templates
         </StatusChip>
       </motion.div>
@@ -180,9 +180,9 @@ export function ReportsVisual() {
 /* ------------------------------ PDF Toolkit ------------------------------ */
 
 const PDF_CHIPS = [
-  { name: 'invoice.pdf', tone: 'text-mint-400', x: -104 },
+  { name: 'invoice.pdf', tone: 'text-amber-400', x: -104 },
   { name: 'po.pdf', tone: 'text-sky-400', x: 0 },
-  { name: 'receipt.pdf', tone: 'text-amber-400', x: 104 },
+  { name: 'receipt.pdf', tone: 'text-violet-400', x: 104 },
 ]
 
 /** 09 — PDF Toolkit: 3 file chips converge into one merged chip on activation. */
@@ -214,7 +214,7 @@ export function PdfToolkitVisual() {
               initial={{ scale: 0.6, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.4, delay: 1.25, ease: [0.34, 1.56, 0.64, 1] }}
-              className="flex items-center gap-1.5 whitespace-nowrap rounded-full border border-mint-400/50 bg-mint-400/10 px-3.5 py-1.5 font-mono text-[11px] text-mint-300 shadow-[0_0_24px_rgba(52,211,153,0.2)]"
+              className="flex items-center gap-1.5 whitespace-nowrap rounded-full border border-amber-400/50 bg-amber-400/10 px-3.5 py-1.5 font-mono text-[11px] text-amber-300 shadow-[0_0_24px_rgba(251,191,36,0.2)]"
             >
               <FileText className="h-3.5 w-3.5" />
               merged.pdf
@@ -255,7 +255,7 @@ export function SettingsVisual() {
                 <span className={cn('flex-1 text-[12.5px] transition-colors duration-200', on ? 'text-fg' : 'text-faint')}>
                   {row.name}
                 </span>
-                <span className={cn('font-mono text-[10px] uppercase tracking-[0.12em]', on ? 'text-mint-300' : 'text-faint')}>
+                <span className={cn('font-mono text-[10px] uppercase tracking-[0.12em]', on ? 'text-amber-300' : 'text-faint')}>
                   {on ? 'On' : 'Off'}
                 </span>
                 <Switch
@@ -274,7 +274,7 @@ export function SettingsVisual() {
           <div className="flex items-center gap-3 py-2.5">
             <ScrollText className="h-3.5 w-3.5 text-faint" />
             <span className="flex-1 text-[12.5px] text-fg">Activity log</span>
-            <StatusChip tone="mint">Enabled</StatusChip>
+            <StatusChip tone="amber">Enabled</StatusChip>
           </div>
         </MiniTile>
       </motion.div>
