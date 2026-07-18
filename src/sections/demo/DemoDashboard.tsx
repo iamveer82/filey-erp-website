@@ -42,7 +42,7 @@ function ChartTooltip({ active, payload, label }: { active?: boolean; payload?: 
       <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-faint">{label}</p>
       {payload.map((entry) => (
         <p key={entry.name} className="mt-1 flex items-center gap-2 font-mono text-[11px] tabular-nums text-fg">
-          <span className="h-1.5 w-1.5 rounded-full" style={{ background: entry.color ?? '#34D399' }} />
+          <span className="h-1.5 w-1.5 rounded-full" style={{ background: entry.color ?? '#FBBF24' }} />
           {entry.name}: {fmtAED(Number(entry.value ?? 0))}
         </p>
       ))}
@@ -107,13 +107,13 @@ export default function DemoDashboard({ running }: { running: boolean }) {
               aria-pressed={period === p}
               className={cn(
                 'relative rounded-md px-2.5 py-1 font-mono text-[11px] transition-colors duration-200',
-                period === p ? 'text-mint-400' : 'text-faint hover:text-muted-foreground',
+                period === p ? 'text-amber-400' : 'text-faint hover:text-muted-foreground',
               )}
             >
               {period === p && (
                 <motion.span
                   layoutId="demo-period-pill"
-                  className="absolute inset-0 rounded-md bg-mint-400/10"
+                  className="absolute inset-0 rounded-md bg-amber-400/10"
                   transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                 />
               )}
@@ -128,7 +128,7 @@ export default function DemoDashboard({ running }: { running: boolean }) {
         {kpis.map((kpi) => (
           <div
             key={kpi.label}
-            className="rounded-xl border border-ink-700/70 bg-ink-900/60 p-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition-colors duration-200 hover:border-mint-400/40"
+            className="rounded-xl border border-ink-700/70 bg-ink-900/60 p-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition-colors duration-200 hover:border-amber-400/40"
           >
             <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-faint">{kpi.label}</p>
             <p className="mt-1.5 font-mono text-lg font-semibold tabular-nums text-fg lg:text-xl">
@@ -137,7 +137,7 @@ export default function DemoDashboard({ running }: { running: boolean }) {
             <p
               className={cn(
                 'mt-1 flex items-center gap-1 font-mono text-[10px]',
-                kpi.tone === 'mint' && 'text-mint-400',
+                kpi.tone === 'emerald' && 'text-emerald-400',
                 kpi.tone === 'sky' && 'text-sky-400',
                 kpi.tone === 'amber' && 'text-amber-400',
               )}
@@ -155,7 +155,7 @@ export default function DemoDashboard({ running }: { running: boolean }) {
           <div className="mb-2 flex items-center justify-between">
             <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-faint">Revenue — {period}</p>
             <span className="flex items-center gap-1.5 font-mono text-[10px] text-faint">
-              <span className="h-1.5 w-3 rounded-full bg-mint-400" />
+              <span className="h-1.5 w-3 rounded-full bg-amber-400" />
               Revenue
             </span>
           </div>
@@ -172,8 +172,8 @@ export default function DemoDashboard({ running }: { running: boolean }) {
                 <AreaChart data={DEMO_CHARTS[period]} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
                   <defs>
                     <linearGradient id="demoRevFill" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#34D399" stopOpacity={0.3} />
-                      <stop offset="100%" stopColor="#34D399" stopOpacity={0} />
+                      <stop offset="0%" stopColor="#FBBF24" stopOpacity={0.3} />
+                      <stop offset="100%" stopColor="#FBBF24" stopOpacity={0} />
                     </linearGradient>
                   </defs>
                   <CartesianGrid stroke="rgba(148,163,184,0.08)" strokeDasharray="4 6" vertical={false} />
@@ -191,12 +191,12 @@ export default function DemoDashboard({ running }: { running: boolean }) {
                     width={44}
                     tickFormatter={fmtCompact}
                   />
-                  <Tooltip content={<ChartTooltip />} cursor={{ stroke: 'rgba(52,211,153,0.3)' }} />
+                  <Tooltip content={<ChartTooltip />} cursor={{ stroke: 'rgba(251,191,36,0.3)' }} />
                   <Area
                     type="monotone"
                     dataKey="rev"
                     name="Revenue"
-                    stroke="#34D399"
+                    stroke="#FBBF24"
                     strokeWidth={2}
                     fill="url(#demoRevFill)"
                     dot={false}
@@ -250,7 +250,7 @@ export default function DemoDashboard({ running }: { running: boolean }) {
                 {hoveredSlice === c.name && (
                   <motion.span
                     layoutId="donut-legend-ring"
-                    className="absolute inset-0 rounded-md border border-mint-400/40 bg-mint-400/5"
+                    className="absolute inset-0 rounded-md border border-amber-400/40 bg-amber-400/5"
                     transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                   />
                 )}
@@ -267,10 +267,10 @@ export default function DemoDashboard({ running }: { running: boolean }) {
       <div className="rounded-xl border border-ink-700/70 bg-ink-900/60 p-4">
         <div className="mb-2 flex items-center justify-between">
           <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-faint">Recent activity</p>
-          <span className="flex items-center gap-1.5 font-mono text-[10px] text-mint-400">
+          <span className="flex items-center gap-1.5 font-mono text-[10px] text-amber-400">
             <span className="relative flex h-1.5 w-1.5">
-              <span className="absolute h-full w-full animate-ping rounded-full bg-mint-400 opacity-60 motion-reduce:hidden" />
-              <span className="relative h-1.5 w-1.5 rounded-full bg-mint-400" />
+              <span className="absolute h-full w-full animate-ping rounded-full bg-amber-400 opacity-60 motion-reduce:hidden" />
+              <span className="relative h-1.5 w-1.5 rounded-full bg-amber-400" />
             </span>
             live
           </span>
@@ -285,7 +285,7 @@ export default function DemoDashboard({ running }: { running: boolean }) {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 10 }}
                 transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                className="flex items-center justify-between rounded-md px-2 py-2 transition-colors duration-200 hover:bg-mint-400/5"
+                className="flex items-center justify-between rounded-md px-2 py-2 transition-colors duration-200 hover:bg-amber-400/5"
               >
                 <span className="flex items-center gap-2 text-[12.5px] text-muted-foreground">
                   <span className={cn('h-1.5 w-1.5 shrink-0 rounded-full', item.dot)} />
