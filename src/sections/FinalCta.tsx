@@ -121,7 +121,7 @@ export default function FinalCta() {
             <span className="fc-word inline-block will-change-transform">Stop</span>{' '}
             <span className="fc-word inline-block will-change-transform">renting</span>{' '}
             <span className="fc-word inline-block will-change-transform">your</span>{' '}
-            <span className="fc-word inline-block will-change-transform">software.</span>{' '}
+            <span className="fc-word inline-block will-change-transform">software.</span>
           </span>
           <span className="block overflow-hidden pb-[0.18em]">
             <span className="fc-word inline-block font-serif font-normal italic text-mint-300 will-change-transform">
