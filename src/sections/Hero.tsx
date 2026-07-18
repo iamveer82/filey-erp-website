@@ -100,7 +100,7 @@ function DecoTag({ children, className, delay = 0 }: { children: ReactNode; clas
   return (
     <div className={cn('hero-tag absolute z-10 hidden xl:block', className)}>
       <FloatLoop duration={6} distance={8} delay={delay}>
-        <span className="rounded-full border border-ink-600 bg-ink-900/70 px-3 py-1 font-mono text-[11px] text-faint backdrop-blur-sm">
+        <span className="rounded-full border border-zinc-200 bg-white/80 px-3 py-1 font-mono text-[11px] text-zinc-500 backdrop-blur-sm">
           {children}
         </span>
       </FloatLoop>
@@ -326,13 +326,6 @@ export default function Hero() {
 
   return (
     <section id="top" ref={sectionRef} className="relative -mt-16 overflow-hidden">
-      {/* single faint amber glow (the vignette in index.css does the rest) */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -top-48 left-1/2 h-[560px] w-[1100px] -translate-x-1/2 rounded-full"
-        style={{ background: 'radial-gradient(closest-side, rgba(251,191,36,0.06), transparent 70%)' }}
-      />
-
       {/* floating decorative mono tags */}
       <DecoTag className="right-10 top-28" delay={0}>
         Offline-first
@@ -354,7 +347,7 @@ export default function Hero() {
                 href={RELEASES_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-ink-600 px-3 py-1 font-mono text-[11px] text-muted-foreground transition-colors duration-200 hover:border-amber-400/40 hover:text-fg"
+                className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-3 py-1 font-mono text-[11px] text-zinc-600 transition-colors duration-200 hover:border-amber-400 hover:text-zinc-900"
               >
                 <span className="relative flex h-1.5 w-1.5">
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber-400 opacity-60 motion-reduce:hidden" />
@@ -365,7 +358,7 @@ export default function Hero() {
             </div>
 
             {/* H1 — word-split, 3 masked lines */}
-            <h1 className="mt-7 font-display text-[clamp(2.75rem,6vw,5rem)] font-semibold leading-[1.04] tracking-[-0.03em] text-fg">
+            <h1 className="mt-7 font-display text-[clamp(2.75rem,6vw,5rem)] font-semibold leading-[1.04] tracking-[-0.03em] text-zinc-900">
               <span className="block overflow-hidden pb-[0.12em]">
                 <span className="hero-word inline-block will-change-transform">Invoicing,</span>{' '}
                 <span className="hero-word inline-block will-change-transform">CRM</span>{' '}
@@ -378,15 +371,15 @@ export default function Hero() {
                 <span className="hero-word inline-block will-change-transform">app.</span>
               </span>
               <span className="block overflow-hidden pb-[0.14em]">
-                <span className="hero-word inline-block text-amber-400 will-change-transform">Works</span>{' '}
-                <span className="hero-word inline-block text-amber-400 will-change-transform">fully</span>{' '}
-                <span className="hero-word inline-block text-amber-400 will-change-transform">offline.</span>
+                <span className="hero-word inline-block text-amber-600 will-change-transform">Works</span>{' '}
+                <span className="hero-word inline-block text-amber-600 will-change-transform">fully</span>{' '}
+                <span className="hero-word inline-block text-amber-600 will-change-transform">offline.</span>
               </span>
             </h1>
           </div>
 
           {/* lead */}
-          <p className="hero-lead mt-6 max-w-xl text-[clamp(1.0625rem,1.4vw,1.25rem)] leading-[1.6] text-muted-foreground">
+          <p className="hero-lead mt-6 max-w-xl text-[clamp(1.0625rem,1.4vw,1.25rem)] leading-[1.6] text-zinc-600">
             Filey ERP runs your whole business — FTA-compliant tax invoices, orders, customers and stock —
             from one signed desktop app. Free to start: 20 invoices a month, offline included.
           </p>
@@ -408,19 +401,19 @@ export default function Hero() {
               <a
                 href="#demo"
                 onClick={(e) => handleHash(e, '#demo')}
-                className="inline-flex h-11 items-center gap-2 rounded-lg border border-ink-600 px-6 text-[15px] font-semibold text-fg transition-colors duration-200 hover:border-amber-400/50 hover:bg-amber-400/5 active:scale-[0.98]"
+                className="inline-flex h-11 items-center gap-2 rounded-lg border border-zinc-300 px-6 text-[15px] font-semibold text-zinc-900 transition-colors duration-200 hover:border-amber-500 hover:bg-amber-50 active:scale-[0.98]"
               >
-                <Play className="h-4 w-4 text-amber-400" />
+                <Play className="h-4 w-4 text-amber-600" />
                 Try the live demo
               </a>
             </MagneticButton>
           </div>
 
           {/* micro-proof row */}
-          <p className="hero-proof mt-8 font-mono text-[11px] text-faint">
-            {RELEASE_TAG} <span className="mx-2 text-ink-600">·</span> 18.9 MB Windows{' '}
-            <span className="mx-2 text-ink-600">·</span> Linux builds{' '}
-            <span className="mx-2 text-ink-600">·</span> No subscription
+          <p className="hero-proof mt-8 font-mono text-[11px] text-zinc-400">
+            {RELEASE_TAG} <span className="mx-2 text-zinc-300">·</span> 18.9 MB Windows{' '}
+            <span className="mx-2 text-zinc-300">·</span> Linux builds{' '}
+            <span className="mx-2 text-zinc-300">·</span> No subscription
           </p>
         </div>
 
@@ -431,7 +424,7 @@ export default function Hero() {
               {/* mobile 0.9 scale lives on its own wrapper to avoid transform clashes */}
               <div className="max-lg:scale-90 max-lg:[transform-origin:top_center]">
                 <motion.div
-                  className="hero-window"
+                  className="hero-window rounded-2xl shadow-[0_24px_80px_-24px_rgba(245,158,11,0.25)]"
                   style={{ rotateX: tiltRX, rotateY: tiltRY, transformPerspective: 1000 }}
                   onMouseMove={onTiltMove}
                   onMouseLeave={onTiltLeave}
@@ -456,7 +449,7 @@ export default function Hero() {
         className="pointer-events-none absolute bottom-5 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 md:flex"
         aria-hidden
       >
-        <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-faint">scroll</span>
+        <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-400">scroll</span>
         <span className="h-8 w-px animate-scroll-cue bg-amber-400/70 motion-reduce:animate-none" />
       </motion.div>
     </section>
