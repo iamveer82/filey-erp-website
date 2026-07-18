@@ -43,10 +43,10 @@ export default function LiveDemo() {
 
       <div className="relative mx-auto max-w-[1400px] px-5 sm:px-8">
         <SectionHeader
-          index="04"
+          index="03"
           label="live demo"
           title="Don't watch. Do."
-          lead="A miniature Filey ERP running right here — same React, same charts, same drag-and-drop. Sample data only; the real app keeps everything on your machine."
+          lead="A hands-on slice of the real app — edit an invoice, drag deals through the pipeline, sort stock. No sign-up needed."
           aside={
             <span className="inline-flex items-center gap-2 rounded-full border border-amber-400/40 bg-amber-400/10 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.12em] text-amber-400">
               <span className="relative flex h-1.5 w-1.5">
@@ -81,11 +81,11 @@ export default function LiveDemo() {
                         aria-current={active ? 'page' : undefined}
                         className={cn(
                           'relative flex h-10 items-center justify-center gap-2.5 rounded-lg transition-colors duration-200 lg:justify-start lg:px-3',
-                          active ? 'bg-mint-400/10 text-mint-400' : 'text-faint hover:bg-ink-700/40 hover:text-muted-foreground',
+                          active ? 'bg-amber-400/10 text-amber-400' : 'text-faint hover:bg-ink-700/40 hover:text-muted-foreground',
                         )}
                       >
                         {active && (
-                          <span className="absolute -left-2 top-1/2 h-5 w-0.5 -translate-y-1/2 rounded-full bg-mint-400" />
+                          <span className="absolute -left-2 top-1/2 h-5 w-0.5 -translate-y-1/2 rounded-full bg-amber-400" />
                         )}
                         <t.icon className="h-[18px] w-[18px] shrink-0" />
                         <span className="hidden text-[13px] font-medium lg:inline">{t.rail}</span>
@@ -114,13 +114,13 @@ export default function LiveDemo() {
                       <TabsTrigger
                         key={t.id}
                         value={t.id}
-                        className="relative flex-none rounded-md border-transparent px-3 py-1.5 font-mono text-[12px] uppercase tracking-[0.12em] text-muted-foreground shadow-none transition-colors duration-200 hover:text-fg data-[state=active]:bg-mint-400/10 data-[state=active]:text-mint-400 data-[state=active]:shadow-none dark:data-[state=active]:border-transparent dark:data-[state=active]:bg-mint-400/10 dark:data-[state=active]:text-mint-400"
+                        className="relative flex-none rounded-md border-transparent px-3 py-1.5 font-mono text-[12px] uppercase tracking-[0.12em] text-muted-foreground shadow-none transition-colors duration-200 hover:text-fg data-[state=active]:bg-amber-400/10 data-[state=active]:text-amber-400 data-[state=active]:shadow-none dark:data-[state=active]:border-transparent dark:data-[state=active]:bg-amber-400/10 dark:data-[state=active]:text-amber-400"
                       >
                         {t.label}
                         {tab === t.id && (
                           <motion.span
                             layoutId="demo-tab-underline"
-                            className="absolute inset-x-2 -bottom-[9px] h-0.5 rounded-full bg-mint-400"
+                            className="absolute inset-x-2 -bottom-[9px] h-0.5 rounded-full bg-amber-400"
                             transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                           />
                         )}
