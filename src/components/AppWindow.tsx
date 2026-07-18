@@ -40,7 +40,7 @@ export function AppWindow({
         <div className="flex items-center gap-2" aria-hidden>
           <span className="h-2.5 w-2.5 rounded-full bg-rose-400" />
           <span className="h-2.5 w-2.5 rounded-full bg-amber-400" />
-          <span className="h-2.5 w-2.5 rounded-full bg-mint-400" />
+          <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
         </div>
         <span className="pointer-events-none absolute left-1/2 -translate-x-1/2 font-mono text-[11px] text-faint">
           {title}
@@ -49,7 +49,7 @@ export function AppWindow({
           <span
             className={cn(
               'h-1.5 w-1.5 rounded-full',
-              led === 'online' ? 'animate-pulse bg-mint-400 shadow-[0_0_6px_rgba(52,211,153,0.8)]' : 'bg-amber-400',
+              led === 'online' ? 'animate-pulse bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.8)]' : 'bg-amber-400',
             )}
           />
           <span className="hidden sm:inline">{ledLabel}</span>

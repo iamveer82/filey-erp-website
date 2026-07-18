@@ -10,11 +10,10 @@ const LOGO_SRC = `${import.meta.env.BASE_URL}logo.svg`
 
 const NAV_LINKS = [
   { label: 'Features', hash: '#features' },
-  { label: 'Dashboard', hash: '#dashboard' },
   { label: 'Demo', hash: '#demo' },
+  { label: 'Pricing', hash: '#pricing' },
   { label: 'Download', hash: '#download' },
-  { label: 'Run locally', hash: '#run-locally' },
-  { label: 'Open Source', hash: '#open-source' },
+  { label: 'FAQ', hash: '#faq' },
 ]
 
 export default function Navbar() {
@@ -106,9 +105,9 @@ export default function Navbar() {
             <img src={LOGO_SRC} alt="" className="h-7 w-7" width={28} height={28} />
             <span className="font-display text-[17px]">
               <span className="font-bold text-fg">Filey</span>{' '}
-              <span className="font-medium text-mint-400">ERP</span>
+              <span className="font-medium text-amber-400">ERP</span>
             </span>
-            <span className="hidden rounded-full border border-mint-400/40 px-2 py-0.5 font-mono text-[10px] text-mint-400 sm:inline-block">
+            <span className="hidden rounded-full border border-amber-400/40 px-2 py-0.5 font-mono text-[10px] text-amber-400 sm:inline-block">
               {RELEASE_TAG}
             </span>
           </a>
@@ -130,7 +129,7 @@ export default function Navbar() {
                   {isActive && (
                     <motion.span
                       layoutId="nav-dot"
-                      className="absolute -left-3 h-1 w-1 rounded-full bg-mint-400"
+                      className="absolute -left-3 h-1 w-1 rounded-full bg-amber-400"
                       transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                     />
                   )}
@@ -147,15 +146,15 @@ export default function Navbar() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub repository"
-              title="Star on GitHub"
-              className="hidden h-10 w-10 items-center justify-center rounded-lg border border-ink-600 text-muted-foreground transition-colors duration-200 hover:border-mint-400/50 hover:text-fg sm:flex"
+              title="Source code on GitHub"
+              className="hidden h-10 w-10 items-center justify-center rounded-lg border border-ink-600 text-muted-foreground transition-colors duration-200 hover:border-amber-400/50 hover:text-fg sm:flex"
             >
               <Github className="h-[18px] w-[18px]" />
             </a>
             <a
               href="#download"
               onClick={(e) => handleAnchor(e, '#download')}
-              className="hidden h-9 items-center gap-2 rounded-lg bg-mint-400 px-4 text-sm font-semibold text-ink-950 transition-all duration-200 hover:bg-mint-300 hover:shadow-[0_0_24px_rgba(52,211,153,0.25)] active:scale-[0.98] active:bg-mint-500 sm:flex"
+              className="btn-gradient hidden h-9 items-center gap-2 rounded-lg px-4 text-sm font-semibold text-[#1A1206] transition-all duration-200 active:scale-[0.98] sm:flex"
             >
               <Download className="h-4 w-4" />
               Download
@@ -195,7 +194,7 @@ export default function Navbar() {
                   transition={{ delay: 0.05 * i, duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                   className="font-display text-[32px] font-semibold tracking-tight text-fg"
                 >
-                  <span className="mr-3 font-mono text-sm text-mint-400">0{i + 1}</span>
+                  <span className="mr-3 font-mono text-sm text-amber-400">0{i + 1}</span>
                   {label}
                 </motion.a>
               ))}
@@ -210,7 +209,7 @@ export default function Navbar() {
               <a
                 href="#download"
                 onClick={(e) => handleAnchor(e, '#download')}
-                className="flex h-11 items-center gap-2 rounded-lg bg-mint-400 px-6 text-[15px] font-semibold text-ink-950 transition-colors duration-200 hover:bg-mint-300"
+                className="btn-gradient flex h-11 items-center gap-2 rounded-lg px-6 text-[15px] font-semibold text-[#1A1206] transition-all duration-200 active:scale-[0.98]"
               >
                 <Download className="h-[18px] w-[18px]" />
                 Download

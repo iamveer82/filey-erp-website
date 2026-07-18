@@ -9,7 +9,7 @@ interface SectionHeaderProps {
   label: string
   /** H2 content */
   title: ReactNode
-  /** Optional accent word(s) rendered in Instrument Serif italic mint-300 after the title */
+  /** Optional accent word(s) rendered in amber after the title */
   accent?: string
   /** Lead paragraph */
   lead?: ReactNode
@@ -19,7 +19,7 @@ interface SectionHeaderProps {
   aside?: ReactNode
 }
 
-/** Shared section header: eyebrow → H2 (with optional serif accent word) → lead. */
+/** Shared section header: eyebrow → H2 (with optional amber accent word) → lead. */
 export default function SectionHeader({
   index,
   label,
@@ -42,7 +42,7 @@ export default function SectionHeader({
       duration={0.9}
       start="top 80%"
     >
-      <p className="font-mono text-xs font-medium uppercase tracking-[0.18em] text-mint-400">
+      <p className="font-mono text-xs font-medium uppercase tracking-[0.18em] text-amber-400">
         {'// '}
         {index} — {label}
       </p>
@@ -52,7 +52,7 @@ export default function SectionHeader({
           {accent ? (
             <>
               {' '}
-              <span className="font-serif font-normal italic text-mint-300">{accent}</span>
+              <span className="font-semibold text-amber-400">{accent}</span>
             </>
           ) : null}
         </h2>

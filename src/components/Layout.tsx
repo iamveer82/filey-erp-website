@@ -24,7 +24,7 @@ export default function Layout({ children }: { children: ReactNode }) {
     <div className="relative min-h-[100dvh] bg-background text-foreground">
       {/* thin scroll-progress bar, above the navbar */}
       <motion.div
-        className="fixed inset-x-0 top-0 z-[60] h-0.5 origin-left bg-mint-400"
+        className="fixed inset-x-0 top-0 z-[60] h-0.5 origin-left bg-amber-400"
         style={{ scaleX }}
         aria-hidden
       />

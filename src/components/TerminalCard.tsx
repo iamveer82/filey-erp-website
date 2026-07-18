@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils'
 
 export interface TerminalLine {
   text: string
-  /** cmd = mint "$" prompt · comment = faint · string = amber */
+  /** cmd = amber "$" prompt · comment = faint · string = amber */
   kind?: 'cmd' | 'comment' | 'string'
 }
 
@@ -39,12 +39,12 @@ export default function TerminalCard({ title = 'terminal', lines, copyText, clas
   }
 
   return (
-    <div className={cn('overflow-hidden rounded-xl border border-ink-700 bg-[#0A0F18]', className)}>
+    <div className={cn('overflow-hidden rounded-xl border border-ink-700 bg-ink-900', className)}>
       <div className="relative flex h-9 items-center border-b border-ink-700/70 px-3.5">
         <div className="flex items-center gap-1.5" aria-hidden>
           <span className="h-2.5 w-2.5 rounded-full bg-rose-400" />
           <span className="h-2.5 w-2.5 rounded-full bg-amber-400" />
-          <span className="h-2.5 w-2.5 rounded-full bg-mint-400" />
+          <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
         </div>
         <span className="pointer-events-none absolute left-1/2 -translate-x-1/2 font-mono text-[11px] text-faint">
           {title}
@@ -55,7 +55,7 @@ export default function TerminalCard({ title = 'terminal', lines, copyText, clas
           aria-label="Copy commands"
           className="ml-auto rounded-md p-1.5 text-faint transition-colors duration-200 hover:bg-ink-700/60 hover:text-fg"
         >
-          {copied ? <Check className="h-3.5 w-3.5 text-mint-400" /> : <Copy className="h-3.5 w-3.5" />}
+          {copied ? <Check className="h-3.5 w-3.5 text-emerald-400" /> : <Copy className="h-3.5 w-3.5" />}
         </button>
       </div>
       <div className="px-4 py-3.5 font-mono text-[13.5px] leading-[1.7]">
@@ -77,7 +77,7 @@ export default function TerminalCard({ title = 'terminal', lines, copyText, clas
           }
           return (
             <div key={i} className="text-foreground/90">
-              <span className="mr-2 select-none text-mint-400">$</span>
+              <span className="mr-2 select-none text-amber-400">$</span>
               {line.text}
             </div>
           )
