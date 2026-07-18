@@ -29,18 +29,18 @@ const CONFETTI = Array.from({ length: 12 }, (_, i) => {
     r: ((i * 47) % 140) - 70,
     size: 4 + ((i * 13) % 3),
     delay: (i % 4) * 0.02,
-    color: ['#34D399', '#FBBF24', '#6EE7B7', '#FCD34D'][i % 4],
+    color: ['#F59E0B', '#FBBF24', '#F97316', '#FCD34D'][i % 4],
   }
 })
 
-/** One-shot mint ring + confetti burst when a deal lands in Won (keyed re-mount per drop). */
+/** One-shot emerald ring + confetti burst when a deal lands in Won (keyed re-mount per drop). */
 function WonFx({ pulseKey }: { pulseKey: number }) {
   if (pulseKey === 0) return null
   return (
     <span key={pulseKey}>
       <motion.span
         aria-hidden
-        className="pointer-events-none absolute inset-0 z-10 block rounded-xl border-2 border-mint-400/80"
+        className="pointer-events-none absolute inset-0 z-10 block rounded-xl border-2 border-emerald-400/80"
         initial={{ opacity: 0.8, scale: 0.985 }}
         animate={{ opacity: 0, scale: 1.02 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
@@ -69,7 +69,7 @@ function DealCardBody({ deal, lifted = false }: { deal: Deal; lifted?: boolean }
       className={cn(
         'rounded-lg border p-3',
         lifted
-          ? 'rotate-[1.5deg] scale-[1.04] border-mint-400/40 bg-ink-800 shadow-[0_18px_50px_-10px_rgba(0,0,0,0.8)]'
+          ? 'rotate-[1.5deg] scale-[1.04] border-amber-400/40 bg-ink-800 shadow-[0_18px_50px_-10px_rgba(0,0,0,0.8)]'
           : 'border-ink-700 bg-ink-850 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]',
       )}
     >
@@ -129,7 +129,7 @@ function StageColumn({ stage, deals, isTarget, pulseKey }: ColumnProps) {
       ref={setNodeRef}
       className={cn(
         'relative flex min-h-[300px] min-w-[260px] snap-start flex-col rounded-xl border bg-ink-900/50 p-2.5 transition-colors duration-200 lg:min-w-0',
-        isTarget ? 'border-mint-400/50 bg-mint-400/[0.03]' : 'border-ink-700/70',
+        isTarget ? 'border-amber-400/50 bg-amber-400/[0.03]' : 'border-ink-700/70',
       )}
     >
       {/* header: name + count + live total */}

@@ -27,7 +27,7 @@ function StatusChip({ status }: { status: StockStatus }) {
     <span
       className={cn(
         'inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.1em]',
-        status === 'In stock' && 'border border-mint-400/40 text-mint-400',
+        status === 'In stock' && 'border border-emerald-400/40 text-emerald-400',
         status === 'Low' && 'bg-amber-400/10 text-amber-400',
         status === 'Reorder' && 'bg-rose-400/10 text-rose-400',
       )}
@@ -90,7 +90,7 @@ export default function DemoInventory() {
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search SKU or name…"
             aria-label="Search SKU or name"
-            className="h-9 w-full rounded-lg border border-ink-600 bg-ink-850 pl-8 pr-3 font-mono text-[12px] text-fg placeholder:text-faint focus:border-mint-400/50 focus:outline-none"
+            className="h-9 w-full rounded-lg border border-ink-600 bg-ink-850 pl-8 pr-3 font-mono text-[12px] text-fg placeholder:text-faint focus:border-amber-400/50 focus:outline-none"
           />
         </div>
         <div className="flex items-center gap-1" role="group" aria-label="Filter by status">
@@ -103,7 +103,7 @@ export default function DemoInventory() {
               className={cn(
                 'rounded-full border px-2.5 py-1 font-mono text-[10.5px] transition-colors duration-200',
                 statusFilter === s
-                  ? 'border-mint-400/50 bg-mint-400/10 text-mint-400'
+                  ? 'border-amber-400/50 bg-amber-400/10 text-amber-400'
                   : 'border-ink-600 text-faint hover:text-muted-foreground',
               )}
             >
@@ -130,7 +130,7 @@ export default function DemoInventory() {
                       onClick={() => toggleSort(col.key)}
                       className={cn(
                         'flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.12em] transition-colors duration-200',
-                        active ? 'text-mint-400' : 'text-faint hover:text-fg',
+                        active ? 'text-amber-400' : 'text-faint hover:text-fg',
                       )}
                       aria-sort={active ? (sort.dir === 'asc' ? 'ascending' : 'descending') : undefined}
                     >
@@ -150,7 +150,7 @@ export default function DemoInventory() {
           </TableHeader>
           <TableBody>
             {rows.map((r) => (
-              <TableRow key={r.sku} className="border-ink-700/60 hover:bg-mint-400/5">
+              <TableRow key={r.sku} className="border-ink-700/60 hover:bg-amber-400/5">
                 <TableCell className="px-3 py-2.5 font-mono text-[11.5px] tabular-nums text-faint">{r.sku}</TableCell>
                 <TableCell className="px-3 py-2.5 text-[13px] font-medium text-fg">{r.item}</TableCell>
                 <TableCell className="px-3 py-2.5 text-[12px] text-muted-foreground">{r.category}</TableCell>
