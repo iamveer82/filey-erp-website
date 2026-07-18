@@ -50,7 +50,7 @@ export const PREVIEW_LOW_STOCK = [
 ]
 
 export const PREVIEW_ACTIVITY = [
-  { dot: 'bg-mint-400', text: 'Invoice #1042 paid', meta: 'AED 8,750' },
+  { dot: 'bg-emerald-400', text: 'Invoice #1042 paid', meta: 'AED 8,750' },
   { dot: 'bg-sky-400', text: 'Quote #233 sent to Oasis Fitness', meta: '#0233' },
   { dot: 'bg-amber-400', text: 'PO #88 received from Gulf Metals', meta: '#0088' },
 ]
@@ -65,28 +65,28 @@ export interface DemoKpi {
   value: number
   prefix?: string
   delta: string
-  tone: 'mint' | 'sky' | 'amber'
+  tone: 'emerald' | 'sky' | 'amber'
 }
 
 /** Default 30D set is specified row-by-row in home.md; 7D/12M are the same KPIs at other scales. */
 export const DEMO_KPIS: Record<Period, DemoKpi[]> = {
   '7D': [
-    { label: 'Revenue', value: 14280, prefix: 'AED ', delta: '▲ 3.1%', tone: 'mint' },
+    { label: 'Revenue', value: 14280, prefix: 'AED ', delta: '▲ 3.1%', tone: 'emerald' },
     { label: 'Orders', value: 9, delta: '▲ 2', tone: 'sky' },
     { label: 'Low stock', value: 3, delta: '1 critical', tone: 'amber' },
-    { label: 'New customers', value: 3, delta: '▲ 1', tone: 'mint' },
+    { label: 'New customers', value: 3, delta: '▲ 1', tone: 'emerald' },
   ],
   '30D': [
-    { label: 'Revenue', value: 61400, prefix: 'AED ', delta: '▲ 9.2%', tone: 'mint' },
+    { label: 'Revenue', value: 61400, prefix: 'AED ', delta: '▲ 9.2%', tone: 'emerald' },
     { label: 'Orders', value: 41, delta: '▲ 5', tone: 'sky' },
     { label: 'Low stock', value: 3, delta: '1 critical', tone: 'amber' },
-    { label: 'New customers', value: 12, delta: '▲ 4', tone: 'mint' },
+    { label: 'New customers', value: 12, delta: '▲ 4', tone: 'emerald' },
   ],
   '12M': [
-    { label: 'Revenue', value: 688900, prefix: 'AED ', delta: '▲ 21.7%', tone: 'mint' },
+    { label: 'Revenue', value: 688900, prefix: 'AED ', delta: '▲ 21.7%', tone: 'emerald' },
     { label: 'Orders', value: 462, delta: '▲ 38', tone: 'sky' },
     { label: 'Low stock', value: 3, delta: '1 critical', tone: 'amber' },
-    { label: 'New customers', value: 128, delta: '▲ 17', tone: 'mint' },
+    { label: 'New customers', value: 128, delta: '▲ 17', tone: 'emerald' },
   ],
 }
 
@@ -142,8 +142,8 @@ export const DEMO_CHARTS: Record<Period, RevPoint[]> = {
 
 /** Sales by category donut (exact per home.md). */
 export const CATEGORY_SALES = [
-  { name: 'Hardware', value: 44, color: '#34D399' },
-  { name: 'Tools', value: 27, color: '#FBBF24' },
+  { name: 'Hardware', value: 44, color: '#FBBF24' },
+  { name: 'Tools', value: 27, color: '#F97316' },
   { name: 'Fittings', value: 18, color: '#38BDF8' },
   { name: 'Other', value: 11, color: '#A78BFA' },
 ]
@@ -157,12 +157,12 @@ export interface ActivityEvent {
 
 /** 8 canned events cycled into the live feed every 6s. */
 export const ACTIVITY_EVENTS: ActivityEvent[] = [
-  { id: 1, dot: 'bg-mint-400', text: 'Invoice #1051 paid', meta: 'AED 2,300' },
+  { id: 1, dot: 'bg-emerald-400', text: 'Invoice #1051 paid', meta: 'AED 2,300' },
   { id: 2, dot: 'bg-sky-400', text: 'New lead: Marina Boutique', meta: 'CRM' },
   { id: 3, dot: 'bg-violet-400', text: 'Stock adjusted: Pallet wrap', meta: '+50' },
   { id: 4, dot: 'bg-amber-400', text: 'Quote #234 sent to Cedar Café', meta: 'AED 5,400' },
   { id: 5, dot: 'bg-sky-400', text: 'PO #89 received from Gulf Metals', meta: '#0089' },
-  { id: 6, dot: 'bg-mint-400', text: 'Deal won: Falcon Auto Parts', meta: 'AED 31,800' },
+  { id: 6, dot: 'bg-emerald-400', text: 'Deal won: Falcon Auto Parts', meta: 'AED 31,800' },
   { id: 7, dot: 'bg-rose-400', text: 'Stock alert: Shelf bracket 300mm', meta: '4 left' },
   { id: 8, dot: 'bg-sky-400', text: 'New customer: ByteBistro LLC', meta: 'CRM' },
 ]
