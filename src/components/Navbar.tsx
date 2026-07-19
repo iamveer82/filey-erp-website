@@ -6,7 +6,7 @@ import { ScrollTrigger, getLenis, scrollToHash } from '@/lib/scroll'
 import { RELEASE_TAG, REPO_URL } from '@/lib/constants'
 import { cn } from '@/lib/utils'
 
-const LOGO_SRC = `${import.meta.env.BASE_URL}logo.svg`
+const LOGO_SRC = `${import.meta.env.BASE_URL}filey-logo.png`
 
 const NAV_LINKS = [
   { label: 'Features', hash: '#features' },
@@ -102,7 +102,7 @@ export default function Navbar() {
             className="flex items-center gap-2.5"
             aria-label="Filey ERP — back to top"
           >
-            <img src={LOGO_SRC} alt="" className="h-7 w-7" width={28} height={28} />
+            <img src={LOGO_SRC} alt="" className="h-7 w-7 rounded-md" width={28} height={28} />
             <span className="font-display text-[17px]">
               <span className="font-bold text-zinc-900">Filey</span>{' '}
               <span className="font-medium text-amber-600">ERP</span>

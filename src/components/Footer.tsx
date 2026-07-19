@@ -60,9 +60,9 @@ export default function Footer() {
               className="flex items-center gap-2.5"
             >
               <img
-                src={`${import.meta.env.BASE_URL}logo.svg`}
+                src={`${import.meta.env.BASE_URL}filey-logo.png`}
                 alt="Filey ERP logo"
-                className="h-7 w-7"
+                className="h-7 w-7 rounded-md"
                 width={28}
                 height={28}
               />
