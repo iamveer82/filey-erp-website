@@ -1,7 +1,7 @@
 import type { MouseEvent, ReactNode } from 'react'
 import { Github } from 'lucide-react'
 import { scrollToHash } from '@/lib/scroll'
-import { ISSUES_URL, RELEASE_TAG, RELEASES_URL, REPO_URL } from '@/lib/constants'
+import { ISSUES_URL, RELEASES_URL, REPO_URL } from '@/lib/constants'
 import Reveal from '@/components/Reveal'
 
 function AnchorLink({ hash, children }: { hash: string; children: ReactNode }) {
@@ -86,9 +86,6 @@ export default function Footer() {
               >
                 <Github className="h-[18px] w-[18px]" />
               </a>
-              <span className="rounded-full border border-amber-500/40 bg-amber-50 px-2.5 py-1 font-mono text-[10px] text-amber-600">
-                {RELEASE_TAG}
-              </span>
             </div>
           </div>
 

@@ -19,7 +19,7 @@ import {
 import AppWindow from '@/components/AppWindow'
 import MagneticButton from '@/components/MagneticButton'
 import { gsap, prefersReducedMotion, scrollToHash } from '@/lib/scroll'
-import { RELEASES_URL, RELEASE_TAG, downloadUrlForOS } from '@/lib/constants'
+import { RELEASES_URL, downloadUrlForOS } from '@/lib/constants'
 import { detectOS } from '@/lib/os'
 import { cn } from '@/lib/utils'
 
@@ -353,7 +353,7 @@ export default function Hero() {
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber-400 opacity-60 motion-reduce:hidden" />
                   <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-amber-400" />
                 </span>
-                {RELEASE_TAG} — now available
+                Download now — available for Windows
               </a>
             </div>
 
@@ -411,7 +411,7 @@ export default function Hero() {
 
           {/* micro-proof row */}
           <p className="hero-proof mt-8 font-mono text-[11px] text-zinc-400">
-            {RELEASE_TAG} <span className="mx-2 text-zinc-300">·</span> 18.9 MB Windows{' '}
+            18.9 MB Windows{' '}
             <span className="mx-2 text-zinc-300">·</span> Linux builds{' '}
             <span className="mx-2 text-zinc-300">·</span> No subscription
           </p>

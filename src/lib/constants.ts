@@ -5,17 +5,17 @@ export const LICENSE_URL = `${REPO_URL}/blob/main/LICENSE`
 export const CONTRIBUTING_URL = `${REPO_URL}/blob/main/CONTRIBUTING.md`
 export const ROADMAP_URL = `${REPO_URL}/blob/main/ROADMAP.md`
 
-export const APP_VERSION = '2.2.1'
+export const APP_VERSION = '2.3.7'
 export const RELEASE_TAG = `v${APP_VERSION}`
-export const RELEASE_CODENAME = 'Reference Parity'
+export const RELEASE_CODENAME = 'Latest'
 
 const DL = `${RELEASES_URL}/download/${RELEASE_TAG}`
 export const DOWNLOAD_URLS = {
-  windowsExe: `${DL}/Filey.ERP_2.2.1_x64-setup.exe`,
-  windowsMsi: `${DL}/Filey.ERP_2.2.1_x64_en-US.msi`,
-  linuxAppImage: `${DL}/Filey.ERP_2.2.1_amd64.AppImage`,
-  linuxDeb: `${DL}/Filey.ERP_2.2.1_amd64.deb`,
-  linuxRpm: `${DL}/Filey.ERP-2.2.1-1.x86_64.rpm`,
+  windowsExe: `${DL}/Filey.ERP_2.3.7_x64-setup.exe`,
+  windowsMsi: `${DL}/Filey.ERP_2.3.7_x64_en-US.msi`,
+  linuxAppImage: `${DL}/Filey.ERP_2.3.7_amd64.AppImage`,
+  linuxDeb: `${DL}/Filey.ERP_2.3.7_amd64.deb`,
+  linuxRpm: `${DL}/Filey.ERP-2.3.7-1.x86_64.rpm`,
 } as const
 
 export type OS = 'windows' | 'macos' | 'linux'

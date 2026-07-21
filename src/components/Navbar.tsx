@@ -3,7 +3,7 @@ import type { MouseEvent } from 'react'
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'framer-motion'
 import { Download, Github, Menu, X } from 'lucide-react'
 import { ScrollTrigger, getLenis, scrollToHash } from '@/lib/scroll'
-import { RELEASE_TAG, REPO_URL } from '@/lib/constants'
+import { REPO_URL } from '@/lib/constants'
 import { cn } from '@/lib/utils'
 
 const LOGO_SRC = `${import.meta.env.BASE_URL}filey-logo.png`
@@ -106,9 +106,6 @@ export default function Navbar() {
             <span className="font-display text-[17px]">
               <span className="font-bold text-zinc-900">Filey</span>{' '}
               <span className="font-medium text-amber-600">ERP</span>
-            </span>
-            <span className="hidden rounded-full border border-amber-500/40 bg-amber-50 px-2 py-0.5 font-mono text-[10px] text-amber-600 sm:inline-block">
-              {RELEASE_TAG}
             </span>
           </a>
 

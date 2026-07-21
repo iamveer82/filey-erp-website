@@ -6,7 +6,7 @@ import { toast } from 'sonner'
 import TerminalCard from '@/components/TerminalCard'
 import Reveal from '@/components/Reveal'
 import { gsap, prefersReducedMotion } from '@/lib/scroll'
-import { DOWNLOAD_URLS, RELEASE_TAG, REPO_URL } from '@/lib/constants'
+import { DOWNLOAD_URLS, REPO_URL } from '@/lib/constants'
 import type { OS } from '@/lib/constants'
 import { detectOS } from '@/lib/os'
 import { cn } from '@/lib/utils'
@@ -14,7 +14,7 @@ import { cn } from '@/lib/utils'
 /* ------------------------------ button pieces ----------------------------- */
 
 function toastDownload(size: string) {
-  toast.success(`Download started — ${RELEASE_TAG} (${size}). Thanks for trying Filey!`)
+  toast.success(`Download started — ${size}. Thanks for trying Filey!`)
 }
 
 function PrimaryDownloadLink({ href, label, size }: { href: string; label: string; size: string }) {
@@ -104,9 +104,6 @@ function OsCardShell({ os, recommended, icon, name, caption, children, className
             <h3 className="font-display text-[22px] font-semibold leading-tight text-zinc-900">{name}</h3>
             <p className="mt-0.5 font-mono text-[11px] text-zinc-400">{caption}</p>
           </div>
-          <span className="ml-auto self-start rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 font-mono text-[10px] text-amber-700">
-            {RELEASE_TAG}
-          </span>
         </div>
         <div className="mt-6 flex flex-1 flex-col justify-end gap-2.5">{children}</div>
       </div>

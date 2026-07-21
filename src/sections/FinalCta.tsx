@@ -4,7 +4,6 @@ import { useGSAP } from '@gsap/react'
 import { Download } from 'lucide-react'
 import MagneticButton from '@/components/MagneticButton'
 import { gsap, prefersReducedMotion, scrollToHash } from '@/lib/scroll'
-import { RELEASE_TAG } from '@/lib/constants'
 
 /* --------------------------------- section --------------------------------- */
 
@@ -93,7 +92,7 @@ export default function FinalCta() {
         </div>
 
         <p className="fc-reveal mt-7 font-mono text-[11px] text-zinc-400">
-          18.9 MB <span className="mx-2 text-zinc-300">·</span> {RELEASE_TAG}{' '}
+          18.9 MB{' '}
           <span className="mx-2 text-zinc-300">·</span> no subscription
         </p>
       </div>
