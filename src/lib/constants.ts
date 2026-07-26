@@ -5,17 +5,19 @@ export const LICENSE_URL = `${REPO_URL}/blob/main/LICENSE`
 export const CONTRIBUTING_URL = `${REPO_URL}/blob/main/CONTRIBUTING.md`
 export const ROADMAP_URL = `${REPO_URL}/blob/main/ROADMAP.md`
 
-export const APP_VERSION = '2.3.10'
+// ponytail: bumped by hand each release, which is why the links sat on 2.3.10
+// for five releases. Worth deriving from latest.json only if it drifts again.
+export const APP_VERSION = '2.3.15'
 export const RELEASE_TAG = `v${APP_VERSION}`
 export const RELEASE_CODENAME = 'Latest'
 
 const DL = `${RELEASES_URL}/download/${RELEASE_TAG}`
 export const DOWNLOAD_URLS = {
-  windowsExe: `${DL}/Filey.ERP_2.3.10_x64-setup.exe`,
-  windowsMsi: `${DL}/Filey.ERP_2.3.10_x64_en-US.msi`,
-  linuxAppImage: `${DL}/Filey.ERP_2.3.10_amd64.AppImage`,
-  linuxDeb: `${DL}/Filey.ERP_2.3.10_amd64.deb`,
-  linuxRpm: `${DL}/Filey.ERP-2.3.10-1.x86_64.rpm`,
+  windowsExe: `${DL}/Filey.ERP_${APP_VERSION}_x64-setup.exe`,
+  windowsMsi: `${DL}/Filey.ERP_${APP_VERSION}_x64_en-US.msi`,
+  linuxAppImage: `${DL}/Filey.ERP_${APP_VERSION}_amd64.AppImage`,
+  linuxDeb: `${DL}/Filey.ERP_${APP_VERSION}_amd64.deb`,
+  linuxRpm: `${DL}/Filey.ERP-${APP_VERSION}-1.x86_64.rpm`,
 } as const
 
 export type OS = 'windows' | 'macos' | 'linux'

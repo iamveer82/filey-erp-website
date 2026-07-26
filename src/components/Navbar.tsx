@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
 import type { MouseEvent } from 'react'
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'framer-motion'
-import { Download, Github, Menu, X } from 'lucide-react'
+import { Download, Github, Menu, UserPlus, X } from 'lucide-react'
 import { ScrollTrigger, getLenis, scrollToHash } from '@/lib/scroll'
 import { REPO_URL } from '@/lib/constants'
 import { cn } from '@/lib/utils'
+import SignUpDialog from '@/components/SignUpDialog'
 
 const LOGO_SRC = `${import.meta.env.BASE_URL}filey-logo.png`
 
@@ -21,6 +22,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [active, setActive] = useState<string | null>(null)
   const [open, setOpen] = useState(false)
+  const [signUpOpen, setSignUpOpen] = useState(false)
   const { scrollY } = useScroll()
 
   // Hide on scroll-down past 120px, reveal on scroll-up; blur bg after 40px
@@ -148,6 +150,14 @@ export default function Navbar() {
             >
               <Github className="h-[18px] w-[18px]" />
             </a>
+            <button
+              type="button"
+              onClick={() => setSignUpOpen(true)}
+              className="hidden h-9 items-center gap-2 rounded-lg border border-zinc-200 px-4 text-sm font-semibold text-zinc-700 transition-all duration-200 hover:border-zinc-300 hover:text-zinc-900 active:scale-[0.98] sm:flex"
+            >
+              <UserPlus className="h-4 w-4" />
+              Sign up
+            </button>
             <a
               href="#download"
               onClick={(e) => handleAnchor(e, '#download')}
@@ -203,6 +213,17 @@ export default function Navbar() {
               transition={{ delay: 0.32, duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
               className="mt-12 flex items-center gap-4"
             >
+              <button
+                type="button"
+                onClick={() => {
+                  setOpen(false)
+                  setSignUpOpen(true)
+                }}
+                className="flex h-11 items-center gap-2 rounded-lg border border-zinc-200 px-5 text-[15px] font-semibold text-zinc-700 transition-all duration-200 active:scale-[0.98]"
+              >
+                <UserPlus className="h-[18px] w-[18px]" />
+                Sign up
+              </button>
               <a
                 href="#download"
                 onClick={(e) => handleAnchor(e, '#download')}
@@ -224,6 +245,8 @@ export default function Navbar() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <SignUpDialog open={signUpOpen} onOpenChange={setSignUpOpen} />
     </>
   )
 }

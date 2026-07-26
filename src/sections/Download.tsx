@@ -183,8 +183,8 @@ export default function Download() {
             name="Windows"
             caption="Windows 10 / 11 · 64-bit"
           >
-            <PrimaryDownloadLink href={DOWNLOAD_URLS.windowsExe} label="Installer (.exe)" size="18.9 MB" />
-            <GhostDownloadLink href={DOWNLOAD_URLS.windowsMsi} label="MSI package" size="20.6 MB" />
+            <PrimaryDownloadLink href={DOWNLOAD_URLS.windowsExe} label="Installer (.exe)" size="18.0 MB" />
+            <GhostDownloadLink href={DOWNLOAD_URLS.windowsMsi} label="MSI package" size="19.6 MB" />
           </OsCardShell>
 
           {/* Linux */}
@@ -195,10 +195,10 @@ export default function Download() {
             name="Linux"
             caption="AppImage · deb · rpm"
           >
-            <PrimaryDownloadLink href={DOWNLOAD_URLS.linuxAppImage} label="AppImage" size="100 MB" />
+            <PrimaryDownloadLink href={DOWNLOAD_URLS.linuxAppImage} label="AppImage" size="95.6 MB" />
             <div className="flex gap-2.5">
-              <GhostDownloadLink href={DOWNLOAD_URLS.linuxDeb} label=".deb" size="23.3 MB" />
-              <GhostDownloadLink href={DOWNLOAD_URLS.linuxRpm} label=".rpm" size="23.3 MB" />
+              <GhostDownloadLink href={DOWNLOAD_URLS.linuxDeb} label=".deb" size="22.1 MB" />
+              <GhostDownloadLink href={DOWNLOAD_URLS.linuxRpm} label=".rpm" size="22.1 MB" />
             </div>
           </OsCardShell>
 
