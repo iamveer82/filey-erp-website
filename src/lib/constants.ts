@@ -7,7 +7,7 @@ export const ROADMAP_URL = `${REPO_URL}/blob/main/ROADMAP.md`
 
 // ponytail: bumped by hand each release, which is why the links sat on 2.3.10
 // for five releases. Worth deriving from latest.json only if it drifts again.
-export const APP_VERSION = '2.3.16'
+export const APP_VERSION = '2.3.17'
 export const RELEASE_TAG = `v${APP_VERSION}`
 export const RELEASE_CODENAME = 'Latest'
 
