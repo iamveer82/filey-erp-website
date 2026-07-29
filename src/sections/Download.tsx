@@ -168,8 +168,8 @@ export default function Download() {
             Download Filey ERP.
           </h2>
           <p className="mx-auto mt-5 max-w-2xl text-[clamp(1.0625rem,1.4vw,1.25rem)] leading-[1.6] text-zinc-600">
-            Free plan included — 20 invoices a month, offline. Upgrade to Pro inside the app
-            whenever you&rsquo;re ready.
+            Free plan included — 5 invoices a month with cloud sync. Upgrade to Freedom inside the
+            app whenever you&rsquo;re ready.
           </p>
         </Reveal>
 

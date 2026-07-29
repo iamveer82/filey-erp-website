@@ -334,7 +334,7 @@ export default function Hero() {
         FTA-compliant ✓
       </DecoTag>
       <DecoTag className="bottom-36 right-24" delay={2.4}>
-        One-time Pro — pay once
+        One-time Freedom — pay once
       </DecoTag>
 
       <div className="relative mx-auto grid min-h-[100svh] max-w-7xl grid-cols-1 items-center gap-16 px-5 pb-20 pt-32 sm:px-8 lg:grid-cols-12 lg:pb-16 lg:pt-16">
@@ -381,7 +381,7 @@ export default function Hero() {
           {/* lead */}
           <p className="hero-lead mt-6 max-w-xl text-[clamp(1.0625rem,1.4vw,1.25rem)] leading-[1.6] text-zinc-600">
             Filey ERP runs your whole business — FTA-compliant tax invoices, orders, customers and stock —
-            from one signed desktop app. Free to start: 20 invoices a month, offline included.
+            from one signed desktop app. Free to start: 5 invoices a month, cloud sync included.
           </p>
 
           {/* CTA row */}

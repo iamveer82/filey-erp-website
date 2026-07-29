@@ -4,11 +4,11 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 const QA = [
   {
     q: 'Is Filey ERP a subscription?',
-    a: 'No. The Free plan costs nothing forever — 20 invoices a month with offline mode. Pro is a single one-time payment: pay once and own your license forever, updates included.',
+    a: 'No. The Free plan costs nothing forever — 5 invoices a month, with cloud sync and backup included. Freedom is a single one-time payment: pay once and own your license forever, updates included.',
   },
   {
-    q: 'What happens when I hit 20 invoices in a month?',
-    a: "Nothing scary — your data stays put and everything keeps working; you just can't create new invoices until the month rolls over or you upgrade to Pro for unlimited invoicing.",
+    q: 'What happens when I hit 5 invoices in a month?',
+    a: "Nothing scary — your data stays put and everything keeps working; you just can't create new invoices until the month rolls over or you upgrade to Freedom for unlimited invoicing.",
   },
   {
     q: 'Does it work without internet?',

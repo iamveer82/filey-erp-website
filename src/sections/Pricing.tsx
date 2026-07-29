@@ -4,17 +4,20 @@ import { cn } from '@/lib/utils'
 
 /* ---------------------------------- data ---------------------------------- */
 
+// Free keeps cloud; offline is what you buy. The free card used to list
+// "Offline mode" as included, which now contradicts the plan it is upselling.
 const FREE_FEATURES = [
-  '20 invoices / month',
-  'Offline mode — data stays on your device',
+  '5 invoices / month',
+  'Cloud sync & backup included',
   'Invoicing, CRM & inventory',
   '3 invoice templates',
   'Community support',
 ]
 
-const PRO_FEATURES = [
+const FREEDOM_FEATURES = [
   'Unlimited invoices',
-  'Full offline access to every module',
+  'Works fully offline — data stays on your device',
+  'Cloud sync on demand, whenever you want it',
   'All 10+ FTA-compliant templates',
   'PDF toolkit — merge, split, compress, watermark',
   'Reports & statements of account',
@@ -82,24 +85,26 @@ export default function Pricing() {
             </div>
           </Reveal>
 
-          {/* -------------------------------- Pro -------------------------------- */}
+          {/* ------------------------------ Freedom ------------------------------ */}
           <Reveal delay={0.2} className="h-full">
             <div className="relative flex h-full flex-col rounded-xl border border-amber-400 bg-white p-8 shadow-[0_8px_40px_-12px_rgba(245,158,11,0.25)]">
               <span className="btn-gradient absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full px-3 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.12em] text-[#1A1206]">
                 Most popular
               </span>
               <div className="flex items-center justify-between">
-                <h3 className="font-display text-lg font-semibold text-zinc-900">Pro</h3>
+                <h3 className="font-display text-lg font-semibold text-zinc-900">Freedom</h3>
                 <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-amber-600">
                   One-time payment
                 </span>
               </div>
-              <p className="mt-6 font-display text-5xl font-semibold tracking-[-0.03em] text-zinc-900">$49</p>
+              <p className="mt-6 font-display text-5xl font-semibold tracking-[-0.03em] text-zinc-900">
+                AED 499
+              </p>
               <p className="mt-2 font-mono text-[11px] uppercase tracking-[0.14em] text-zinc-400">
                 pay once, own it forever
               </p>
 
-              <FeatureList items={PRO_FEATURES} />
+              <FeatureList items={FREEDOM_FEATURES} />
 
               <div className="mt-auto pt-8">
                 <a
@@ -109,7 +114,7 @@ export default function Pricing() {
                     'transition-all duration-200 hover:shadow-[0_0_28px_rgba(251,191,36,0.25)] active:scale-[0.98]',
                   )}
                 >
-                  Get Pro — $49 once
+                  Get Freedom — AED 499 once
                 </a>
                 <p className="mt-3 text-center font-mono text-[10.5px] text-zinc-400">
                   Lifetime license · 30-day money-back guarantee
@@ -121,7 +126,7 @@ export default function Pricing() {
 
         <Reveal delay={0.3} y={16}>
           <p className="mt-8 text-center font-mono text-[11px] text-zinc-400">
-            Prices in USD. VAT may apply at checkout.
+            Prices in AED. VAT may apply at checkout.
           </p>
         </Reveal>
       </div>
