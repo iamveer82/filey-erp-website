@@ -6,8 +6,12 @@ export const CONTRIBUTING_URL = `${REPO_URL}/blob/main/CONTRIBUTING.md`
 export const ROADMAP_URL = `${REPO_URL}/blob/main/ROADMAP.md`
 
 // ponytail: bumped by hand each release, which is why the links sat on 2.3.10
-// for five releases. Worth deriving from latest.json only if it drifts again.
-export const APP_VERSION = '2.3.19'
+// for five releases — and then on 2.3.19 for another five, through the release
+// that fixed a crash on every new sign-in. It has now drifted twice, so the
+// condition this comment set has been met: derive it from
+// releases/latest/download/latest.json (the updater manifest, already public
+// and always current) instead of trusting anyone to remember this line.
+export const APP_VERSION = '2.3.24'
 export const RELEASE_TAG = `v${APP_VERSION}`
 export const RELEASE_CODENAME = 'Latest'
 
