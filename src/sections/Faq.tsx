@@ -4,7 +4,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 const QA = [
   {
     q: 'Is Filey ERP a subscription?',
-    a: 'No. The Free plan costs nothing forever — 5 invoices a month, with cloud sync and backup included. Freedom is a single one-time payment: pay once and own your license forever, updates included.',
+    a: 'No. The Free plan costs nothing forever — 5 invoices a month, with cloud sync and backup included. Freedom is a single one-time payment of AED 1,499: pay once and own your license forever, updates included.',
   },
   {
     q: 'What happens when I hit 5 invoices in a month?',

@@ -1,11 +1,14 @@
+import { useState } from 'react'
 import { Check } from 'lucide-react'
 import Reveal from '@/components/Reveal'
+import FreedomContact from '@/components/FreedomContact'
 import { cn } from '@/lib/utils'
 
 /* ---------------------------------- data ---------------------------------- */
 
 // Free keeps cloud; offline is what you buy. The free card used to list
-// "Offline mode" as included, which now contradicts the plan it is upselling.
+// "Offline mode" as included, which contradicted the plan it is upselling.
+// The invoice count is kept in step with FREE_LIMITS in the app.
 const FREE_FEATURES = [
   '5 invoices / month',
   'Cloud sync & backup included',
@@ -18,6 +21,7 @@ const FREEDOM_FEATURES = [
   'Unlimited invoices',
   'Works fully offline — data stays on your device',
   'Cloud sync on demand, whenever you want it',
+  '2 device slots',
   'All 10+ FTA-compliant templates',
   'PDF toolkit — merge, split, compress, watermark',
   'Reports & statements of account',
@@ -46,6 +50,10 @@ function FeatureList({ items }: { items: string[] }) {
 /* --------------------------------- section --------------------------------- */
 
 export default function Pricing() {
+  // Freedom has no checkout while Stripe is out of the loop — the CTA opens a
+  // form that emails the owner instead of sending people to a download.
+  const [leadOpen, setLeadOpen] = useState(false)
+
   return (
     <section id="pricing" className="relative border-t border-zinc-200 py-28 lg:py-40">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
@@ -98,7 +106,7 @@ export default function Pricing() {
                 </span>
               </div>
               <p className="mt-6 font-display text-5xl font-semibold tracking-[-0.03em] text-zinc-900">
-                AED 499
+                AED 1,499
               </p>
               <p className="mt-2 font-mono text-[11px] uppercase tracking-[0.14em] text-zinc-400">
                 pay once, own it forever
@@ -107,15 +115,15 @@ export default function Pricing() {
               <FeatureList items={FREEDOM_FEATURES} />
 
               <div className="mt-auto pt-8">
-                <a
-                  href="#download"
+                <button
+                  onClick={() => setLeadOpen(true)}
                   className={cn(
                     'btn-gradient inline-flex h-11 w-full items-center justify-center rounded-lg text-sm font-semibold text-[#1A1206]',
                     'transition-all duration-200 hover:shadow-[0_0_28px_rgba(251,191,36,0.25)] active:scale-[0.98]',
                   )}
                 >
-                  Get Freedom — AED 499 once
-                </a>
+                  Get Freedom — AED 1,499 once
+                </button>
                 <p className="mt-3 text-center font-mono text-[10.5px] text-zinc-400">
                   Lifetime license · 30-day money-back guarantee
                 </p>
@@ -129,6 +137,8 @@ export default function Pricing() {
             Prices in AED. VAT may apply at checkout.
           </p>
         </Reveal>
+
+        <FreedomContact open={leadOpen} onClose={() => setLeadOpen(false)} />
       </div>
     </section>
   )
