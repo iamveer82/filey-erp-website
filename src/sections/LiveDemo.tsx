@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import { AnimatePresence, motion, useInView } from 'framer-motion'
-import { FileText, LayoutDashboard, Package, ShoppingCart, Users, Wrench } from 'lucide-react'
+import { Bot, FileText, LayoutDashboard, Package, ShoppingCart, Users, Wrench } from 'lucide-react'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import AppWindow from '@/components/AppWindow'
 import Reveal from '@/components/Reveal'
@@ -13,7 +13,7 @@ import { cn } from '@/lib/utils'
 type DemoTab = 'dashboard' | 'invoicing' | 'crm' | 'inventory'
 
 const TABS: { id: DemoTab; label: string; icon: typeof LayoutDashboard; rail: string }[] = [
-  { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, rail: 'Overview' },
+  { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, rail: 'Dashboard' },
   { id: 'invoicing', label: 'Invoicing', icon: FileText, rail: 'Invoicing' },
   { id: 'crm', label: 'CRM board', icon: Users, rail: 'CRM' },
   { id: 'inventory', label: 'Inventory', icon: Package, rail: 'Inventory' },
@@ -21,6 +21,7 @@ const TABS: { id: DemoTab; label: string; icon: typeof LayoutDashboard; rail: st
 
 /** Decorative rail-only modules (not part of the demo tabs). */
 const RAIL_EXTRA = [
+  { icon: Bot, label: 'Filey AI' },
   { icon: ShoppingCart, label: 'Orders' },
   { icon: Wrench, label: 'Settings' },
 ]
@@ -54,8 +55,8 @@ export default function LiveDemo() {
             </div>
           </div>
           <p className="mt-5 max-w-2xl text-[clamp(1.0625rem,1.4vw,1.25rem)] leading-[1.6] text-zinc-600">
-            A hands-on slice of the real app — edit an invoice, drag deals through the pipeline,
-            sort stock. No sign-up needed.
+            A hands-on slice of the real app — edit an invoice, drag deals, sort stock,
+            or ask the AI agent to do it for you. No sign-up needed.
           </p>
         </Reveal>
 

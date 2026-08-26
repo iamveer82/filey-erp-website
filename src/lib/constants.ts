@@ -11,7 +11,7 @@ export const ROADMAP_URL = `${REPO_URL}/blob/main/ROADMAP.md`
 // condition this comment set has been met: derive it from
 // releases/latest/download/latest.json (the updater manifest, already public
 // and always current) instead of trusting anyone to remember this line.
-export const APP_VERSION = '2.3.24'
+export const APP_VERSION = '2.9.0'
 export const RELEASE_TAG = `v${APP_VERSION}`
 export const RELEASE_CODENAME = 'Latest'
 

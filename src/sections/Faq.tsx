@@ -3,6 +3,14 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 
 const QA = [
   {
+    q: 'What can the AI agent do?',
+    a: 'The built-in agent can draft invoices and purchase orders from plain-English descriptions, chase overdue payments on WhatsApp, merge and split PDFs, look up any record, and answer questions about your business. It has full tool access — everything you can do in the app, it can do for you.',
+  },
+  {
+    q: 'Does the AI agent work on WhatsApp?',
+    a: 'Yes. Pair your WhatsApp number and the agent answers your messages, sends PDFs and voice replies, and transcribes your voice notes. You can run your business from your phone.',
+  },
+  {
     q: 'Is Filey ERP a subscription?',
     a: 'No. The Free plan costs nothing forever — 5 invoices a month, with cloud sync and backup included. Freedom is a single one-time payment of AED 1,499: pay once and own your license forever, updates included.',
   },
@@ -12,7 +20,7 @@ const QA = [
   },
   {
     q: 'Does it work without internet?',
-    a: 'Yes. Filey is offline-first: your data lives in a local database on your machine and every core feature works with no connection at all.',
+    a: 'Yes. Filey is offline-first: your data lives in a local database on your machine and every core feature works with no connection at all. The AI agent needs an internet connection to reach the language model.',
   },
   {
     q: 'Is there a macOS version?',
@@ -20,7 +28,7 @@ const QA = [
   },
   {
     q: 'Is my data private?',
-    a: 'Completely. Your business data never leaves your device unless you choose to connect your own cloud workspace. The PDF toolkit processes files 100% locally.',
+    a: 'Completely. Your business data never leaves your device unless you choose to connect your own cloud workspace. The PDF toolkit processes files 100% locally, and your AI key stays in your browser — requests go straight from your device to the provider.',
   },
 ]
 

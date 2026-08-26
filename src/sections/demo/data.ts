@@ -155,16 +155,20 @@ export interface ActivityEvent {
   meta: string
 }
 
-/** 8 canned events cycled into the live feed every 6s. */
+/** 12 canned events cycled into the live feed every 6s. */
 export const ACTIVITY_EVENTS: ActivityEvent[] = [
   { id: 1, dot: 'bg-emerald-400', text: 'Invoice #1051 paid', meta: 'AED 2,300' },
-  { id: 2, dot: 'bg-sky-400', text: 'New lead: Marina Boutique', meta: 'CRM' },
-  { id: 3, dot: 'bg-violet-400', text: 'Stock adjusted: Pallet wrap', meta: '+50' },
-  { id: 4, dot: 'bg-amber-400', text: 'Quote #234 sent to Cedar Café', meta: 'AED 5,400' },
-  { id: 5, dot: 'bg-sky-400', text: 'PO #89 received from Gulf Metals', meta: '#0089' },
-  { id: 6, dot: 'bg-emerald-400', text: 'Deal won: Falcon Auto Parts', meta: 'AED 31,800' },
-  { id: 7, dot: 'bg-rose-400', text: 'Stock alert: Shelf bracket 300mm', meta: '4 left' },
-  { id: 8, dot: 'bg-sky-400', text: 'New customer: ByteBistro LLC', meta: 'CRM' },
+  { id: 2, dot: 'bg-violet-400', text: 'AI drafted PO #90 for Rennox', meta: 'AED 152,660' },
+  { id: 3, dot: 'bg-sky-400', text: 'New lead: Marina Boutique', meta: 'CRM' },
+  { id: 4, dot: 'bg-violet-400', text: 'Stock adjusted: Pallet wrap', meta: '+50' },
+  { id: 5, dot: 'bg-amber-400', text: 'Quote #234 sent to Cedar Café', meta: 'AED 5,400' },
+  { id: 6, dot: 'bg-sky-400', text: 'PO #89 received from Gulf Metals', meta: '#0089' },
+  { id: 7, dot: 'bg-emerald-400', text: 'Deal won: Falcon Auto Parts', meta: 'AED 31,800' },
+  { id: 8, dot: 'bg-rose-400', text: 'Stock alert: Shelf bracket 300mm', meta: '4 left' },
+  { id: 9, dot: 'bg-violet-400', text: 'AI merged 3 PDFs → quote pack', meta: '1 file' },
+  { id: 10, dot: 'bg-sky-400', text: 'New customer: ByteBistro LLC', meta: 'CRM' },
+  { id: 11, dot: 'bg-violet-400', text: 'AI chased 3 overdue invoices', meta: 'WhatsApp' },
+  { id: 12, dot: 'bg-emerald-400', text: 'Receipt #201 issued — cash', meta: 'AED 850' },
 ]
 
 /* ------------------------- §6.2 — invoicing tab -------------------------- */

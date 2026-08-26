@@ -4,17 +4,18 @@ import { motion, useMotionValue, useReducedMotion, useSpring, useTransform, useS
 import { useGSAP } from '@gsap/react'
 import {
   BarChart3,
+  Bot,
   Download,
   FileText,
   LayoutDashboard,
   Package,
   Play,
   Plus,
+  Receipt,
   ShoppingCart,
   TrendingDown,
   TrendingUp,
   Users,
-  Wallet,
 } from 'lucide-react'
 import AppWindow from '@/components/AppWindow'
 import MagneticButton from '@/components/MagneticButton'
@@ -28,13 +29,14 @@ gsap.registerPlugin(useGSAP)
 /* ---------------------------------- data --------------------------------- */
 
 const SIDEBAR_ITEMS = [
-  { icon: LayoutDashboard, label: 'Overview', active: true },
-  { icon: BarChart3, label: 'Reports', active: false },
-  { icon: ShoppingCart, label: 'Orders', active: false },
+  { icon: LayoutDashboard, label: 'Dashboard', active: true },
+  { icon: Bot, label: 'Filey AI', active: false },
   { icon: FileText, label: 'Invoicing', active: false },
-  { icon: Users, label: 'CRM', active: false },
+  { icon: ShoppingCart, label: 'Orders', active: false },
   { icon: Package, label: 'Inventory', active: false },
-  { icon: Wallet, label: 'Accounting', active: false },
+  { icon: Users, label: 'Customers', active: false },
+  { icon: Receipt, label: 'Receipts', active: false },
+  { icon: BarChart3, label: 'Reports', active: false },
 ]
 
 const KPIS = [
@@ -366,9 +368,12 @@ export default function Hero() {
                 <span className="hero-word inline-block will-change-transform">inventory.</span>
               </span>
               <span className="block overflow-hidden pb-[0.12em]">
-                <span className="hero-word inline-block will-change-transform">One</span>{' '}
-                <span className="hero-word inline-block will-change-transform">desktop</span>{' '}
-                <span className="hero-word inline-block will-change-transform">app.</span>
+                <span className="hero-word inline-block will-change-transform">With</span>{' '}
+                <span className="hero-word inline-block will-change-transform">an</span>{' '}
+                <span className="hero-word inline-block will-change-transform">AI</span>{' '}
+                <span className="hero-word inline-block will-change-transform">agent</span>{' '}
+                <span className="hero-word inline-block will-change-transform">built</span>{' '}
+                <span className="hero-word inline-block will-change-transform">in.</span>
               </span>
               <span className="block overflow-hidden pb-[0.14em]">
                 <span className="hero-word inline-block text-amber-600 will-change-transform">Works</span>{' '}
@@ -381,7 +386,7 @@ export default function Hero() {
           {/* lead */}
           <p className="hero-lead mt-6 max-w-xl text-[clamp(1.0625rem,1.4vw,1.25rem)] leading-[1.6] text-zinc-600">
             Filey ERP runs your whole business — FTA-compliant tax invoices, orders, customers and stock —
-            from one signed desktop app. Free to start: 5 invoices a month, cloud sync included.
+            with an AI agent that drafts documents, chases payments and answers on WhatsApp. Free to start: 5 invoices a month, cloud sync included.
           </p>
 
           {/* CTA row */}
