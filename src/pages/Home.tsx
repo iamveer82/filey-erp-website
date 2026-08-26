@@ -1,5 +1,6 @@
 import Hero from '@/sections/Hero'
 import Features from '@/sections/Features'
+import FileyAI from '@/sections/FileyAI'
 import LiveDemo from '@/sections/LiveDemo'
 import Pricing from '@/sections/Pricing'
 import Download from '@/sections/Download'
@@ -12,6 +13,7 @@ export default function Home() {
     <>
       <Hero />
       <Features />
+      <FileyAI />
       <LiveDemo />
       <Pricing />
       <Download />
