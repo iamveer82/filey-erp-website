@@ -116,10 +116,10 @@ function OverviewMock() {
   return (
     <div>
       {/* top bar */}
-      <div className="-mx-3.5 -mt-3.5 flex items-center justify-between gap-3 border-b border-ink-700 px-4 py-3 sm:-mx-4 sm:-mt-4">
+      <div className="-mx-3.5 -mt-3.5 flex items-center justify-between gap-3 border-b border-zinc-200 px-4 py-3 sm:-mx-4 sm:-mt-4">
         <div className="min-w-0">
-          <p className="truncate text-[13px] font-semibold text-fg">Welcome back, Shaban</p>
-          <p className="font-mono text-[10px] text-faint">Sat, Jul 18 2026</p>
+          <p className="truncate text-[13px] font-semibold text-zinc-900">Welcome back, Shaban</p>
+          <p className="font-mono text-[10px] text-zinc-400">Sat, Jul 18 2026</p>
         </div>
         <span className="btn-gradient inline-flex shrink-0 items-center gap-1.5 rounded-md px-3 py-1.5 text-[11.5px] font-semibold text-[#1A1206]">
           <Plus className="h-3.5 w-3.5" strokeWidth={2.5} />
@@ -130,9 +130,9 @@ function OverviewMock() {
       {/* KPI cards */}
       <div className="mt-3.5 grid grid-cols-2 gap-2">
         {KPIS.map((kpi) => (
-          <div key={kpi.label} className="rounded-lg border border-ink-700/70 bg-ink-900/60 p-2.5">
-            <p className="truncate font-mono text-[9px] uppercase tracking-[0.12em] text-faint">{kpi.label}</p>
-            <p className="mt-1 truncate font-mono text-[12.5px] font-semibold tabular-nums text-fg">{kpi.value}</p>
+          <div key={kpi.label} className="rounded-lg border border-zinc-200/70 bg-white/60 p-2.5">
+            <p className="truncate font-mono text-[9px] uppercase tracking-[0.12em] text-zinc-400">{kpi.label}</p>
+            <p className="mt-1 truncate font-mono text-[12.5px] font-semibold tabular-nums text-zinc-900">{kpi.value}</p>
             <p
               className={cn(
                 'mt-1 flex items-center gap-1 font-mono text-[9.5px] tabular-nums',
@@ -147,12 +147,12 @@ function OverviewMock() {
       </div>
 
       {/* sales vs payments bar chart */}
-      <div className="mt-2.5 rounded-lg border border-ink-700/70 bg-ink-900/60 p-3">
+      <div className="mt-2.5 rounded-lg border border-zinc-200/70 bg-white/60 p-3">
         <div className="flex items-center justify-between gap-2">
-          <p className="truncate font-mono text-[9.5px] uppercase tracking-[0.12em] text-faint">
+          <p className="truncate font-mono text-[9.5px] uppercase tracking-[0.12em] text-zinc-400">
             Sales vs Payments received
           </p>
-          <div className="flex shrink-0 items-center gap-3 font-mono text-[9px] text-faint">
+          <div className="flex shrink-0 items-center gap-3 font-mono text-[9px] text-zinc-400">
             <span className="flex items-center gap-1">
               <span className="h-1.5 w-2.5 rounded-[2px] bg-amber-400" />
               Invoiced
@@ -176,23 +176,23 @@ function OverviewMock() {
                   style={{ height: `${(bar.rec / 100) * 88}px` }}
                 />
               </div>
-              <span className="text-center font-mono text-[8px] uppercase tracking-wide text-faint">{bar.d}</span>
+              <span className="text-center font-mono text-[8px] uppercase tracking-wide text-zinc-400">{bar.d}</span>
             </div>
           ))}
         </div>
       </div>
 
       {/* recent invoices */}
-      <div className="mt-2.5 rounded-lg border border-ink-700/70 bg-ink-900/60 px-3">
-        <div className="flex items-center justify-between border-b border-ink-700/60 py-2">
-          <p className="font-mono text-[9.5px] uppercase tracking-[0.12em] text-faint">Recent invoices</p>
-          <p className="font-mono text-[9px] text-faint">July</p>
+      <div className="mt-2.5 rounded-lg border border-zinc-200/70 bg-white/60 px-3">
+        <div className="flex items-center justify-between border-b border-zinc-200/60 py-2">
+          <p className="font-mono text-[9.5px] uppercase tracking-[0.12em] text-zinc-400">Recent invoices</p>
+          <p className="font-mono text-[9px] text-zinc-400">July</p>
         </div>
-        <div className="divide-y divide-ink-700/50">
+        <div className="divide-y divide-zinc-200">
           {RECENT_INVOICES.map((inv) => (
             <div key={inv.id} className="flex items-center gap-2.5 py-2">
-              <span className="w-[62px] shrink-0 font-mono text-[10px] text-faint">{inv.id}</span>
-              <span className="min-w-0 flex-1 truncate text-[11.5px] text-fg">{inv.customer}</span>
+              <span className="w-[62px] shrink-0 font-mono text-[10px] text-zinc-400">{inv.id}</span>
+              <span className="min-w-0 flex-1 truncate text-[11.5px] text-zinc-900">{inv.customer}</span>
               <span className="hidden shrink-0 font-mono text-[10px] tabular-nums text-muted-foreground sm:inline">
                 {inv.amount}
               </span>
@@ -217,10 +217,10 @@ function OverviewSidebar() {
     <nav aria-label="Modules" className="flex w-11 flex-col gap-0.5 px-1.5 py-3 sm:w-40 sm:px-2">
       {/* Filey logo */}
       <div className="mb-2.5 flex items-center gap-2 px-1.5">
-        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-amber-400 font-display text-[12px] font-bold text-ink-950">
+        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-amber-400 font-display text-[12px] font-bold text-zinc-900">
           F
         </span>
-        <span className="hidden text-[13px] font-semibold tracking-tight text-fg sm:inline">
+        <span className="hidden text-[13px] font-semibold tracking-tight text-zinc-900 sm:inline">
           Filey <span className="font-medium text-amber-400">ERP</span>
         </span>
       </div>
@@ -229,7 +229,7 @@ function OverviewSidebar() {
           key={item.label}
           className={cn(
             'relative flex h-8 items-center justify-center gap-2.5 rounded-md sm:justify-start sm:px-2.5',
-            item.active ? 'bg-amber-400/10 text-amber-400' : 'text-faint',
+            item.active ? 'bg-amber-400/10 text-amber-400' : 'text-zinc-400',
           )}
         >
           {item.active && (

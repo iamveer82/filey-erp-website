@@ -90,7 +90,7 @@ export default function DemoInventory() {
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search SKU or name…"
             aria-label="Search SKU or name"
-            className="h-9 w-full rounded-lg border border-ink-600 bg-white pl-8 pr-3 text-[12px] text-zinc-900 placeholder:text-zinc-400 focus:border-amber-400/50 focus:outline-none"
+            className="h-9 w-full rounded-lg border border-zinc-200 bg-white pl-8 pr-3 text-[12px] text-zinc-900 placeholder:text-zinc-400 focus:border-amber-400/50 focus:outline-none"
           />
         </div>
         <div className="flex items-center gap-1" role="group" aria-label="Filter by status">
@@ -104,7 +104,7 @@ export default function DemoInventory() {
                 'rounded-full border px-2.5 py-1 text-[10.5px] transition-colors duration-200',
                 statusFilter === s
                   ? 'border-amber-400/50 bg-amber-400/10 text-amber-400'
-                  : 'border-ink-600 text-zinc-400 hover:text-zinc-400',
+                  : 'border-zinc-200 text-zinc-400 hover:text-zinc-400',
               )}
             >
               {s}
@@ -157,7 +157,7 @@ export default function DemoInventory() {
                 <TableCell className="px-3 py-2.5">
                   <div className="flex items-center gap-2.5">
                     <span className="w-7 text-right text-[12px] tabular-nums text-zinc-900">{r.stock}</span>
-                    <span className="h-1 w-[60px] overflow-hidden rounded-full bg-ink-700">
+                    <span className="h-1 w-[60px] overflow-hidden rounded-full bg-zinc-100">
                       <span
                         className="block h-full rounded-full transition-all duration-300"
                         style={{ width: `${Math.min(100, (r.stock / 250) * 100)}%`, background: STATUS_COLORS[r.status] }}

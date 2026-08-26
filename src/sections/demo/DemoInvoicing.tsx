@@ -234,10 +234,10 @@ export default function DemoInvoicing() {
           Customer
         </label>
         <Select value={customer} onValueChange={setCustomer}>
-          <SelectTrigger id="inv-customer" className="mt-1.5 w-full border-ink-600 bg-white text-[13px] text-zinc-900">
+          <SelectTrigger id="inv-customer" className="mt-1.5 w-full border-zinc-200 bg-white text-[13px] text-zinc-900">
             <SelectValue />
           </SelectTrigger>
-          <SelectContent className="border-ink-600 bg-ink-800 text-zinc-900">
+          <SelectContent className="border-zinc-200 bg-zinc-50 text-zinc-900">
             {CUSTOMERS.map((c) => (
               <SelectItem key={c} value={c} className="text-[13px]">
                 {c}
@@ -266,11 +266,11 @@ export default function DemoInvoicing() {
                 <Select value={l.name} onValueChange={(name) => updateLine(l.id, { name })}>
                   <SelectTrigger
                     aria-label="Item"
-                    className="h-8 min-w-0 flex-1 border-ink-600 bg-white px-2 text-[12px] text-zinc-900 [&_span]:truncate"
+                    className="h-8 min-w-0 flex-1 border-zinc-200 bg-white px-2 text-[12px] text-zinc-900 [&_span]:truncate"
                   >
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="border-ink-600 bg-ink-800 text-zinc-900">
+                  <SelectContent className="border-zinc-200 bg-zinc-50 text-zinc-900">
                     {CATALOG.map((c) => (
                       <SelectItem key={c.name} value={c.name} className="text-[12px]">
                         {c.name} — {fmtInt(c.price)}
@@ -278,7 +278,7 @@ export default function DemoInvoicing() {
                     ))}
                   </SelectContent>
                 </Select>
-                <div className="flex shrink-0 items-center rounded-md border border-ink-600">
+                <div className="flex shrink-0 items-center rounded-md border border-zinc-200">
                   <button
                     type="button"
                     aria-label="Decrease quantity"
@@ -317,7 +317,7 @@ export default function DemoInvoicing() {
           type="button"
           onClick={addLine}
           disabled={lines.length >= CATALOG.length}
-          className="mt-2 flex h-8 w-full items-center justify-center gap-1.5 rounded-md border border-dashed border-ink-600 text-[11px] text-zinc-400 transition-colors duration-200 hover:border-amber-400/50 hover:text-amber-400 disabled:pointer-events-none disabled:opacity-40"
+          className="mt-2 flex h-8 w-full items-center justify-center gap-1.5 rounded-md border border-dashed border-zinc-200 text-[11px] text-zinc-400 transition-colors duration-200 hover:border-amber-400/50 hover:text-amber-400 disabled:pointer-events-none disabled:opacity-40"
         >
           <Plus className="h-3.5 w-3.5" /> Add line
         </button>
@@ -361,7 +361,7 @@ export default function DemoInvoicing() {
                 'flex flex-col items-center gap-1.5 rounded-lg border p-2 transition-all duration-200',
                 template === t.id
                   ? 'border-amber-400/60 bg-amber-400/5'
-                  : 'border-ink-600 hover:border-ink-600/80 hover:bg-ink-800',
+                  : 'border-zinc-200 hover:border-zinc-300 hover:bg-zinc-50',
               )}
             >
               {/* mini doc thumbnail */}
@@ -394,7 +394,7 @@ export default function DemoInvoicing() {
             <span className="text-zinc-400">VAT 5%</span>
             <span className="tabular-nums text-zinc-900"><PopNumber value={fmtAED2(totals.vat)} /></span>
           </div>
-          <div className="my-1.5 h-px bg-ink-700" />
+          <div className="my-1.5 h-px bg-zinc-100" />
           <div className="flex items-center justify-between">
             <span className="text-[12px] font-semibold text-zinc-900">Total</span>
             <span className="text-[20px] font-semibold tabular-nums text-amber-400">
@@ -415,7 +415,7 @@ export default function DemoInvoicing() {
           <button
             type="button"
             onClick={pdfToast}
-            className="inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-ink-600 px-4 text-[13.5px] font-semibold text-zinc-900 transition-colors duration-200 hover:border-amber-400/50 hover:bg-amber-400/5 active:scale-[0.98]"
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-zinc-200 px-4 text-[13.5px] font-semibold text-zinc-900 transition-colors duration-200 hover:border-amber-400/50 hover:bg-amber-400/5 active:scale-[0.98]"
           >
             <Printer className="h-4 w-4" /> Print
           </button>
