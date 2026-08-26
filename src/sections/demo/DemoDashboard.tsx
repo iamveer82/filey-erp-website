@@ -16,9 +16,9 @@ import { TrendingUp } from 'lucide-react'
 import TweenNumber from '@/sections/demo/TweenNumber'
 import {
   ACTIVITY_EVENTS,
-  CATEGORY_SALES,
   DEMO_CHARTS,
   DEMO_KPIS,
+  CATEGORY_SALES,
   PERIODS,
   fmtAED,
   fmtCompact,
@@ -27,7 +27,7 @@ import {
 import type { Period } from '@/sections/demo/data'
 import { cn } from '@/lib/utils'
 
-/* ------------------------------ dark tooltip ----------------------------- */
+/* ------------------------------ clean tooltip ----------------------------- */
 
 interface TooltipEntry {
   value?: number | string
@@ -38,11 +38,19 @@ interface TooltipEntry {
 function ChartTooltip({ active, payload, label }: { active?: boolean; payload?: TooltipEntry[]; label?: string }) {
   if (!active || !payload?.length) return null
   return (
-    <div className="rounded-lg border border-ink-700 bg-ink-850 px-3 py-2 shadow-xl">
-      <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-faint">{label}</p>
+    <div
+      className="rounded-[10px] px-2.5 py-2 text-[12px] shadow-lg"
+      style={{
+        background: '#fff',
+        border: '1px solid hsl(240 5.9% 90%)',
+        color: 'hsl(240 6% 10%)',
+        boxShadow: '0 8px 24px rgba(0,0,0,0.12)',
+      }}
+    >
+      <p className="mb-1 text-[10px] uppercase tracking-wide text-zinc-400">{label}</p>
       {payload.map((entry) => (
-        <p key={entry.name} className="mt-1 flex items-center gap-2 font-mono text-[11px] tabular-nums text-fg">
-          <span className="h-1.5 w-1.5 rounded-full" style={{ background: entry.color ?? '#FBBF24' }} />
+        <p key={entry.name} className="flex items-center gap-1.5 tabular-nums text-zinc-800">
+          <span className="h-1.5 w-1.5 rounded-full" style={{ background: entry.color ?? '#F59E0B' }} />
           {entry.name}: {fmtAED(Number(entry.value ?? 0))}
         </p>
       ))}
@@ -76,8 +84,6 @@ export default function DemoDashboard({ running }: { running: boolean }) {
   const seqRef = useRef(4)
   const reduced = useReducedMotion()
 
-  // Live feed: a new row every 6s (max 4, oldest drops). Pauses when the tab
-  // is hidden or the section is off-screen.
   useEffect(() => {
     if (!running) return
     const t = window.setInterval(() => {
@@ -93,12 +99,14 @@ export default function DemoDashboard({ running }: { running: boolean }) {
 
   const kpis = DEMO_KPIS[period]
 
+  const axisTick = { fontSize: 11, fill: '#9ca3af' }
+
   return (
     <div className="flex flex-col gap-4">
       {/* header row: label + period segmented control */}
       <div className="flex items-center justify-between gap-3">
-        <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-faint">Overview — Falcon Trading LLC</p>
-        <div className="flex items-center gap-0.5 rounded-lg border border-ink-700 bg-ink-900/60 p-0.5" role="group" aria-label="Period">
+        <p className="text-[12px] text-muted-foreground">Overview — Falcon Trading LLC</p>
+        <div className="flex items-center gap-0.5 rounded-lg border border-zinc-200 bg-white p-0.5" role="group" aria-label="Period">
           {PERIODS.map((p) => (
             <button
               key={p}
@@ -106,40 +114,33 @@ export default function DemoDashboard({ running }: { running: boolean }) {
               onClick={() => setPeriod(p)}
               aria-pressed={period === p}
               className={cn(
-                'relative rounded-md px-2.5 py-1 font-mono text-[11px] transition-colors duration-200',
-                period === p ? 'text-amber-400' : 'text-faint hover:text-muted-foreground',
+                'relative rounded-md px-2.5 py-1 text-[11px] font-medium transition-colors duration-200',
+                period === p ? 'bg-zinc-900 text-white' : 'text-zinc-400 hover:text-zinc-600',
               )}
             >
-              {period === p && (
-                <motion.span
-                  layoutId="demo-period-pill"
-                  className="absolute inset-0 rounded-md bg-amber-400/10"
-                  transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                />
-              )}
-              <span className="relative">{p}</span>
+              {p}
             </button>
           ))}
         </div>
       </div>
 
-      {/* KPI cards — numbers re-tween on period change */}
+      {/* KPI cards — MetricCard style from the desktop app */}
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         {kpis.map((kpi) => (
           <div
             key={kpi.label}
-            className="rounded-xl border border-ink-700/70 bg-ink-900/60 p-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition-colors duration-200 hover:border-amber-400/40"
+            className="rounded-xl border border-zinc-200 bg-white p-3.5 transition-colors duration-200 hover:border-zinc-300"
           >
-            <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-faint">{kpi.label}</p>
-            <p className="mt-1.5 font-mono text-lg font-semibold tabular-nums text-fg lg:text-xl">
+            <p className="truncate text-[11px] text-zinc-400">{kpi.label}</p>
+            <p className="mt-1 truncate text-[18px] font-semibold leading-tight tracking-tight tabular-nums text-zinc-900">
               <TweenNumber value={kpi.value} format={(v) => `${kpi.prefix ?? ''}${fmtInt(v)}`} />
             </p>
             <p
               className={cn(
-                'mt-1 flex items-center gap-1 font-mono text-[10px]',
-                kpi.tone === 'emerald' && 'text-emerald-400',
-                kpi.tone === 'sky' && 'text-sky-400',
-                kpi.tone === 'amber' && 'text-amber-400',
+                'mt-0.5 flex items-center gap-1 text-[10.5px] font-medium',
+                kpi.tone === 'emerald' && 'text-emerald-600',
+                kpi.tone === 'sky' && 'text-sky-600',
+                kpi.tone === 'amber' && 'text-amber-600',
               )}
             >
               {kpi.tone !== 'amber' && <TrendingUp className="h-3 w-3" />}
@@ -149,12 +150,16 @@ export default function DemoDashboard({ running }: { running: boolean }) {
         ))}
       </div>
 
-      {/* chart + donut */}
+      {/* chart + donut — same layout as the real dashboard */}
       <div className="grid grid-cols-1 gap-3 lg:grid-cols-[1fr_300px]">
-        <div className="rounded-xl border border-ink-700/70 bg-ink-900/60 p-4">
-          <div className="mb-2 flex items-center justify-between">
-            <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-faint">Revenue — {period}</p>
-            <span className="flex items-center gap-1.5 font-mono text-[10px] text-faint">
+        {/* Sales vs Payments bar chart */}
+        <div className="rounded-xl border border-zinc-200 bg-white p-4">
+          <div className="mb-3 flex items-center justify-between">
+            <div>
+              <p className="text-[14px] font-semibold text-zinc-900">Revenue — {period}</p>
+              <p className="text-[11.5px] text-zinc-400 mt-0.5">Invoiced across all customers</p>
+            </div>
+            <span className="flex items-center gap-1.5 text-[10.5px] text-zinc-400">
               <span className="h-1.5 w-3 rounded-full bg-amber-400" />
               Revenue
             </span>
@@ -169,37 +174,38 @@ export default function DemoDashboard({ running }: { running: boolean }) {
               className="h-[220px] lg:h-[260px]"
             >
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={DEMO_CHARTS[period]} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
+                <AreaChart data={DEMO_CHARTS[period]} margin={{ top: 10, right: 10, left: -12, bottom: 0 }}>
                   <defs>
                     <linearGradient id="demoRevFill" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#FBBF24" stopOpacity={0.3} />
-                      <stop offset="100%" stopColor="#FBBF24" stopOpacity={0} />
+                      <stop offset="0%" stopColor="#F59E0B" stopOpacity={0.25} />
+                      <stop offset="100%" stopColor="#F59E0B" stopOpacity={0} />
                     </linearGradient>
                   </defs>
-                  <CartesianGrid stroke="rgba(148,163,184,0.08)" strokeDasharray="4 6" vertical={false} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" vertical={false} />
                   <XAxis
                     dataKey="label"
-                    tick={{ fill: '#5A6B80', fontSize: 11, fontFamily: 'JetBrains Mono' }}
+                    tick={axisTick}
                     tickLine={false}
-                    axisLine={{ stroke: 'rgba(148,163,184,0.15)' }}
+                    axisLine={false}
                     minTickGap={28}
                   />
                   <YAxis
-                    tick={{ fill: '#5A6B80', fontSize: 11, fontFamily: 'JetBrains Mono' }}
+                    tick={axisTick}
                     tickLine={false}
                     axisLine={false}
                     width={44}
                     tickFormatter={fmtCompact}
                   />
-                  <Tooltip content={<ChartTooltip />} cursor={{ stroke: 'rgba(251,191,36,0.3)' }} />
+                  <Tooltip content={<ChartTooltip />} cursor={{ fill: 'rgba(0,0,0,0.03)' }} />
                   <Area
                     type="monotone"
                     dataKey="rev"
                     name="Revenue"
-                    stroke="#FBBF24"
+                    stroke="#F59E0B"
                     strokeWidth={2}
                     fill="url(#demoRevFill)"
                     dot={false}
+                    activeDot={{ r: 3, strokeWidth: 0 }}
                     isAnimationActive={!reduced}
                     animationDuration={900}
                   />
@@ -209,10 +215,11 @@ export default function DemoDashboard({ running }: { running: boolean }) {
           </AnimatePresence>
         </div>
 
-        {/* sales by category donut */}
-        <div className="rounded-xl border border-ink-700/70 bg-ink-900/60 p-4">
-          <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-faint">Sales by category</p>
-          <div className="mx-auto h-[140px] w-[140px]">
+        {/* Customer segments donut with centre total */}
+        <div className="rounded-xl border border-zinc-200 bg-white p-4">
+          <p className="text-[14px] font-semibold text-zinc-900">Customer segments</p>
+          <p className="text-[11.5px] text-zinc-400 mt-0.5">By segment tag</p>
+          <div className="relative mx-auto mt-3 h-[140px] w-[140px]">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
@@ -221,7 +228,8 @@ export default function DemoDashboard({ running }: { running: boolean }) {
                   nameKey="name"
                   innerRadius="58%"
                   outerRadius="88%"
-                  paddingAngle={3}
+                  paddingAngle={2}
+                  cornerRadius={3}
                   strokeWidth={0}
                   isAnimationActive={!reduced}
                   animationDuration={900}
@@ -238,6 +246,12 @@ export default function DemoDashboard({ running }: { running: boolean }) {
                 </Pie>
               </PieChart>
             </ResponsiveContainer>
+            <div className="absolute inset-0 grid place-items-center pointer-events-none">
+              <div className="text-center">
+                <p className="text-[18px] font-semibold text-zinc-900 tabular-nums leading-none">6</p>
+                <p className="text-[10px] text-zinc-400 mt-0.5">customers</p>
+              </div>
+            </div>
           </div>
           <ul className="mt-2 space-y-1">
             {CATEGORY_SALES.map((c) => (
@@ -250,13 +264,13 @@ export default function DemoDashboard({ running }: { running: boolean }) {
                 {hoveredSlice === c.name && (
                   <motion.span
                     layoutId="donut-legend-ring"
-                    className="absolute inset-0 rounded-md border border-amber-400/40 bg-amber-400/5"
+                    className="absolute inset-0 rounded-md border border-amber-300 bg-amber-50"
                     transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                   />
                 )}
                 <span className="relative h-2 w-2 rounded-sm" style={{ background: c.color }} />
-                <span className="relative text-[12px] text-muted-foreground">{c.name}</span>
-                <span className="relative ml-auto font-mono text-[11px] tabular-nums text-faint">{c.value}%</span>
+                <span className="relative text-[12px] text-zinc-600">{c.name}</span>
+                <span className="relative ml-auto text-[11px] tabular-nums text-zinc-400">{c.value}%</span>
               </li>
             ))}
           </ul>
@@ -264,13 +278,13 @@ export default function DemoDashboard({ running }: { running: boolean }) {
       </div>
 
       {/* recent activity — live feed */}
-      <div className="rounded-xl border border-ink-700/70 bg-ink-900/60 p-4">
+      <div className="rounded-xl border border-zinc-200 bg-white p-4">
         <div className="mb-2 flex items-center justify-between">
-          <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-faint">Recent activity</p>
-          <span className="flex items-center gap-1.5 font-mono text-[10px] text-amber-400">
+          <p className="text-[14px] font-semibold text-zinc-900">Recent activity</p>
+          <span className="flex items-center gap-1.5 text-[10.5px] font-medium text-emerald-600">
             <span className="relative flex h-1.5 w-1.5">
-              <span className="absolute h-full w-full animate-ping rounded-full bg-amber-400 opacity-60 motion-reduce:hidden" />
-              <span className="relative h-1.5 w-1.5 rounded-full bg-amber-400" />
+              <span className="absolute h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60 motion-reduce:hidden" />
+              <span className="relative h-1.5 w-1.5 rounded-full bg-emerald-400" />
             </span>
             live
           </span>
@@ -285,13 +299,13 @@ export default function DemoDashboard({ running }: { running: boolean }) {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 10 }}
                 transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                className="flex items-center justify-between rounded-md px-2 py-2 transition-colors duration-200 hover:bg-amber-400/5"
+                className="flex items-center justify-between rounded-md px-2 py-2 transition-colors duration-200 hover:bg-zinc-50"
               >
-                <span className="flex items-center gap-2 text-[12.5px] text-muted-foreground">
+                <span className="flex items-center gap-2 text-[12.5px] text-zinc-600">
                   <span className={cn('h-1.5 w-1.5 shrink-0 rounded-full', item.dot)} />
                   {item.text}
                 </span>
-                <span className="ml-3 shrink-0 font-mono text-[11px] tabular-nums text-faint">{item.meta}</span>
+                <span className="ml-3 shrink-0 text-[11px] tabular-nums text-zinc-400">{item.meta}</span>
               </motion.li>
             ))}
           </AnimatePresence>

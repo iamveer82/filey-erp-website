@@ -70,13 +70,13 @@ function DealCardBody({ deal, lifted = false }: { deal: Deal; lifted?: boolean }
         'rounded-lg border p-3',
         lifted
           ? 'rotate-[1.5deg] scale-[1.04] border-amber-400/40 bg-ink-800 shadow-[0_18px_50px_-10px_rgba(0,0,0,0.8)]'
-          : 'border-ink-700 bg-ink-850 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]',
+          : 'border-zinc-200 bg-white shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]',
       )}
     >
-      <p className="text-[13px] font-semibold leading-tight text-fg">{deal.company}</p>
+      <p className="text-[13px] font-semibold leading-tight text-zinc-900">{deal.company}</p>
       <div className="mt-2 flex items-center justify-between gap-2">
-        <span className="font-mono text-[12px] tabular-nums text-amber-400">{fmtAED(deal.value)}</span>
-        <span className="rounded-full border border-ink-600 px-2 py-px font-mono text-[9px] uppercase tracking-[0.1em] text-faint">
+        <span className="text-[12px] tabular-nums text-amber-400">{fmtAED(deal.value)}</span>
+        <span className="rounded-full border border-ink-600 px-2 py-px text-[9px] uppercase tracking-[0.1em] text-zinc-400">
           {deal.tag}
         </span>
       </div>
@@ -128,18 +128,18 @@ function StageColumn({ stage, deals, isTarget, pulseKey }: ColumnProps) {
     <div
       ref={setNodeRef}
       className={cn(
-        'relative flex min-h-[300px] min-w-[260px] snap-start flex-col rounded-xl border bg-ink-900/50 p-2.5 transition-colors duration-200 lg:min-w-0',
-        isTarget ? 'border-amber-400/50 bg-amber-400/[0.03]' : 'border-ink-700/70',
+        'relative flex min-h-[300px] min-w-[260px] snap-start flex-col rounded-xl border bg-white/50 p-2.5 transition-colors duration-200 lg:min-w-0',
+        isTarget ? 'border-amber-400/50 bg-amber-400/[0.03]' : 'border-zinc-200',
       )}
     >
       {/* header: name + count + live total */}
       <div className="flex items-center gap-2 px-1 pb-2.5">
         <span className="h-2 w-2 rounded-full" style={{ background: stage.color }} />
-        <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-muted-foreground">{stage.label}</span>
-        <span className="rounded-full border border-ink-600 px-1.5 py-px font-mono text-[10px] tabular-nums text-faint">
+        <span className="text-[11px] uppercase tracking-[0.12em] text-zinc-400">{stage.label}</span>
+        <span className="rounded-full border border-ink-600 px-1.5 py-px text-[10px] tabular-nums text-zinc-400">
           {deals.length}
         </span>
-        <span className="ml-auto font-mono text-[11px] font-medium tabular-nums text-fg">
+        <span className="ml-auto text-[11px] font-medium tabular-nums text-zinc-900">
           <TweenNumber value={total} format={fmtAED} />
         </span>
       </div>
@@ -161,7 +161,7 @@ function StageColumn({ stage, deals, isTarget, pulseKey }: ColumnProps) {
             ))}
           </AnimatePresence>
           {deals.length === 0 && (
-            <div className="flex flex-1 items-center justify-center rounded-lg border border-dashed border-ink-600/70 py-8 font-mono text-[10px] uppercase tracking-[0.12em] text-faint">
+            <div className="flex flex-1 items-center justify-center rounded-lg border border-dashed border-ink-600/70 py-8 text-[10px] uppercase tracking-[0.12em] text-zinc-400">
               Drop deals here
             </div>
           )}
@@ -264,7 +264,7 @@ export default function DemoCrm() {
         </DragOverlay>
       </DndContext>
 
-      <p className="mt-3 text-center font-mono text-[11px] text-faint">
+      <p className="mt-3 text-center text-[11px] text-zinc-400">
         In the app, every move is logged to the customer timeline — try dragging a deal to Won.
       </p>
     </div>

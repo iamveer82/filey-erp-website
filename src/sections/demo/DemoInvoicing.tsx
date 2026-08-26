@@ -69,16 +69,16 @@ function InvoicePaper({ template, customer, lines, subtotal, discountPct, discou
     <>
       <div className="flex items-center justify-between py-1">
         <span className={cn('text-[10.5px]', navy ? 'opacity-70' : 'opacity-60')}>Subtotal</span>
-        <span className="font-mono text-[11px] tabular-nums"><PopNumber value={fmtNum2(subtotal)} /></span>
+        <span className="text-[11px] tabular-nums"><PopNumber value={fmtNum2(subtotal)} /></span>
       </div>
       <div className="flex items-center justify-between py-1">
         <span className={cn('text-[10.5px]', navy ? 'opacity-70' : 'opacity-60')}>Discount ({discountPct}%)</span>
-        <span className="font-mono text-[11px] tabular-nums">−<PopNumber value={fmtNum2(discount)} /></span>
+        <span className="text-[11px] tabular-nums">−<PopNumber value={fmtNum2(discount)} /></span>
       </div>
       {vatOn && (
         <div className="flex items-center justify-between py-1">
           <span className={cn('text-[10.5px]', navy ? 'opacity-70' : 'opacity-60')}>VAT 5%</span>
-          <span className="font-mono text-[11px] tabular-nums"><PopNumber value={fmtNum2(vat)} /></span>
+          <span className="text-[11px] tabular-nums"><PopNumber value={fmtNum2(vat)} /></span>
         </div>
       )}
     </>
@@ -98,9 +98,9 @@ function InvoicePaper({ template, customer, lines, subtotal, discountPct, discou
         {lines.map((l) => (
           <tr key={l.id} className={cn('border-b', navy ? 'border-black/10' : mint ? 'border-[#0E9F6E]/15' : 'border-paper-ink/10')}>
             <td className="py-1.5 pr-2 text-[11px] leading-tight">{l.name}</td>
-            <td className="py-1.5 pr-2 text-right font-mono text-[11px] tabular-nums">{l.qty}</td>
-            <td className="py-1.5 pr-2 text-right font-mono text-[11px] tabular-nums">{fmtInt(priceOf(l.name))}</td>
-            <td className="py-1.5 text-right font-mono text-[11px] tabular-nums">{fmtInt(priceOf(l.name) * l.qty)}</td>
+            <td className="py-1.5 pr-2 text-right text-[11px] tabular-nums">{l.qty}</td>
+            <td className="py-1.5 pr-2 text-right text-[11px] tabular-nums">{fmtInt(priceOf(l.name))}</td>
+            <td className="py-1.5 text-right text-[11px] tabular-nums">{fmtInt(priceOf(l.name) * l.qty)}</td>
           </tr>
         ))}
       </tbody>
@@ -127,7 +127,7 @@ function InvoicePaper({ template, customer, lines, subtotal, discountPct, discou
             </div>
             <div className="text-right">
               <p className="text-[13px] font-bold tracking-[0.14em]">{INVOICE_META.title}</p>
-              <p className="mt-0.5 font-mono text-[9.5px] opacity-75">
+              <p className="mt-0.5 text-[9.5px] opacity-75">
                 {INVOICE_META.number} · {INVOICE_META.date}
               </p>
             </div>
@@ -145,8 +145,8 @@ function InvoicePaper({ template, customer, lines, subtotal, discountPct, discou
           </div>
           <div className="text-right">
             <p className={cn('text-[13px] font-bold tracking-[0.14em]', mint && 'text-[#0E9F6E]')}>{INVOICE_META.title}</p>
-            <p className="mt-0.5 font-mono text-[9.5px] opacity-60">{INVOICE_META.number}</p>
-            <p className="font-mono text-[9.5px] opacity-60">{INVOICE_META.date}</p>
+            <p className="mt-0.5 text-[9.5px] opacity-60">{INVOICE_META.number}</p>
+            <p className="text-[9.5px] opacity-60">{INVOICE_META.date}</p>
           </div>
         </div>
       )}
@@ -170,7 +170,7 @@ function InvoicePaper({ template, customer, lines, subtotal, discountPct, discou
             <div className="mt-2 flex justify-end">
               <div className="flex items-center gap-3 rounded-full bg-[#0E9F6E]/10 px-4 py-1.5">
                 <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#0E9F6E]">Total</span>
-                <span className="font-mono text-[14px] font-semibold tabular-nums text-[#0E9F6E]">
+                <span className="text-[14px] font-semibold tabular-nums text-[#0E9F6E]">
                   <PopNumber value={fmtAED2(total)} />
                 </span>
               </div>
@@ -183,7 +183,7 @@ function InvoicePaper({ template, customer, lines, subtotal, discountPct, discou
               <span className="text-[10.5px] font-semibold uppercase tracking-[0.14em]" style={{ color: accent }}>
                 Total
               </span>
-              <span className="font-mono text-[14px] font-bold tabular-nums" style={{ color: accent }}>
+              <span className="text-[14px] font-bold tabular-nums" style={{ color: accent }}>
                 <PopNumber value={fmtAED2(total)} />
               </span>
             </div>
@@ -228,16 +228,16 @@ export default function DemoInvoicing() {
   return (
     <div className="grid grid-cols-1 gap-4 lg:grid-cols-[380px_1fr]">
       {/* ------------------------------ left: controls ------------------------------ */}
-      <div className="rounded-xl border border-ink-700/70 bg-ink-900/60 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+      <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
         {/* customer */}
-        <label className="font-mono text-[10px] uppercase tracking-[0.12em] text-faint" htmlFor="inv-customer">
+        <label className="text-[10px] uppercase tracking-[0.12em] text-zinc-400" htmlFor="inv-customer">
           Customer
         </label>
         <Select value={customer} onValueChange={setCustomer}>
-          <SelectTrigger id="inv-customer" className="mt-1.5 w-full border-ink-600 bg-ink-850 text-[13px] text-fg">
+          <SelectTrigger id="inv-customer" className="mt-1.5 w-full border-ink-600 bg-white text-[13px] text-zinc-900">
             <SelectValue />
           </SelectTrigger>
-          <SelectContent className="border-ink-600 bg-ink-800 text-fg">
+          <SelectContent className="border-ink-600 bg-ink-800 text-zinc-900">
             {CUSTOMERS.map((c) => (
               <SelectItem key={c} value={c} className="text-[13px]">
                 {c}
@@ -248,8 +248,8 @@ export default function DemoInvoicing() {
 
         {/* line items editor */}
         <div className="mt-4 flex items-center justify-between">
-          <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-faint">Line items</p>
-          <span className="font-mono text-[10px] text-faint">{lines.length} / {CATALOG.length}</span>
+          <p className="text-[10px] uppercase tracking-[0.12em] text-zinc-400">Line items</p>
+          <span className="text-[10px] text-zinc-400">{lines.length} / {CATALOG.length}</span>
         </div>
         <div className="mt-1.5 space-y-2">
           <AnimatePresence initial={false}>
@@ -266,11 +266,11 @@ export default function DemoInvoicing() {
                 <Select value={l.name} onValueChange={(name) => updateLine(l.id, { name })}>
                   <SelectTrigger
                     aria-label="Item"
-                    className="h-8 min-w-0 flex-1 border-ink-600 bg-ink-850 px-2 text-[12px] text-fg [&_span]:truncate"
+                    className="h-8 min-w-0 flex-1 border-ink-600 bg-white px-2 text-[12px] text-zinc-900 [&_span]:truncate"
                   >
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="border-ink-600 bg-ink-800 text-fg">
+                  <SelectContent className="border-ink-600 bg-ink-800 text-zinc-900">
                     {CATALOG.map((c) => (
                       <SelectItem key={c.name} value={c.name} className="text-[12px]">
                         {c.name} — {fmtInt(c.price)}
@@ -283,21 +283,21 @@ export default function DemoInvoicing() {
                     type="button"
                     aria-label="Decrease quantity"
                     onClick={() => updateLine(l.id, { qty: Math.max(1, l.qty - 1) })}
-                    className="flex h-8 w-6 items-center justify-center text-faint transition-colors hover:text-fg"
+                    className="flex h-8 w-6 items-center justify-center text-zinc-400 transition-colors hover:text-zinc-900"
                   >
                     <Minus className="h-3 w-3" />
                   </button>
-                  <span className="w-5 text-center font-mono text-[12px] tabular-nums text-fg">{l.qty}</span>
+                  <span className="w-5 text-center text-[12px] tabular-nums text-zinc-900">{l.qty}</span>
                   <button
                     type="button"
                     aria-label="Increase quantity"
                     onClick={() => updateLine(l.id, { qty: Math.min(99, l.qty + 1) })}
-                    className="flex h-8 w-6 items-center justify-center text-faint transition-colors hover:text-fg"
+                    className="flex h-8 w-6 items-center justify-center text-zinc-400 transition-colors hover:text-zinc-900"
                   >
                     <Plus className="h-3 w-3" />
                   </button>
                 </div>
-                <span className="hidden w-14 shrink-0 text-right font-mono text-[11px] tabular-nums text-muted-foreground sm:inline">
+                <span className="hidden w-14 shrink-0 text-right text-[11px] tabular-nums text-zinc-400 sm:inline">
                   {fmtInt(priceOf(l.name))}
                 </span>
                 <button
@@ -305,7 +305,7 @@ export default function DemoInvoicing() {
                   aria-label={`Remove ${l.name}`}
                   disabled={lines.length <= 1}
                   onClick={() => setLines((prev) => prev.filter((x) => x.id !== l.id))}
-                  className="flex h-8 w-6 shrink-0 items-center justify-center rounded-md text-faint transition-colors hover:text-rose-400 disabled:pointer-events-none disabled:opacity-30"
+                  className="flex h-8 w-6 shrink-0 items-center justify-center rounded-md text-zinc-400 transition-colors hover:text-rose-400 disabled:pointer-events-none disabled:opacity-30"
                 >
                   <X className="h-3.5 w-3.5" />
                 </button>
@@ -317,17 +317,17 @@ export default function DemoInvoicing() {
           type="button"
           onClick={addLine}
           disabled={lines.length >= CATALOG.length}
-          className="mt-2 flex h-8 w-full items-center justify-center gap-1.5 rounded-md border border-dashed border-ink-600 font-mono text-[11px] text-muted-foreground transition-colors duration-200 hover:border-amber-400/50 hover:text-amber-400 disabled:pointer-events-none disabled:opacity-40"
+          className="mt-2 flex h-8 w-full items-center justify-center gap-1.5 rounded-md border border-dashed border-ink-600 text-[11px] text-zinc-400 transition-colors duration-200 hover:border-amber-400/50 hover:text-amber-400 disabled:pointer-events-none disabled:opacity-40"
         >
           <Plus className="h-3.5 w-3.5" /> Add line
         </button>
 
         {/* discount */}
         <div className="mt-4 flex items-center justify-between">
-          <label className="font-mono text-[10px] uppercase tracking-[0.12em] text-faint" htmlFor="inv-discount">
+          <label className="text-[10px] uppercase tracking-[0.12em] text-zinc-400" htmlFor="inv-discount">
             Discount
           </label>
-          <span className="font-mono text-[11px] tabular-nums text-amber-400">{discountPct}%</span>
+          <span className="text-[11px] tabular-nums text-amber-400">{discountPct}%</span>
         </div>
         <Slider
           id="inv-discount"
@@ -340,15 +340,15 @@ export default function DemoInvoicing() {
         />
 
         {/* VAT switch */}
-        <div className="mt-4 flex items-center justify-between rounded-lg border border-ink-700/70 bg-ink-850 px-3 py-2.5">
-          <label className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground" htmlFor="inv-vat">
+        <div className="mt-4 flex items-center justify-between rounded-lg border border-zinc-200 bg-white px-3 py-2.5">
+          <label className="text-[10px] uppercase tracking-[0.12em] text-zinc-400" htmlFor="inv-vat">
             VAT 5% (FTA)
           </label>
           <Switch id="inv-vat" checked={vatOn} onCheckedChange={setVatOn} />
         </div>
 
         {/* template swatches */}
-        <p className="mt-4 font-mono text-[10px] uppercase tracking-[0.12em] text-faint">Template</p>
+        <p className="mt-4 text-[10px] uppercase tracking-[0.12em] text-zinc-400">Template</p>
         <div className="mt-1.5 grid grid-cols-3 gap-2" role="radiogroup" aria-label="Invoice template">
           {INVOICE_TEMPLATES.map((t) => (
             <button
@@ -372,32 +372,32 @@ export default function DemoInvoicing() {
                 <span className="mx-1 mt-1 h-px w-2/3 bg-paper-ink/30" />
                 <span className="mx-1 mt-auto mb-1 h-1 w-1/2 rounded-full" style={{ background: t.id === 'mono' ? '#1A2330' : t.accent }} />
               </span>
-              <span className={cn('font-mono text-[9.5px] leading-none', template === t.id ? 'text-amber-400' : 'text-faint')}>
+              <span className={cn('text-[9.5px] leading-none', template === t.id ? 'text-amber-400' : 'text-zinc-400')}>
                 {t.name}
               </span>
             </button>
           ))}
         </div>
-        <p className="mt-1.5 text-center font-mono text-[10px] text-faint">3 of 10 templates in the app</p>
+        <p className="mt-1.5 text-center text-[10px] text-zinc-400">3 of 10 templates in the app</p>
 
         {/* live totals */}
-        <div className="mt-4 rounded-lg border border-ink-700/70 bg-ink-850 p-3">
+        <div className="mt-4 rounded-lg border border-zinc-200 bg-white p-3">
           <div className="flex items-center justify-between py-0.5 text-[12px]">
-            <span className="text-muted-foreground">Subtotal</span>
-            <span className="font-mono tabular-nums text-fg"><PopNumber value={fmtAED2(totals.subtotal)} /></span>
+            <span className="text-zinc-400">Subtotal</span>
+            <span className="tabular-nums text-zinc-900"><PopNumber value={fmtAED2(totals.subtotal)} /></span>
           </div>
           <div className="flex items-center justify-between py-0.5 text-[12px]">
-            <span className="text-muted-foreground">Discount ({discountPct}%)</span>
-            <span className="font-mono tabular-nums text-fg">−<PopNumber value={fmtAED2(totals.discount)} /></span>
+            <span className="text-zinc-400">Discount ({discountPct}%)</span>
+            <span className="tabular-nums text-zinc-900">−<PopNumber value={fmtAED2(totals.discount)} /></span>
           </div>
           <div className={cn('flex items-center justify-between py-0.5 text-[12px]', !vatOn && 'opacity-40')}>
-            <span className="text-muted-foreground">VAT 5%</span>
-            <span className="font-mono tabular-nums text-fg"><PopNumber value={fmtAED2(totals.vat)} /></span>
+            <span className="text-zinc-400">VAT 5%</span>
+            <span className="tabular-nums text-zinc-900"><PopNumber value={fmtAED2(totals.vat)} /></span>
           </div>
           <div className="my-1.5 h-px bg-ink-700" />
           <div className="flex items-center justify-between">
-            <span className="text-[12px] font-semibold text-fg">Total</span>
-            <span className="font-mono text-[20px] font-semibold tabular-nums text-amber-400">
+            <span className="text-[12px] font-semibold text-zinc-900">Total</span>
+            <span className="text-[20px] font-semibold tabular-nums text-amber-400">
               <PopNumber value={fmtAED2(totals.total)} />
             </span>
           </div>
@@ -415,7 +415,7 @@ export default function DemoInvoicing() {
           <button
             type="button"
             onClick={pdfToast}
-            className="inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-ink-600 px-4 text-[13.5px] font-semibold text-fg transition-colors duration-200 hover:border-amber-400/50 hover:bg-amber-400/5 active:scale-[0.98]"
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-ink-600 px-4 text-[13.5px] font-semibold text-zinc-900 transition-colors duration-200 hover:border-amber-400/50 hover:bg-amber-400/5 active:scale-[0.98]"
           >
             <Printer className="h-4 w-4" /> Print
           </button>
@@ -423,7 +423,7 @@ export default function DemoInvoicing() {
       </div>
 
       {/* ------------------------------ right: live paper ------------------------------ */}
-      <div className="flex items-start justify-center rounded-xl border border-ink-700/40 bg-ink-900/30 p-4 lg:p-6" style={{ perspective: '1200px' }}>
+      <div className="flex items-start justify-center rounded-xl border border-zinc-200/40 bg-white/30 p-4 lg:p-6" style={{ perspective: '1200px' }}>
         <motion.div
           key={template}
           initial={{ rotateY: -90, opacity: 0.3 }}
