@@ -11,15 +11,20 @@ export const ROADMAP_URL = `${REPO_URL}/blob/main/ROADMAP.md`
 // condition this comment set has been met: derive it from
 // releases/latest/download/latest.json (the updater manifest, already public
 // and always current) instead of trusting anyone to remember this line.
-export const APP_VERSION = '2.9.0'
+export const APP_VERSION = '2.10.0'
 export const RELEASE_TAG = `v${APP_VERSION}`
 export const RELEASE_CODENAME = 'Latest'
 
+// GitHub replaces spaces in an asset's filename with dots on upload, which is
+// why these read "Filey.ERP" while the bundler emits "Filey ERP".
 const DL = `${RELEASES_URL}/download/${RELEASE_TAG}`
 export const DOWNLOAD_URLS = {
   windowsExe: `${DL}/Filey.ERP_${APP_VERSION}_x64-setup.exe`,
   windowsMsi: `${DL}/Filey.ERP_${APP_VERSION}_x64_en-US.msi`,
-  linuxAppImage: `${DL}/Filey.ERP_${APP_VERSION}_amd64.AppImage`,
+  // No AppImage. It is the one Linux format that has never built — linuxdeploy
+  // fails in CI and the release carries deb and rpm only. A linuxAppImage entry
+  // lived here pointing at a file that never existed once, 404ing for every
+  // Linux visitor; don't re-add one without checking the release first.
   linuxDeb: `${DL}/Filey.ERP_${APP_VERSION}_amd64.deb`,
   linuxRpm: `${DL}/Filey.ERP-${APP_VERSION}-1.x86_64.rpm`,
 } as const
@@ -32,7 +37,7 @@ export function downloadUrlForOS(os: OS): string {
     case 'windows':
       return DOWNLOAD_URLS.windowsExe
     case 'linux':
-      return DOWNLOAD_URLS.linuxAppImage
+      return DOWNLOAD_URLS.linuxDeb
     case 'macos':
       return RELEASES_URL
   }

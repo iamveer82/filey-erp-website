@@ -1,4 +1,4 @@
-import { Bot, FileText, MessageCircle, Mic, Sparkles } from 'lucide-react'
+import { FileText, MessageCircle, Mic, Sparkles } from 'lucide-react'
 import Reveal from '@/components/Reveal'
 import FileyBot from '@/components/FileyBot'
 import { cn } from '@/lib/utils'
