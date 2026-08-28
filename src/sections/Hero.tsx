@@ -14,7 +14,7 @@ import {
   ShoppingCart,
   Users,
 } from 'lucide-react'
-import { downloadUrlForOS } from '@/lib/constants'
+import { installerForOS, useLatestRelease } from '@/lib/useLatestRelease'
 import { detectOS } from '@/lib/os'
 import { cn } from '@/lib/utils'
 
@@ -155,6 +155,7 @@ function AppPreview() {
 
 export default function Hero() {
   const os = detectOS()
+  const release = useLatestRelease()
   const reduced = useReducedMotion()
   const previewRef = useRef<HTMLDivElement>(null)
   const [tilt, setTilt] = useState({ x: 0, y: 0 })
@@ -203,7 +204,7 @@ export default function Hero() {
         <Reveal delay={0.2}>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             <a
-              href={downloadUrlForOS(os)}
+              href={installerForOS(release, os)}
               target="_blank"
               rel="noopener noreferrer"
               className="btn-primary"

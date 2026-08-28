@@ -6,8 +6,9 @@ import { toast } from 'sonner'
 import TerminalCard from '@/components/TerminalCard'
 import Reveal from '@/components/Reveal'
 import { gsap, prefersReducedMotion } from '@/lib/scroll'
-import { DOWNLOAD_URLS, REPO_URL } from '@/lib/constants'
+import { REPO_URL } from '@/lib/constants'
 import type { OS } from '@/lib/constants'
+import { useLatestRelease } from '@/lib/useLatestRelease'
 import { detectOS } from '@/lib/os'
 import { cn } from '@/lib/utils'
 
@@ -28,7 +29,9 @@ function PrimaryDownloadLink({ href, label, size }: { href: string; label: strin
       className="dl-primary btn-gradient inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg px-4 text-sm font-semibold text-[#1A1206] transition-all duration-200 active:scale-[0.98]"
     >
       <DownloadIcon className="h-4 w-4" />
-      {label} — {size}
+      {/* size is blank until the releases API answers — show the label alone
+          rather than a stale or invented number */}
+      {size ? `${label} — ${size}` : label}
     </a>
   )
 }
@@ -56,7 +59,8 @@ function GhostDownloadLink({
         className,
       )}
     >
-      {label} <span className="font-mono text-xs font-normal text-zinc-400">— {size}</span>
+      {label}
+      {size && <span className="font-mono text-xs font-normal text-zinc-400">— {size}</span>}
     </a>
   )
 }
@@ -115,6 +119,7 @@ function OsCardShell({ os, recommended, icon, name, caption, children, className
 
 export default function Download() {
   const [recommended] = useState<OS>(() => detectOS())
+  const release = useLatestRelease()
   const sectionRef = useRef<HTMLElement>(null)
 
   useGSAP(
@@ -183,8 +188,16 @@ export default function Download() {
             name="Windows"
             caption="Windows 10 / 11 · 64-bit"
           >
-            <PrimaryDownloadLink href={DOWNLOAD_URLS.windowsExe} label="Installer (.exe)" size="44.7 MB" />
-            <GhostDownloadLink href={DOWNLOAD_URLS.windowsMsi} label="MSI package" size="59.3 MB" />
+            <PrimaryDownloadLink
+              href={release.windowsExe.url}
+              label="Installer (.exe)"
+              size={release.windowsExe.size}
+            />
+            <GhostDownloadLink
+              href={release.windowsMsi.url}
+              label="MSI package"
+              size={release.windowsMsi.size}
+            />
           </OsCardShell>
 
           {/* Linux */}
@@ -195,41 +208,70 @@ export default function Download() {
             name="Linux"
             caption="Debian / Ubuntu · Fedora / RHEL · 64-bit"
           >
-            <PrimaryDownloadLink href={DOWNLOAD_URLS.linuxDeb} label="Debian package (.deb)" size="61.2 MB" />
-            <GhostDownloadLink href={DOWNLOAD_URLS.linuxRpm} label="RPM package" size="61.2 MB" />
+            <PrimaryDownloadLink
+              href={release.linuxDeb.url}
+              label="Debian package (.deb)"
+              size={release.linuxDeb.size}
+            />
+            <GhostDownloadLink
+              href={release.linuxRpm.url}
+              label="RPM package"
+              size={release.linuxRpm.size}
+            />
           </OsCardShell>
 
-          {/* macOS — build from source */}
+          {/* macOS — a real .dmg once one is published, build-from-source until
+              then. Driven by the release itself rather than by someone
+              remembering to swap this card over. */}
           <OsCardShell
             os="macos"
             recommended={recommended}
             icon={<Command className="h-5 w-5" />}
             name="macOS"
-            caption="Apple Silicon & Intel — build from source"
+            caption={release.macDmg ? 'Apple Silicon · 64-bit' : 'Apple Silicon & Intel — build from source'}
           >
-            <p className="text-sm leading-relaxed text-zinc-600">
-              Signed macOS builds are on the roadmap. Today, build your own in ~5 minutes with the
-              Tauri toolchain:
-            </p>
-            <TerminalCard
-              title="zsh"
-              lines={[
-                { text: 'git clone https://github.com/iamveer82/Filey-erp.git' },
-                { text: 'npm ci' },
-                { text: 'npm run tauri build' },
-              ]}
-            />
-            <a
-              href={REPO_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group inline-flex items-center gap-1.5 self-start font-mono text-[13px] text-zinc-600 transition-colors duration-200 hover:text-amber-600"
-            >
-              Open the repo
-              <span aria-hidden className="transition-transform duration-200 group-hover:translate-x-1">
-                →
-              </span>
-            </a>
+            {release.macDmg ? (
+              <>
+                <PrimaryDownloadLink
+                  href={release.macDmg.url}
+                  label="Disk image (.dmg)"
+                  size={release.macDmg.size}
+                />
+                {/* The build is unsigned — no Apple Developer cert exists yet — so
+                    Gatekeeper blocks a plain double-click. Say so here rather than
+                    let it read as a broken download. */}
+                <p className="text-sm leading-relaxed text-zinc-600">
+                  Not yet notarised: on first launch, right-click the app and choose{' '}
+                  <span className="font-medium text-zinc-900">Open</span> to get past Gatekeeper.
+                </p>
+              </>
+            ) : (
+              <>
+                <p className="text-sm leading-relaxed text-zinc-600">
+                  Signed macOS builds are on the roadmap. Today, build your own in ~5 minutes with the
+                  Tauri toolchain:
+                </p>
+                <TerminalCard
+                  title="zsh"
+                  lines={[
+                    { text: 'git clone https://github.com/iamveer82/Filey-erp.git' },
+                    { text: 'npm ci' },
+                    { text: 'npm run tauri build' },
+                  ]}
+                />
+                <a
+                  href={REPO_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group inline-flex items-center gap-1.5 self-start font-mono text-[13px] text-zinc-600 transition-colors duration-200 hover:text-amber-600"
+                >
+                  Open the repo
+                  <span aria-hidden className="transition-transform duration-200 group-hover:translate-x-1">
+                    →
+                  </span>
+                </a>
+              </>
+            )}
           </OsCardShell>
         </div>
       </div>

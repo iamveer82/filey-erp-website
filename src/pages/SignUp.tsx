@@ -13,7 +13,8 @@ import {
 } from 'lucide-react'
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp'
 import { MIN_PASSWORD, RESEND_COOLDOWN, resendOtp, signUp, verifyOtp } from '@/lib/signup'
-import { REPO_URL, downloadUrlForOS, osLabel } from '@/lib/constants'
+import { REPO_URL, osLabel } from '@/lib/constants'
+import { installerForOS, useLatestRelease } from '@/lib/useLatestRelease'
 import { detectOS } from '@/lib/os'
 
 /* The desktop app's auth screen, rebuilt for the web: one centred card on a
@@ -70,6 +71,7 @@ export default function SignUp() {
   const [cooldown, setCooldown] = useState(0)
 
   const os = detectOS()
+  const release = useLatestRelease()
 
   useEffect(() => {
     if (cooldown <= 0) return
@@ -298,7 +300,7 @@ export default function SignUp() {
                 </p>
               </div>
               <a
-                href={downloadUrlForOS(os)}
+                href={installerForOS(release, os)}
                 className="btn-gradient flex h-11 w-full items-center justify-center gap-2 rounded-lg text-sm font-semibold text-[#1A1206] transition-all duration-200 active:scale-[0.98]"
               >
                 <Download className="h-[18px] w-[18px]" />

@@ -31,17 +31,11 @@ export const DOWNLOAD_URLS = {
 
 export type OS = 'windows' | 'macos' | 'linux'
 
-/** Recommended download target per OS: direct installer on Win/Linux, releases page on macOS. */
-export function downloadUrlForOS(os: OS): string {
-  switch (os) {
-    case 'windows':
-      return DOWNLOAD_URLS.windowsExe
-    case 'linux':
-      return DOWNLOAD_URLS.linuxDeb
-    case 'macos':
-      return RELEASES_URL
-  }
-}
+/* downloadUrlForOS lived here and returned a link built from the pinned
+ * APP_VERSION above. That is the mechanism that drifted, so it is gone rather
+ * than fixed — use installerForOS() from useLatestRelease, which reads the
+ * actual published release. The constants below it are the offline fallback
+ * for that hook, not something to link to directly. */
 
 export function osLabel(os: OS): string {
   switch (os) {
