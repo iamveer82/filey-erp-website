@@ -4,6 +4,8 @@ import { useLayoutEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { ArrowDown, ArrowRight, Boxes, ChartNoAxesCombined, FileText, Sparkles, UsersRound } from 'lucide-react'
+import type { HeroScene } from './HeroScene'
+import type { HeroSceneMode } from './heroSceneMotion'
 import './Hero.css'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -43,6 +45,52 @@ export default function Hero() {
     const section = root.current
     if (!section) return
     const media = gsap.matchMedia()
+    const enhance = (timeline: gsap.core.Timeline, mode: HeroSceneMode) => {
+      const host = section.querySelector<HTMLElement>('.hero-story__canvas')!
+      const logo = section.querySelector<HTMLImageElement>('.hero-story__logo img')!
+      let scene: HeroScene | undefined
+      let stopped = false
+      let started = false
+      let timer = 0
+      let idle = 0
+      const fallback = () => {
+        section.classList.remove('hero-story--3d')
+        host.dataset.state = 'fallback'
+        scene?.dispose()
+        scene = undefined
+      }
+      const load = async () => {
+        try {
+          const [module] = await Promise.all([import('./HeroScene'), logo.decode(), document.fonts.ready])
+          if (stopped) return
+          scene = module.createHeroScene(host, logo, features, mode, timeline.progress(), fallback)
+          section.classList.add('hero-story--3d')
+          host.dataset.state = 'ready'
+        } catch { if (!stopped) fallback() }
+      }
+      timeline.eventCallback('onUpdate', () => scene?.update(timeline.progress()))
+      const observer = new IntersectionObserver(([entry]) => {
+        if (!entry.isIntersecting || started) return
+        started = true
+        host.dataset.state = 'loading'
+        // The logo and copy paint before the optional WebGL bundle is requested.
+        timer = window.setTimeout(() => {
+          if ('requestIdleCallback' in window) idle = window.requestIdleCallback(() => { void load() }, { timeout: 1000 })
+          else void load()
+        }, 250)
+      })
+      observer.observe(host)
+      return () => {
+        stopped = true
+        clearTimeout(timer)
+        if (idle) window.cancelIdleCallback(idle)
+        observer.disconnect()
+        timeline.eventCallback('onUpdate', null)
+        scene?.dispose()
+        section.classList.remove('hero-story--3d')
+        delete host.dataset.state
+      }
+    }
     const context = gsap.context(() => {
       media.add('(min-width: 1100px) and (min-height: 680px) and (prefers-reduced-motion: no-preference)', () => {
         const stage = section.querySelector<HTMLElement>('.hero-story__stage')!
@@ -85,7 +133,8 @@ export default function Hero() {
             rotation: position.rotation, scale: 1, duration: 0.6,
           }, 0.31 + index * 0.022)
         })
-        return () => { section.classList.remove('hero-story--animated') }
+        const stopScene = enhance(timeline, 'desktop')
+        return () => { stopScene(); section.classList.remove('hero-story--animated') }
       })
 
       media.add('(max-width: 1099px) and (min-height: 560px) and (prefers-reduced-motion: no-preference)', () => {
@@ -122,7 +171,8 @@ export default function Hero() {
           }, start)
         })
         timeline.to(sheets[sheets.length - 1], { x: 0, rotation: 0, duration: 0.5 }, 4.25)
-        return () => { section.classList.remove('hero-story--compact') }
+        const stopScene = enhance(timeline, 'compact')
+        return () => { stopScene(); section.classList.remove('hero-story--compact') }
       })
     }, section)
     return () => { media.revert(); context.revert() }
@@ -142,6 +192,7 @@ export default function Hero() {
           </div>
         </div>
         <div className="hero-story__visual">
+          <div className="hero-story__canvas" aria-hidden="true" />
           <div className="hero-story__logo">
             <img src="/filey-mark.png" width="512" height="512" fetchPriority="high" alt="Filey, a smiling yellow folder" />
           </div>

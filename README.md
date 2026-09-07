@@ -25,7 +25,7 @@ npm run lint
 node --test scripts/*.test.mjs
 ```
 
-The checks use Node's built-in test runner and the installed TypeScript compiler. They cover actual installer selection, partial releases, missing or malformed assets, rejection of download links outside the app's release repository, initial anchor navigation after signup, and registration controls while requests are in progress. They do not contact GitHub or create accounts.
+The checks use Node's built-in test runner and the installed TypeScript compiler. They cover installer selection and safe fallback URLs, anchor navigation, registration controls during pending requests, demo navigation, invoice totals and draft validation, chart reconciliation, CRM stages, stock movements, and the 3D paper positions. They do not contact GitHub or create accounts. The demo and scene tests import TypeScript directly, requiring Node 22.18 or newer.
 
 ## Structure
 
@@ -35,18 +35,18 @@ The site uses React 19, TypeScript and Vite 7. React Router serves `/`, `/signup
 - `src/components/Layout.tsx` supplies navigation, footer and progressive section reveals.
 - `src/site.css` defines the shared light/dark palette, typography, pill buttons and responsive layouts. `Hero.css`, `LiveDemo.css`, `Download.css` and `FreedomContact.css` handle their respective sections.
 - `src/sections/ProductStory.tsx` contains product, AI-example and next-update content, including the interactive demo.
-- `src/sections/LiveDemo.tsx` loads the default invoice preview with the page and lazily loads CRM, inventory and dashboard previews from `src/sections/demo/`. Keeping the first panel stable prevents later anchors from moving during load.
+- `src/sections/LiveDemo.tsx` supplies a desktop-style sidebar, section search and an internally scrolling workspace. It starts on Overview and connects its invoice actions to the invoice list/editor. The fixed workspace height prevents later page anchors from moving when lazy sections load.
 - `src/lib/useLatestRelease.ts` resolves published desktop installers. `src/lib/constants.ts` holds public project links.
 - `src/pages/SignUp.tsx` and `src/lib/signup.ts` implement email/password registration and email-code verification. Registration connects to Supabase; the demo does not.
 - `src/components/FreedomContact.tsx` sends an explicitly submitted enquiry to the existing `lead-contact` Supabase function. It is a contact flow, not an online checkout.
 
-The demo runs directly in the page with sample records. Invoice controls use native selects, radio buttons and a range input. Changes reset when switching demo sections; they are not saved to an ERP account. AI examples are illustrative and make no provider requests. PDF export and printing are app features; the preview links to the download section.
+The demos reproduce the current ERP working tree's Overview, Invoicing, CRM and Inventory layouts using sample records. The shared demo tokens and navigation follow the desktop app's `src/index.css` and `src/components/Layout.tsx`; individual screens follow their corresponding ERP page files. Changes reset when switching demo sections; they are not saved to an ERP account. The preview is labelled as the next desktop update, since public installers can have older screens. AI examples are illustrative and make no provider requests.
 
 ## Assets and motion
 
 The active website uses the committed `public/filey-mark.png` brand asset and self-hosted `public/inter-latin-variable.woff2`. Inter's copyright and SIL Open Font License are included in `public/inter-OFL.txt`. These assets do not need a generation step to build the site. Product previews, charts and document examples are rendered in code.
 
-Scrolling remains native. The hero uses GSAP ScrollTrigger to fan out five papers on large desktop viewports and reveal them sequentially on narrower screens at least 560px tall. Shorter viewports and visitors requesting reduced motion receive a readable static layout. Section reveals use IntersectionObserver; reduced-motion styles keep content visible and disable animation and smooth scrolling. The appearance toggle persists a preference locally and otherwise follows the system theme, including on signup.
+Scrolling remains native. GSAP ScrollTrigger drives five feature papers emerging from the folder, with a fan on large desktops and a sequential reveal on narrower screens at least 560px tall. A lazy Three.js scene adds curved papers, perspective and depth; its text textures use the same feature copy as the accessible HTML. Rendering is scheduled only when the scene changes and pauses offscreen. WebGL failure retains the HTML animation; short viewports and reduced motion use a readable static layout. Section reveals use IntersectionObserver. The appearance toggle persists a preference locally and otherwise follows the system theme, including on signup.
 
 ## Account configuration
 

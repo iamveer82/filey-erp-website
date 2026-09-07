@@ -1,378 +1,116 @@
-import { useMemo, useState } from 'react'
-import { ArrowRight, Minus, Plus, X } from 'lucide-react'
-import { Switch } from '@/components/ui/switch'
-import { CATALOG, CUSTOMERS, INVOICE_META, INVOICE_TEMPLATES, fmtAED2, fmtInt, fmtNum2 } from '@/sections/demo/data'
-import type { TemplateId } from '@/sections/demo/data'
-import { cn } from '@/lib/utils'
+import { useState, type ReactNode } from 'react'
+import { ArrowLeft, Check, Eye, FileText, Pencil, Plus, Save, Search, Trash2 } from 'lucide-react'
+import { DEMO_CATALOG, DEMO_CUSTOMERS, displayDate, invoiceSummary, invoiceTotals, money, newDraft, SAMPLE_INVOICES, saveSampleDraft, type InvoiceLine, type InvoiceStatus, type SampleInvoice } from './desktopFinanceData'
+import './DesktopFinance.css'
 
-/* --------------------------------- types --------------------------------- */
-
-interface LineItem {
-  id: string
-  name: string
-  qty: number
+function Step({ number, title, children }: { number: number; title: string; children: ReactNode }) {
+  return <section className="fd-invoice-step"><h4><span>{number}</span>{title}</h4>{children}</section>
 }
 
-const STARTER_LINES: LineItem[] = [
-  { id: 'l1', name: 'Pallet jack', qty: 1 },
-  { id: 'l2', name: 'Industrial shelving unit', qty: 2 },
-  { id: 'l3', name: 'Hex bolt M8 (box)', qty: 4 },
-]
-
-const priceOf = (name: string): number => CATALOG.find((c) => c.name === name)?.price ?? 0
-
-/* ------------------------------ invoice paper ---------------------------- */
-
-interface PaperProps {
-  template: TemplateId
-  customer: string
-  lines: LineItem[]
-  subtotal: number
-  discountPct: number
-  discount: number
-  vatOn: boolean
-  vat: number
-  total: number
+function InvoicePaper({ invoice }: { invoice: SampleInvoice }) {
+  const totals = invoiceTotals(invoice)
+  return <article className="fd-invoice-paper" data-template={invoice.template} aria-label={'Invoice preview ' + invoice.number}>
+    <div className="fd-paper-heading"><div><strong>FALCON TRADING LLC</strong><p>Dubai, United Arab Emirates</p><p>Sample company</p></div><div><h4>TAX INVOICE</h4><span>{invoice.number}</span></div></div>
+    <div className="fd-paper-address"><div><span>BILL TO</span><strong>{invoice.customer || 'Your customer'}</strong><p>United Arab Emirates</p></div><dl><div><dt>Invoice date</dt><dd>{invoice.date ? displayDate(invoice.date) : '—'}</dd></div><div><dt>Due date</dt><dd>{invoice.due ? displayDate(invoice.due) : '—'}</dd></div></dl></div>
+    <table><thead><tr><th>Description</th><th>Qty</th><th>Price</th><th>Amount</th></tr></thead><tbody>{invoice.lines.map(line => <tr key={line.id}><td>{line.description || 'Item description'}</td><td>{line.qty}</td><td>{line.rate.toFixed(2)}</td><td>{(line.qty * line.rate).toFixed(2)}</td></tr>)}</tbody></table>
+    <dl className="fd-paper-totals"><div><dt>Subtotal</dt><dd>{money(totals.subtotal)}</dd></div>{invoice.discount > 0 && <div><dt>Discount ({invoice.discount}%)</dt><dd>−{money(totals.discount)}</dd></div>}<div><dt>VAT ({invoice.tax}%)</dt><dd>{money(totals.tax)}</dd></div><div className="fd-paper-total"><dt>Total</dt><dd>{money(totals.total)}</dd></div></dl>
+    <footer><strong>Thank you for your business.</strong><p>This is a sample invoice preview.</p><span>Made with Filey</span></footer>
+  </article>
 }
 
-function InvoicePaper({ template, customer, lines, subtotal, discountPct, discount, vatOn, vat, total }: PaperProps) {
-  const navy = template === 'navy'
-  const mint = template === 'mint'
-  const mono = template === 'mono'
-  const accent = mint ? '#0E9F6E' : navy ? '#1E3A5F' : '#1A2330'
+export default function DemoInvoicing({ initialNew = false }: { initialNew?: boolean }) {
+  const [invoices, setInvoices] = useState<SampleInvoice[]>(SAMPLE_INVOICES)
+  const [form, setForm] = useState<SampleInvoice | null>(() => initialNew ? newDraft(SAMPLE_INVOICES) : null)
+  const [preview, setPreview] = useState<SampleInvoice | null>(null)
+  const [filter, setFilter] = useState<InvoiceStatus | 'all'>('all')
+  const [query, setQuery] = useState('')
+  const [notice, setNotice] = useState('')
+  const [error, setError] = useState('')
+  const summary = invoiceSummary(invoices)
+  const visible = invoices.filter(invoice => (filter === 'all' || invoice.status === filter) && (invoice.number + ' ' + invoice.customer).toLowerCase().includes(query.toLowerCase().trim()))
 
-  const totalRows = (
-    <>
-      <div className="flex items-center justify-between py-1">
-        <span className={cn('text-[10.5px]', navy ? 'opacity-70' : 'opacity-60')}>Subtotal</span>
-        <span className="text-[11px] tabular-nums">{fmtNum2(subtotal)}</span>
-      </div>
-      <div className="flex items-center justify-between py-1">
-        <span className={cn('text-[10.5px]', navy ? 'opacity-70' : 'opacity-60')}>Discount ({discountPct}%)</span>
-        <span className="text-[11px] tabular-nums">−{fmtNum2(discount)}</span>
-      </div>
-      {vatOn && (
-        <div className="flex items-center justify-between py-1">
-          <span className={cn('text-[10.5px]', navy ? 'opacity-70' : 'opacity-60')}>VAT 5%</span>
-          <span className="text-[11px] tabular-nums">{fmtNum2(vat)}</span>
-        </div>
-      )}
-    </>
-  )
-
-  const itemsTable = (
-    <table className="w-full text-left">
-      <thead>
-        <tr className={cn('border-b text-[9px] uppercase tracking-[0.12em]', navy ? 'border-black/20 opacity-60' : mint ? 'border-[#0E9F6E]/30 text-[#0E9F6E]' : 'border-paper-ink/30 opacity-60')}>
-          <th className="py-1.5 pr-2 font-medium">Item</th>
-          <th className="py-1.5 pr-2 text-right font-medium">Qty</th>
-          <th className="py-1.5 pr-2 text-right font-medium">Price</th>
-          <th className="py-1.5 text-right font-medium">Amount</th>
-        </tr>
-      </thead>
-      <tbody>
-        {lines.map((l) => (
-          <tr key={l.id} className={cn('border-b', navy ? 'border-black/10' : mint ? 'border-[#0E9F6E]/15' : 'border-paper-ink/10')}>
-            <td className="py-1.5 pr-2 text-[11px] leading-tight">{l.name}</td>
-            <td className="py-1.5 pr-2 text-right text-[11px] tabular-nums">{l.qty}</td>
-            <td className="py-1.5 pr-2 text-right text-[11px] tabular-nums">{fmtInt(priceOf(l.name))}</td>
-            <td className="py-1.5 text-right text-[11px] tabular-nums">{fmtInt(priceOf(l.name) * l.qty)}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  )
-
-  return (
-    <div
-      className={cn(
-        'flex h-full flex-col overflow-hidden',
-        mono && 'font-mono',
-        mint && 'border-l-4 border-[#0E9F6E]',
-      )}
-    >
-      {/* header */}
-      {navy ? (
-        <div className="bg-[#1E3A5F] px-5 py-4 text-white">
-          <div className="flex items-start justify-between gap-3">
-            <div>
-              <p className="text-[13px] font-semibold leading-tight">{INVOICE_META.company}</p>
-              <p className="mt-0.5 text-[9.5px] leading-relaxed opacity-75">
-                {INVOICE_META.city} · {INVOICE_META.trn}
-              </p>
-            </div>
-            <div className="text-right">
-              <p className="text-[13px] font-bold tracking-[0.14em]">{INVOICE_META.title}</p>
-              <p className="mt-0.5 text-[9.5px] opacity-75">
-                {INVOICE_META.number} · {INVOICE_META.date}
-              </p>
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div className="flex items-start justify-between gap-3 px-5 pt-5">
-          <div>
-            <p className={cn('text-[13px] font-semibold leading-tight', mint && 'text-[#0E9F6E]')}>{INVOICE_META.company}</p>
-            <p className="mt-0.5 text-[9.5px] leading-relaxed opacity-60">
-              {INVOICE_META.city}
-              <br />
-              {INVOICE_META.trn}
-            </p>
-          </div>
-          <div className="text-right">
-            <p className={cn('text-[13px] font-bold tracking-[0.14em]', mint && 'text-[#0E9F6E]')}>{INVOICE_META.title}</p>
-            <p className="mt-0.5 text-[9.5px] opacity-60">{INVOICE_META.number}</p>
-            <p className="text-[9.5px] opacity-60">{INVOICE_META.date}</p>
-          </div>
-        </div>
-      )}
-
-      {/* bill to */}
-      <div className="px-5 pt-3">
-        <p className={cn('text-[9px] uppercase tracking-[0.16em]', mint ? 'text-[#0E9F6E]' : 'opacity-50')}>Bill to</p>
-        <p className="mt-0.5 text-[12px] font-semibold leading-tight">{customer}</p>
-      </div>
-
-      {/* items (scroll-safe) */}
-      <div className="mx-5 mt-2 min-h-0 flex-1 overflow-y-auto border-b border-t py-1" style={{ borderColor: mint ? 'rgba(14,159,110,0.25)' : 'rgba(26,35,48,0.15)' }}>
-        {itemsTable}
-      </div>
-
-      {/* totals */}
-      <div className="px-5 pb-3 pt-2">
-        {mint ? (
-          <div>
-            <div className="ml-auto w-full max-w-[220px]">{totalRows}</div>
-            <div className="mt-2 flex justify-end">
-              <div className="flex items-center gap-3 rounded-full bg-[#0E9F6E]/10 px-4 py-1.5">
-                <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#0E9F6E]">Total</span>
-                <span className="text-[14px] font-semibold tabular-nums text-[#0E9F6E]">
-                  {fmtAED2(total)}
-                </span>
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div className={cn('ml-auto w-full max-w-[220px]', navy && 'text-right')}>
-            {totalRows}
-            <div className={cn('mt-1 flex items-center justify-between border-t pt-1.5', navy ? 'border-black/25' : 'border-paper-ink/30')}>
-              <span className="text-[10.5px] font-semibold uppercase tracking-[0.14em]" style={{ color: accent }}>
-                Total
-              </span>
-              <span className="text-[14px] font-bold tabular-nums" style={{ color: accent }}>
-                {fmtAED2(total)}
-              </span>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* footer */}
-      <p className={cn('px-5 pb-4 text-center text-[9.5px]', navy ? 'opacity-50' : 'opacity-45')}>{INVOICE_META.thanks}</p>
-    </div>
-  )
-}
-
-/* ------------------------------- main tab -------------------------------- */
-
-export default function DemoInvoicing() {
-  const [customer, setCustomer] = useState(CUSTOMERS[0])
-  const [lines, setLines] = useState<LineItem[]>(STARTER_LINES)
-  const [discountPct, setDiscountPct] = useState(5)
-  const [vatOn, setVatOn] = useState(true)
-  const [template, setTemplate] = useState<TemplateId>('mint')
-  const [lineSeq, setLineSeq] = useState(4)
-
-  const totals = useMemo(() => {
-    const subtotal = lines.reduce((s, l) => s + priceOf(l.name) * l.qty, 0)
-    const discount = (subtotal * discountPct) / 100
-    const vat = vatOn ? (subtotal - discount) * 0.05 : 0
-    return { subtotal, discount, vat, total: subtotal - discount + vat }
-  }, [lines, discountPct, vatOn])
-
-  const updateLine = (id: string, patch: Partial<LineItem>) =>
-    setLines((prev) => prev.map((l) => (l.id === id ? { ...l, ...patch } : l)))
-
-  const addLine = () => {
-    const unused = CATALOG.find((c) => !lines.some((l) => l.name === c.name)) ?? CATALOG[0]
-    setLines((prev) => [...prev, { id: `l${lineSeq}`, name: unused.name, qty: 1 }])
-    setLineSeq((s) => s + 1)
+  function edit(invoice: SampleInvoice) {
+    setForm({ ...invoice, lines: invoice.lines.map(line => ({ ...line })) })
+    setError('')
+    setNotice('')
+  }
+  function update(patch: Partial<SampleInvoice>) { setForm(previous => previous ? { ...previous, ...patch } : previous) }
+  function updateLine(id: number, patch: Partial<InvoiceLine>) {
+    if (form) update({ lines: form.lines.map(line => line.id === id ? { ...line, ...patch } : line) })
+  }
+  function save() {
+    if (!form) return
+    try {
+      setInvoices(saveSampleDraft(form, invoices))
+      setNotice(form.number.trim() + ' saved as a draft in this preview.')
+      setForm(null)
+      setFilter('all')
+      setQuery('')
+      setError('')
+    } catch (cause) { setError(cause instanceof Error ? cause.message : 'Check your invoice details.') }
   }
 
-  return (
-    <div className="grid grid-cols-1 gap-4 lg:grid-cols-[380px_1fr]">
-      {/* ------------------------------ left: controls ------------------------------ */}
-      <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
-        {/* customer */}
-        <label className="text-[10px] uppercase tracking-[0.12em] text-zinc-400" htmlFor="inv-customer">
-          Customer
-        </label>
-        <select id="inv-customer" className="invoice-select mt-1.5 w-full" value={customer} onChange={event => setCustomer(event.target.value)}>
-          {CUSTOMERS.map(name => <option key={name}>{name}</option>)}
-        </select>
+  if (preview) return <div className="fd-finance">
+    <header className="fd-page-heading"><div><h3>Invoice preview</h3><p>{preview.number} · {preview.customer || 'New customer'}</p></div><button className="fd-button" onClick={() => setPreview(null)}><ArrowLeft size={14} />{form ? 'Back to editor' : 'Back to invoices'}</button></header>
+    <div className="fd-preview-full"><InvoicePaper invoice={preview} /></div>
+  </div>
 
-        {/* line items editor */}
-        <div className="mt-4 flex items-center justify-between">
-          <p className="text-[10px] uppercase tracking-[0.12em] text-zinc-400">Line items</p>
-          <span className="text-[10px] text-zinc-400">{lines.length} / {CATALOG.length}</span>
+  if (form) {
+    const totals = invoiceTotals(form)
+    return <div className="fd-finance">
+      <header className="fd-page-heading">
+        <div className="fd-editor-title"><button className="fd-fin-icon-button" aria-label="Back to invoice list" onClick={() => { setForm(null); setError('') }}><ArrowLeft size={18} /></button><div><h3>Create Invoice</h3><p>Create and review an invoice for your customer</p></div></div>
+        <div className="fd-fin-actions"><span className="fd-fin-status" data-status="draft">draft</span><button className="fd-button" onClick={() => setPreview(form)}><Eye size={14} /> View</button><button className="fd-button fd-button-primary" onClick={save}><Save size={14} /> Save draft</button></div>
+      </header>
+      {error && <p className="fd-fin-error" role="alert">{error}</p>}
+      <div className="fd-invoice-editor">
+        <div className="fd-invoice-editor-fields">
+          <Step number={1} title="Choose Template">
+            <p className="fd-fin-hint">Select a template for your invoice</p>
+            <div className="fd-template-options" role="group" aria-label="Invoice template">
+              {['Classic', 'Modern', 'Minimal'].map(template => <button key={template} className="fd-template-option" aria-pressed={form.template === template} onClick={() => update({ template })}><span className="fd-template-mini" data-template={template}><i /><i /><i /><i /></span><span>{template}</span>{form.template === template && <Check size={13} />}</button>)}
+            </div>
+          </Step>
+          <Step number={2} title="Invoice Details">
+            <div className="fd-invoice-fields">
+              <label className="fd-invoice-field fd-invoice-field-full">Customer<select className="fd-input" value={form.customer} onChange={event => update({ customer: event.target.value })}><option value="">Select saved customer…</option>{DEMO_CUSTOMERS.map(customer => <option key={customer.name}>{customer.name}</option>)}</select></label>
+              <label className="fd-invoice-field">Invoice Number<input className="fd-input" value={form.number} onChange={event => update({ number: event.target.value })} /></label>
+              <label className="fd-invoice-field">Currency<input className="fd-input" value="AED — UAE Dirham" readOnly /></label>
+              <label className="fd-invoice-field">Invoice Date<input className="fd-input" type="date" value={form.date} onChange={event => update({ date: event.target.value })} /></label>
+              <label className="fd-invoice-field">Due Date<input className="fd-input" type="date" min={form.date} value={form.due} onChange={event => update({ due: event.target.value })} /></label>
+            </div>
+          </Step>
+          <Step number={3} title="Items">
+            <datalist id="fd-invoice-catalog">{DEMO_CATALOG.map(item => <option key={item.description} value={item.description} />)}</datalist>
+            <div className="fd-table-wrap"><table className="fd-table fd-invoice-items"><thead><tr><th>#</th><th>Description</th><th>Qty</th><th>Unit price</th><th>Amount</th><th><span className="sr-only">Remove</span></th></tr></thead><tbody>{form.lines.map((line, index) => <tr key={line.id}><td>{index + 1}</td><td><input className="fd-input" list="fd-invoice-catalog" aria-label={'Item ' + (index + 1) + ' description'} placeholder="Choose or enter an item" value={line.description} onChange={event => { const item = DEMO_CATALOG.find(item => item.description === event.target.value); updateLine(line.id, { description: event.target.value, rate: item?.rate ?? line.rate }) }} /></td><td><input className="fd-input" type="number" min="0.01" step="0.01" aria-label={'Item ' + (index + 1) + ' quantity'} value={line.qty} onChange={event => updateLine(line.id, { qty: Number(event.target.value) })} /></td><td><input className="fd-input" type="number" min="0" step="0.01" aria-label={'Item ' + (index + 1) + ' unit price'} value={line.rate} onChange={event => updateLine(line.id, { rate: Number(event.target.value) })} /></td><td className="fd-fin-number">{money(line.qty * line.rate)}</td><td><button className="fd-fin-icon-button" aria-label={'Remove item ' + (index + 1)} disabled={form.lines.length === 1} onClick={() => update({ lines: form.lines.filter(item => item.id !== line.id) })}><Trash2 size={14} /></button></td></tr>)}</tbody></table></div>
+            <button className="fd-button fd-add-item" onClick={() => update({ lines: [...form.lines, { id: Math.max(0, ...form.lines.map(line => line.id)) + 1, description: '', qty: 1, rate: 0 }] })}><Plus size={13} /> Add item</button>
+          </Step>
+          <Step number={4} title="Totals & Settings">
+            <div className="fd-invoice-fields"><label className="fd-invoice-field">Discount (%)<input className="fd-input" type="number" min="0" max="100" value={form.discount} onChange={event => update({ discount: Number(event.target.value) })} /></label><label className="fd-invoice-field">VAT (%)<input className="fd-input" type="number" min="0" max="100" value={form.tax} onChange={event => update({ tax: Number(event.target.value) })} /></label></div>
+            <dl className="fd-editor-totals"><div><dt>Subtotal</dt><dd>{money(totals.subtotal)}</dd></div><div><dt>Discount</dt><dd>−{money(totals.discount)}</dd></div><div><dt>VAT</dt><dd>{money(totals.tax)}</dd></div><div><dt>Total</dt><dd>{money(totals.total)}</dd></div></dl>
+          </Step>
         </div>
-        <div className="mt-1.5 space-y-2">
-            {lines.map((l, index) => (
-              <div
-                key={l.id}
-                className="flex items-center gap-1.5"
-              >
-                <select className="invoice-select min-w-0 flex-1" aria-label={`Item ${index + 1}`} value={l.name} onChange={event => updateLine(l.id, { name: event.target.value })}>
-                  {CATALOG.map(item => <option key={item.name} value={item.name}>{item.name} · {fmtInt(item.price)}</option>)}
-                </select>
-                <div className="invoice-quantity flex shrink-0 items-center rounded-full border border-zinc-200">
-                  <button
-                    type="button"
-                    aria-label={`Decrease ${l.name} quantity`}
-                    disabled={l.qty <= 1}
-                    onClick={() => updateLine(l.id, { qty: Math.max(1, l.qty - 1) })}
-                    className="flex h-8 w-6 items-center justify-center text-zinc-400 transition-colors hover:text-zinc-900"
-                  >
-                    <Minus className="h-3 w-3" />
-                  </button>
-                  <span className="w-5 text-center text-[12px] tabular-nums text-zinc-900">{l.qty}</span>
-                  <button
-                    type="button"
-                    aria-label={`Increase ${l.name} quantity`}
-                    disabled={l.qty >= 99}
-                    onClick={() => updateLine(l.id, { qty: Math.min(99, l.qty + 1) })}
-                    className="flex h-8 w-6 items-center justify-center text-zinc-400 transition-colors hover:text-zinc-900"
-                  >
-                    <Plus className="h-3 w-3" />
-                  </button>
-                </div>
-                <span className="hidden w-14 shrink-0 text-right text-[11px] tabular-nums text-zinc-400 sm:inline">
-                  {fmtInt(priceOf(l.name))}
-                </span>
-                <button
-                  type="button"
-                  aria-label={`Remove ${l.name}`}
-                  disabled={lines.length <= 1}
-                  onClick={() => setLines((prev) => prev.filter((x) => x.id !== l.id))}
-                  className="flex h-8 w-6 shrink-0 items-center justify-center rounded-md text-zinc-400 transition-colors hover:text-rose-400 disabled:pointer-events-none disabled:opacity-30"
-                >
-                  <X className="h-3.5 w-3.5" />
-                </button>
-              </div>
-            ))}
-        </div>
-        <button
-          type="button"
-          onClick={addLine}
-          disabled={lines.length >= CATALOG.length}
-          className="invoice-add-line mt-2 flex w-full items-center justify-center gap-1.5 rounded-full border border-dashed border-zinc-200 text-[12px] text-zinc-400 transition-colors disabled:opacity-40"
-        >
-          <Plus className="h-3.5 w-3.5" /> Add line
-        </button>
-
-        {/* discount */}
-        <div className="mt-4 flex items-center justify-between">
-          <label className="text-[10px] uppercase tracking-[0.12em] text-zinc-400" htmlFor="inv-discount">
-            Discount
-          </label>
-          <span className="text-[11px] tabular-nums text-amber-400">{discountPct}%</span>
-        </div>
-        <input
-          type="range"
-          id="inv-discount"
-          className="invoice-discount"
-          value={discountPct}
-          onChange={event => setDiscountPct(Number(event.target.value))}
-          aria-valuetext={`${discountPct} percent`}
-          min={0}
-          max={20}
-          step={1}
-        />
-
-        {/* VAT switch */}
-        <div className="mt-4 flex items-center justify-between rounded-lg border border-zinc-200 bg-white px-3 py-2.5">
-          <label className="text-[10px] uppercase tracking-[0.12em] text-zinc-400" htmlFor="inv-vat">
-            VAT 5%
-          </label>
-          <Switch id="inv-vat" checked={vatOn} onCheckedChange={setVatOn} />
-        </div>
-
-        {/* template swatches */}
-        <p className="mt-4 text-[10px] uppercase tracking-[0.12em] text-zinc-400">Template</p>
-        <div className="mt-1.5 grid grid-cols-3 gap-2" role="radiogroup" aria-label="Invoice template">
-          {INVOICE_TEMPLATES.map((t) => (
-            <label
-              key={t.id}
-              className={cn(
-                'invoice-template flex flex-col items-center gap-1.5 rounded-lg border p-2 transition-colors',
-                template === t.id
-                  ? 'border-amber-400/60 bg-amber-400/5'
-                  : 'border-zinc-200 hover:border-zinc-300 hover:bg-zinc-50',
-              )}
-            >
-              <input type="radio" name="invoice-template" value={t.id} checked={template === t.id} onChange={() => setTemplate(t.id)} className="sr-only" />
-              {/* mini doc thumbnail */}
-              <span className="flex h-12 w-9 flex-col overflow-hidden rounded-[3px] bg-paper shadow-sm">
-                <span className="h-2 w-full" style={{ background: t.id === 'mono' ? '#1A2330' : t.accent }} />
-                <span className="mx-1 mt-1.5 h-px bg-paper-ink/30" />
-                <span className="mx-1 mt-1 h-px bg-paper-ink/30" />
-                <span className="mx-1 mt-1 h-px w-2/3 bg-paper-ink/30" />
-                <span className="mx-1 mt-auto mb-1 h-1 w-1/2 rounded-full" style={{ background: t.id === 'mono' ? '#1A2330' : t.accent }} />
-              </span>
-              <span className={cn('text-[9.5px] leading-none', template === t.id ? 'text-amber-400' : 'text-zinc-400')}>
-                {t.name}
-              </span>
-            </label>
-          ))}
-        </div>
-        <p className="mt-1.5 text-center text-[10px] text-zinc-400">3 of 10 templates in the app</p>
-
-        {/* live totals */}
-        <div className="mt-4 rounded-lg border border-zinc-200 bg-white p-3">
-          <div className="flex items-center justify-between py-0.5 text-[12px]">
-            <span className="text-zinc-400">Subtotal</span>
-            <span className="tabular-nums text-zinc-900">{fmtAED2(totals.subtotal)}</span>
-          </div>
-          <div className="flex items-center justify-between py-0.5 text-[12px]">
-            <span className="text-zinc-400">Discount ({discountPct}%)</span>
-            <span className="tabular-nums text-zinc-900">−{fmtAED2(totals.discount)}</span>
-          </div>
-          <div className={cn('flex items-center justify-between py-0.5 text-[12px]', !vatOn && 'opacity-40')}>
-            <span className="text-zinc-400">VAT 5%</span>
-            <span className="tabular-nums text-zinc-900">{fmtAED2(totals.vat)}</span>
-          </div>
-          <div className="my-1.5 h-px bg-zinc-100" />
-          <div className="flex items-center justify-between">
-            <span className="text-[12px] font-semibold text-zinc-900">Total</span>
-            <span className="text-[20px] font-semibold tabular-nums text-amber-400">
-              {fmtAED2(totals.total)}
-            </span>
-          </div>
-        </div>
-
-        {/* actions */}
-        <a className="site-button w-full mt-4" href="#download">Make it your own <ArrowRight size={16} aria-hidden="true" /></a>
-        <p className="invoice-download-note">Save, print and share your invoices in the desktop app.</p>
-      </div>
-
-      {/* ------------------------------ right: live paper ------------------------------ */}
-      <div className="flex items-start justify-center rounded-xl border border-zinc-200/40 bg-white/30 p-4 lg:p-6">
-        <div className="w-full max-w-[400px]">
-          <div className="aspect-[1/1.414] max-h-[560px] w-full overflow-hidden rounded-lg bg-paper text-paper-ink shadow-[0_18px_50px_-12px_rgba(0,0,0,0.55)]">
-            <InvoicePaper
-              template={template}
-              customer={customer}
-              lines={lines}
-              subtotal={totals.subtotal}
-              discountPct={discountPct}
-              discount={totals.discount}
-              vatOn={vatOn}
-              vat={totals.vat}
-              total={totals.total}
-            />
-          </div>
-        </div>
+        <aside className="fd-invoice-preview"><h4>Preview</h4><p>This is how your invoice will look</p><InvoicePaper invoice={form} /><p className="fd-fin-hint">PDF export and sending are available in the desktop app.</p></aside>
       </div>
     </div>
-  )
+  }
+
+  return <div className="fd-finance">
+    <header className="fd-page-heading"><div><h3>Invoicing</h3><p>Create, send and track invoices</p></div><button className="fd-button fd-button-primary" onClick={() => edit(newDraft(invoices))}><Plus size={14} /> New invoice</button></header>
+    <div className="fd-fin-metrics">
+      {[{ label: 'Total billed', value: summary.billed, hint: summary.postedCount + ' invoices' }, { label: 'Paid', value: summary.paid, hint: 'Collected' }, { label: 'Pending', value: summary.pending, hint: 'Awaiting payment' }, { label: 'Overdue', value: summary.overdue, hint: summary.overdueCount + ' past due date' }].map(metric => <div className="fd-fin-metric" key={metric.label}><span>{metric.label}</span><strong>{money(metric.value)}</strong><small>{metric.hint}</small></div>)}
+    </div>
+    {notice && <p className="fd-fin-notice" role="status"><Check size={14} />{notice}</p>}
+    <div className="fd-toolbar fd-invoice-toolbar">
+      <label className="fd-fin-search"><Search size={14} aria-hidden="true" /><input className="fd-input" aria-label="Search invoices" placeholder="Search invoices by number or customer…" value={query} onChange={event => setQuery(event.target.value)} /></label>
+      <div className="fd-fin-filters" role="group" aria-label="Invoice status">{(['all', 'draft', 'sent', 'paid', 'overdue'] as const).map(status => <button className="fd-chip" key={status} aria-pressed={filter === status} onClick={() => setFilter(status)}>{status === 'sent' ? 'Pending' : status.charAt(0).toUpperCase() + status.slice(1)}</button>)}</div>
+    </div>
+    <div className="fd-table-wrap fd-invoice-list">
+      <table className="fd-table"><thead><tr><th>Invoice #</th><th>Customer</th><th>Template</th><th className="fd-fin-number">Total</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+        <tbody>{visible.map(invoice => <tr key={invoice.id}><td><button className="fd-fin-invoice-link" onClick={() => setPreview(invoice)}>{invoice.number}</button></td><td>{invoice.customer}</td><td className="fd-fin-muted">{invoice.template}</td><td className="fd-fin-number">{money(invoiceTotals(invoice).total)}</td><td><span className="fd-fin-status" data-status={invoice.status}>{invoice.status}</span>{invoice.paid > 0 && invoice.status !== 'paid' && <small className="fd-fin-balance">{money(invoiceTotals(invoice).total - invoice.paid)} due</small>}</td><td className="fd-fin-muted">{displayDate(invoice.date)}</td><td><div className="fd-fin-actions"><button className="fd-fin-icon-button" aria-label={'View ' + invoice.number} onClick={() => setPreview(invoice)}><Eye size={15} /></button>{invoice.status === 'draft' && <button className="fd-fin-icon-button" aria-label={'Edit ' + invoice.number} onClick={() => edit(invoice)}><Pencil size={14} /></button>}</div></td></tr>)}</tbody>
+      </table>
+      {!visible.length && <div className="fd-empty"><FileText size={24} /><p>No invoices match your filters.</p><button className="fd-button" onClick={() => { setQuery(''); setFilter('all') }}>Clear filters</button></div>}
+      <div className="fd-invoice-table-footer">{visible.length} of {invoices.length} invoices<span>Sample workspace · AED</span></div>
+    </div>
+  </div>
 }

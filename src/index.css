@@ -79,6 +79,6 @@
 
 /* ── Scrollbar ───────────────────────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 10px; height: 10px; }
-::-webkit-scrollbar-track { background: #fafafa; }
-::-webkit-scrollbar-thumb { background: #d4d4d8; border-radius: 8px; border: 2px solid #fafafa; }
-::-webkit-scrollbar-thumb:hover { background: #a1a1aa; }
+::-webkit-scrollbar-track { background: var(--fd-page, var(--site-bg)); }
+::-webkit-scrollbar-thumb { background: var(--fd-line, var(--site-line)); border-radius: 8px; border: 2px solid var(--fd-page, var(--site-bg)); }
+::-webkit-scrollbar-thumb:hover { background: var(--fd-muted, var(--site-muted)); }
