@@ -207,7 +207,6 @@ export const INVOICE_META = {
   thanks: 'Thank you for your business',
 }
 
-export const PDF_TOAST = 'Demo mode — the desktop app exports print-ready, FTA-compliant PDFs.'
 
 /* ---------------------------- §6.3 — CRM tab ----------------------------- */
 

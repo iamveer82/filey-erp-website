@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type FormEvent, type ReactNode } from 'react'
 import { Link } from 'react-router'
 import {
   AlertCircle,
@@ -13,9 +13,8 @@ import {
 } from 'lucide-react'
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp'
 import { MIN_PASSWORD, RESEND_COOLDOWN, resendOtp, signUp, verifyOtp } from '@/lib/signup'
-import { REPO_URL, osLabel } from '@/lib/constants'
-import { installerForOS, useLatestRelease } from '@/lib/useLatestRelease'
-import { detectOS } from '@/lib/os'
+import { REPO_URL } from '@/lib/constants'
+import './SignUp.css'
 
 /* The desktop app's auth screen, rebuilt for the web: one centred card on a
  * quiet canvas. Phone and Google are deliberately absent — both providers are
@@ -24,7 +23,7 @@ import { detectOS } from '@/lib/os'
 type Step = 'form' | 'code' | 'done'
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-const LOGO_SRC = `${import.meta.env.BASE_URL}filey-mark.png`
+const LOGO_SRC = '/filey-mark.png'
 
 function Field({
   id,
@@ -37,25 +36,19 @@ function Field({
   label: string
   hint?: string
   error?: string
-  children: React.ReactNode
+  children: ReactNode
 }) {
   return (
-    <div className="space-y-1.5">
-      <label htmlFor={id} className="block text-sm font-medium text-zinc-700">
-        {label} <span className="text-red-500">*</span>
+    <div className="signup-field">
+      <label htmlFor={id}>
+        {label} <span className="signup-required" aria-hidden="true">*</span>
       </label>
       {children}
-      {error ? (
-        <p className="text-xs font-medium text-red-600">{error}</p>
-      ) : hint ? (
-        <p className="text-xs text-zinc-500">{hint}</p>
-      ) : null}
+      {hint && <p id={`${id}-hint`} className="signup-hint">{hint}</p>}
+      {error && <p id={`${id}-error`} className="signup-field-error" role="alert">{error}</p>}
     </div>
   )
 }
-
-const inputClass =
-  'h-11 w-full rounded-lg border border-zinc-200 bg-white pl-10 pr-3 text-sm text-zinc-900 outline-none transition-colors placeholder:text-zinc-400 focus:border-amber-500'
 
 export default function SignUp() {
   const [step, setStep] = useState<Step>('form')
@@ -70,17 +63,15 @@ export default function SignUp() {
   const [fieldErr, setFieldErr] = useState<Record<string, string>>({})
   const [cooldown, setCooldown] = useState(0)
 
-  const os = detectOS()
-  const release = useLatestRelease()
-
   useEffect(() => {
     if (cooldown <= 0) return
     const t = setTimeout(() => setCooldown((s) => s - 1), 1000)
     return () => clearTimeout(t)
   }, [cooldown])
 
-  const submitForm = async (e: React.FormEvent) => {
+  const submitForm = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    if (busy) return
     setErr(null)
     const fe: Record<string, string> = {}
     if (!EMAIL_RE.test(email.trim())) fe.email = 'Enter a valid email address'
@@ -88,7 +79,10 @@ export default function SignUp() {
       fe.password = `Password must be at least ${MIN_PASSWORD} characters`
     if (password !== confirm) fe.confirm = 'Passwords do not match'
     setFieldErr(fe)
-    if (Object.keys(fe).length) return
+    if (Object.keys(fe).length) {
+      e.currentTarget.querySelector<HTMLInputElement>(`#${Object.keys(fe)[0]}`)?.focus()
+      return
+    }
 
     setBusy(true)
     try {
@@ -102,8 +96,9 @@ export default function SignUp() {
     }
   }
 
-  const submitCode = async (e: React.FormEvent) => {
+  const submitCode = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    if (busy || code.length !== 6) return
     setErr(null)
     setBusy(true)
     try {
@@ -117,6 +112,7 @@ export default function SignUp() {
   }
 
   const resend = async () => {
+    if (busy || cooldown > 0) return
     setErr(null)
     setBusy(true)
     try {
@@ -133,50 +129,54 @@ export default function SignUp() {
     step === 'form' ? 'Create your account' : step === 'code' ? 'Enter the code' : "You're all set"
   const sub =
     step === 'form' ? (
-      'Start managing your business in minutes.'
+      'One account for your Filey desktop workspace.'
     ) : step === 'code' ? (
       <>
-        Sent to <span className="font-medium text-zinc-900">{email}</span>
+        Sent to <strong>{email}</strong>
       </>
     ) : (
-      'Filey runs as a desktop app — download it to get started.'
+      'Download Filey to start using your workspace.'
     )
 
   return (
-    <div className="grid min-h-[100dvh] place-items-center p-6">
-      <div className="w-full max-w-sm">
-        <div className="mb-6 flex flex-col items-center text-center">
+    <main className="signup-page" aria-labelledby="signup-title">
+      <div className="signup-content">
+        <header className="signup-heading">
           <Link to="/" aria-label="Filey ERP — back to the homepage">
-            <img src={LOGO_SRC} alt="" className="h-11 w-11 rounded-lg" width={44} height={44} />
+            <img src={LOGO_SRC} alt="" width={72} height={72} />
           </Link>
-          <h1 className="mt-4 font-display text-xl font-semibold tracking-tight text-zinc-900">
-            {heading}
-          </h1>
-          <p className="mt-1.5 text-sm text-zinc-500">{sub}</p>
-        </div>
+          <div aria-live="polite">
+            <h1 id="signup-title">{heading}</h1>
+            <p>{sub}</p>
+          </div>
+        </header>
 
-        <div className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm">
+        <div className="signup-card">
           {err && (
-            <p
-              role="alert"
-              className="mb-4 flex items-start gap-2 rounded-lg bg-red-50 px-3 py-2.5 text-xs font-medium text-red-700"
-            >
-              <AlertCircle className="mt-px h-[15px] w-[15px] shrink-0" />
+            <p id="signup-error" role="alert" className="signup-error">
+              <AlertCircle size={18} aria-hidden="true" />
               <span>{err}</span>
             </p>
           )}
 
           {step === 'form' && (
-            <form onSubmit={submitForm} className="space-y-4">
+            <form onSubmit={submitForm} noValidate aria-busy={busy}>
+              <fieldset disabled={busy} className="signup-fields">
+                <legend className="sr-only">Account details. All fields are required.</legend>
               <Field id="email" label="Email" error={fieldErr.email}>
-                <div className="relative">
-                  <Mail className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400" />
+                <div className="signup-input">
+                  <Mail aria-hidden="true" />
                   <input
                     id="email"
+                    name="email"
                     type="email"
                     autoComplete="email"
+                    autoCapitalize="none"
+                    spellCheck={false}
+                    required
+                    aria-invalid={Boolean(fieldErr.email)}
+                    aria-describedby={fieldErr.email ? 'email-error' : undefined}
                     placeholder="you@company.com"
-                    className={inputClass}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                   />
@@ -189,80 +189,105 @@ export default function SignUp() {
                 hint={`At least ${MIN_PASSWORD} characters`}
                 error={fieldErr.password}
               >
-                <div className="relative">
-                  <Lock className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400" />
+                <div className="signup-input signup-input-password">
+                  <Lock aria-hidden="true" />
                   <input
                     id="password"
+                    name="password"
                     type={showPw ? 'text' : 'password'}
                     autoComplete="new-password"
-                    className={inputClass}
+                    required
+                    minLength={MIN_PASSWORD}
+                    aria-invalid={Boolean(fieldErr.password)}
+                    aria-describedby={fieldErr.password ? 'password-hint password-error' : 'password-hint'}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                   />
                   <button
                     type="button"
-                    tabIndex={-1}
-                    aria-label={showPw ? 'Hide password' : 'Show password'}
+                    aria-label="Show password"
+                    aria-pressed={showPw}
+                    aria-controls="password"
                     onClick={() => setShowPw((v) => !v)}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 rounded-md p-1.5 text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-700"
+                    className="signup-visibility"
                   >
-                    {showPw ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    {showPw ? <EyeOff size={18} aria-hidden="true" /> : <Eye size={18} aria-hidden="true" />}
                   </button>
                 </div>
               </Field>
 
               <Field id="confirm" label="Confirm password" error={fieldErr.confirm}>
-                <div className="relative">
-                  <Lock className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400" />
+                <div className="signup-input signup-input-password">
+                  <Lock aria-hidden="true" />
                   <input
                     id="confirm"
+                    name="confirm-password"
                     type={showConfirm ? 'text' : 'password'}
                     autoComplete="new-password"
-                    className={inputClass}
+                    required
+                    aria-invalid={Boolean(fieldErr.confirm)}
+                    aria-describedby={fieldErr.confirm ? 'confirm-error' : undefined}
                     value={confirm}
                     onChange={(e) => setConfirm(e.target.value)}
                   />
                   <button
                     type="button"
-                    tabIndex={-1}
-                    aria-label={showConfirm ? 'Hide password' : 'Show password'}
+                    aria-label="Show confirmation password"
+                    aria-pressed={showConfirm}
+                    aria-controls="confirm"
                     onClick={() => setShowConfirm((v) => !v)}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 rounded-md p-1.5 text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-700"
+                    className="signup-visibility"
                   >
-                    {showConfirm ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    {showConfirm ? <EyeOff size={18} aria-hidden="true" /> : <Eye size={18} aria-hidden="true" />}
                   </button>
                 </div>
               </Field>
+              </fieldset>
 
               <button
                 type="submit"
                 disabled={busy}
-                className="site-button w-full"
+                className="site-button signup-submit"
               >
-                {busy && <Loader2 className="h-4 w-4 animate-spin" />}
+                {busy && <Loader2 size={16} className="animate-spin" aria-hidden="true" />}
                 {busy ? 'Creating…' : 'Create account'}
               </button>
             </form>
           )}
 
           {step === 'code' && (
-            <form onSubmit={submitCode} className="space-y-4">
+            <form onSubmit={submitCode} aria-busy={busy} className="signup-verification">
               <button
                 type="button"
+                disabled={busy}
                 onClick={() => {
                   setStep('form')
                   setCode('')
                   setErr(null)
                 }}
-                className="inline-flex items-center gap-1 text-xs font-medium text-zinc-500 hover:text-zinc-900"
+                className="signup-back"
               >
-                <ArrowLeft className="h-3.5 w-3.5" /> Back
+                <ArrowLeft size={16} aria-hidden="true" /> Change email
               </button>
 
-              <div className="space-y-1.5">
-                <span className="block text-sm font-medium text-zinc-700">6-digit code</span>
-                <InputOTP maxLength={6} value={code} onChange={(v) => setCode(v.replace(/\D/g, ''))}>
-                  <InputOTPGroup>
+              <div className="signup-field">
+                <label htmlFor="verification-code">Email verification code</label>
+                <p id="verification-hint" className="signup-hint">Enter the 6-digit code from your email.</p>
+                <InputOTP
+                  id="verification-code"
+                  name="verification-code"
+                  maxLength={6}
+                  inputMode="numeric"
+                  autoComplete="one-time-code"
+                  autoFocus
+                  required
+                  disabled={busy}
+                  aria-describedby={err ? 'verification-hint signup-error' : 'verification-hint'}
+                  containerClassName="signup-otp"
+                  value={code}
+                  onChange={(v) => setCode(v.replace(/\D/g, ''))}
+                >
+                  <InputOTPGroup aria-hidden="true">
                     {[0, 1, 2, 3, 4, 5].map((i) => (
                       <InputOTPSlot key={i} index={i} />
                     ))}
@@ -273,17 +298,17 @@ export default function SignUp() {
               <button
                 type="submit"
                 disabled={busy || code.length < 6}
-                className="site-button w-full"
+                className="site-button signup-submit"
               >
-                {busy && <Loader2 className="h-4 w-4 animate-spin" />}
-                {busy ? 'Verifying…' : 'Verify'}
+                {busy && <Loader2 size={16} className="animate-spin" aria-hidden="true" />}
+                {busy ? 'Please wait…' : 'Verify email'}
               </button>
 
               <button
                 type="button"
                 disabled={busy || cooldown > 0}
                 onClick={resend}
-                className="w-full text-center text-xs font-medium text-zinc-500 hover:text-zinc-900 disabled:opacity-50"
+                className="signup-resend"
               >
                 {cooldown > 0 ? `Resend code in ${cooldown}s` : 'Resend code'}
               </button>
@@ -291,47 +316,41 @@ export default function SignUp() {
           )}
 
           {step === 'done' && (
-            <div className="space-y-4">
-              <div className="flex items-start gap-3 rounded-lg bg-emerald-50 px-3 py-3">
-                <CheckCircle2 className="mt-px h-5 w-5 shrink-0 text-emerald-600" />
-                <p className="text-sm text-emerald-900">
-                  Account created for <span className="font-medium">{email}</span>. Sign in with the
+            <div className="signup-complete">
+              <div className="signup-success" role="status">
+                <CheckCircle2 size={22} aria-hidden="true" />
+                <p>
+                  Account created for <strong>{email}</strong>. Sign in with the
                   same email in the desktop app.
                 </p>
               </div>
               <a
-                href={installerForOS(release, os)}
-                className="site-button w-full"
-              >
-                <Download className="h-[18px] w-[18px]" />
-                Download for {osLabel(os)}
-              </a>
-              <a
                 href="/#download"
-                className="block text-center text-xs font-medium text-zinc-500 hover:text-zinc-900"
+                className="site-button signup-submit"
               >
-                Other platforms and install options
+                <Download size={18} aria-hidden="true" />
+                Choose your download
               </a>
+              <p className="signup-hint">See the installers available for your computer.</p>
             </div>
           )}
         </div>
 
         {step !== 'done' && (
-          <p className="mt-4 text-center text-xs text-zinc-500">
+          <p className="signup-account-link">
             Already have an account?{' '}
-            <a href="/#download" className="font-medium text-zinc-900">
+            <a href="/#download">
               Sign in from the desktop app
             </a>
           </p>
         )}
 
-        <p className="mt-6 text-center text-[11px] text-zinc-400">
-          Protected workspace ·{' '}
-          <a href={REPO_URL} target="_blank" rel="noopener noreferrer" className="hover:text-zinc-600">
-            Open source
+        <p className="signup-footer">
+          <a href={REPO_URL} target="_blank" rel="noopener noreferrer">
+            Filey is open source
           </a>
         </p>
       </div>
-    </div>
+    </main>
   )
 }

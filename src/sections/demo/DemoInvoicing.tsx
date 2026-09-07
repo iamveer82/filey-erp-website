@@ -1,10 +1,7 @@
 import { useMemo, useState } from 'react'
-import { Download, Minus, Plus, Printer, X } from 'lucide-react'
-import { toast } from 'sonner'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Slider } from '@/components/ui/slider'
+import { ArrowRight, Minus, Plus, X } from 'lucide-react'
 import { Switch } from '@/components/ui/switch'
-import { CATALOG, CUSTOMERS, INVOICE_META, INVOICE_TEMPLATES, PDF_TOAST, fmtAED2, fmtInt, fmtNum2 } from '@/sections/demo/data'
+import { CATALOG, CUSTOMERS, INVOICE_META, INVOICE_TEMPLATES, fmtAED2, fmtInt, fmtNum2 } from '@/sections/demo/data'
 import type { TemplateId } from '@/sections/demo/data'
 import { cn } from '@/lib/utils'
 
@@ -202,8 +199,6 @@ export default function DemoInvoicing() {
     setLineSeq((s) => s + 1)
   }
 
-  const pdfToast = () => toast.success(PDF_TOAST)
-
   return (
     <div className="grid grid-cols-1 gap-4 lg:grid-cols-[380px_1fr]">
       {/* ------------------------------ left: controls ------------------------------ */}
@@ -212,18 +207,9 @@ export default function DemoInvoicing() {
         <label className="text-[10px] uppercase tracking-[0.12em] text-zinc-400" htmlFor="inv-customer">
           Customer
         </label>
-        <Select value={customer} onValueChange={setCustomer}>
-          <SelectTrigger id="inv-customer" className="mt-1.5 w-full border-zinc-200 bg-white text-[13px] text-zinc-900">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent className="border-zinc-200 bg-zinc-50 text-zinc-900">
-            {CUSTOMERS.map((c) => (
-              <SelectItem key={c} value={c} className="text-[13px]">
-                {c}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <select id="inv-customer" className="invoice-select mt-1.5 w-full" value={customer} onChange={event => setCustomer(event.target.value)}>
+          {CUSTOMERS.map(name => <option key={name}>{name}</option>)}
+        </select>
 
         {/* line items editor */}
         <div className="mt-4 flex items-center justify-between">
@@ -231,30 +217,19 @@ export default function DemoInvoicing() {
           <span className="text-[10px] text-zinc-400">{lines.length} / {CATALOG.length}</span>
         </div>
         <div className="mt-1.5 space-y-2">
-            {lines.map((l) => (
+            {lines.map((l, index) => (
               <div
                 key={l.id}
                 className="flex items-center gap-1.5"
               >
-                <Select value={l.name} onValueChange={(name) => updateLine(l.id, { name })}>
-                  <SelectTrigger
-                    aria-label="Item"
-                    className="h-8 min-w-0 flex-1 border-zinc-200 bg-white px-2 text-[12px] text-zinc-900 [&_span]:truncate"
-                  >
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="border-zinc-200 bg-zinc-50 text-zinc-900">
-                    {CATALOG.map((c) => (
-                      <SelectItem key={c.name} value={c.name} className="text-[12px]">
-                        {c.name} — {fmtInt(c.price)}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <div className="flex shrink-0 items-center rounded-md border border-zinc-200">
+                <select className="invoice-select min-w-0 flex-1" aria-label={`Item ${index + 1}`} value={l.name} onChange={event => updateLine(l.id, { name: event.target.value })}>
+                  {CATALOG.map(item => <option key={item.name} value={item.name}>{item.name} · {fmtInt(item.price)}</option>)}
+                </select>
+                <div className="invoice-quantity flex shrink-0 items-center rounded-full border border-zinc-200">
                   <button
                     type="button"
-                    aria-label="Decrease quantity"
+                    aria-label={`Decrease ${l.name} quantity`}
+                    disabled={l.qty <= 1}
                     onClick={() => updateLine(l.id, { qty: Math.max(1, l.qty - 1) })}
                     className="flex h-8 w-6 items-center justify-center text-zinc-400 transition-colors hover:text-zinc-900"
                   >
@@ -263,7 +238,8 @@ export default function DemoInvoicing() {
                   <span className="w-5 text-center text-[12px] tabular-nums text-zinc-900">{l.qty}</span>
                   <button
                     type="button"
-                    aria-label="Increase quantity"
+                    aria-label={`Increase ${l.name} quantity`}
+                    disabled={l.qty >= 99}
                     onClick={() => updateLine(l.id, { qty: Math.min(99, l.qty + 1) })}
                     className="flex h-8 w-6 items-center justify-center text-zinc-400 transition-colors hover:text-zinc-900"
                   >
@@ -289,7 +265,7 @@ export default function DemoInvoicing() {
           type="button"
           onClick={addLine}
           disabled={lines.length >= CATALOG.length}
-          className="mt-2 flex h-8 w-full items-center justify-center gap-1.5 rounded-md border border-dashed border-zinc-200 text-[11px] text-zinc-400 transition-colors duration-200 hover:border-amber-400/50 hover:text-amber-400 disabled:pointer-events-none disabled:opacity-40"
+          className="invoice-add-line mt-2 flex w-full items-center justify-center gap-1.5 rounded-full border border-dashed border-zinc-200 text-[12px] text-zinc-400 transition-colors disabled:opacity-40"
         >
           <Plus className="h-3.5 w-3.5" /> Add line
         </button>
@@ -301,11 +277,13 @@ export default function DemoInvoicing() {
           </label>
           <span className="text-[11px] tabular-nums text-amber-400">{discountPct}%</span>
         </div>
-        <Slider
+        <input
+          type="range"
           id="inv-discount"
-          className="mt-2.5"
-          value={[discountPct]}
-          onValueChange={([v]) => setDiscountPct(v)}
+          className="invoice-discount"
+          value={discountPct}
+          onChange={event => setDiscountPct(Number(event.target.value))}
+          aria-valuetext={`${discountPct} percent`}
           min={0}
           max={20}
           step={1}
@@ -323,19 +301,16 @@ export default function DemoInvoicing() {
         <p className="mt-4 text-[10px] uppercase tracking-[0.12em] text-zinc-400">Template</p>
         <div className="mt-1.5 grid grid-cols-3 gap-2" role="radiogroup" aria-label="Invoice template">
           {INVOICE_TEMPLATES.map((t) => (
-            <button
+            <label
               key={t.id}
-              type="button"
-              role="radio"
-              aria-checked={template === t.id}
-              onClick={() => setTemplate(t.id)}
               className={cn(
-                'flex flex-col items-center gap-1.5 rounded-lg border p-2 transition-all duration-200',
+                'invoice-template flex flex-col items-center gap-1.5 rounded-lg border p-2 transition-colors',
                 template === t.id
                   ? 'border-amber-400/60 bg-amber-400/5'
                   : 'border-zinc-200 hover:border-zinc-300 hover:bg-zinc-50',
               )}
             >
+              <input type="radio" name="invoice-template" value={t.id} checked={template === t.id} onChange={() => setTemplate(t.id)} className="sr-only" />
               {/* mini doc thumbnail */}
               <span className="flex h-12 w-9 flex-col overflow-hidden rounded-[3px] bg-paper shadow-sm">
                 <span className="h-2 w-full" style={{ background: t.id === 'mono' ? '#1A2330' : t.accent }} />
@@ -347,7 +322,7 @@ export default function DemoInvoicing() {
               <span className={cn('text-[9.5px] leading-none', template === t.id ? 'text-amber-400' : 'text-zinc-400')}>
                 {t.name}
               </span>
-            </button>
+            </label>
           ))}
         </div>
         <p className="mt-1.5 text-center text-[10px] text-zinc-400">3 of 10 templates in the app</p>
@@ -376,22 +351,8 @@ export default function DemoInvoicing() {
         </div>
 
         {/* actions */}
-        <div className="mt-3 flex gap-2">
-          <button
-            type="button"
-            onClick={pdfToast}
-            className="btn-gradient inline-flex h-10 flex-1 items-center justify-center gap-2 rounded-lg text-[13.5px] font-semibold text-[#1A1206] transition-all duration-200 hover:shadow-[0_0_24px_rgba(251,191,36,0.25)] active:scale-[0.98]"
-          >
-            <Download className="h-4 w-4" /> Download PDF
-          </button>
-          <button
-            type="button"
-            onClick={pdfToast}
-            className="inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-zinc-200 px-4 text-[13.5px] font-semibold text-zinc-900 transition-colors duration-200 hover:border-amber-400/50 hover:bg-amber-400/5 active:scale-[0.98]"
-          >
-            <Printer className="h-4 w-4" /> Print
-          </button>
-        </div>
+        <a className="site-button w-full mt-4" href="#download">Make it your own <ArrowRight size={16} aria-hidden="true" /></a>
+        <p className="invoice-download-note">Save, print and share your invoices in the desktop app.</p>
       </div>
 
       {/* ------------------------------ right: live paper ------------------------------ */}

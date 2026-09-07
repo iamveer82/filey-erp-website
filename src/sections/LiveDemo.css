@@ -10,6 +10,27 @@
 .demo-loading { min-height: 26rem; display: grid; place-items: center; color: var(--site-muted); font-size: .9375rem; }
 .demo-limits { margin: 1rem 0 0; max-width: 68ch; color: var(--site-muted); font-size: .8125rem; line-height: 1.65; }
 
+.invoice-select {
+  min-height: 40px;
+  padding: 8px 10px;
+  border: 1px solid var(--site-line);
+  border-radius: 10px;
+  background: var(--site-paper);
+  color: var(--site-text);
+  font: inherit;
+  font-size: 12px;
+  text-overflow: ellipsis;
+}
+.invoice-quantity button { width: 28px; height: 40px; border-radius: 999px; }
+.invoice-quantity button:disabled { opacity: .35; cursor: default; }
+.invoice-add-line { min-height: 40px; }
+.invoice-add-line:hover:not(:disabled) { color: var(--site-text); border-color: var(--site-text); }
+.invoice-discount { display: block; width: 100%; height: 32px; accent-color: var(--site-text); cursor: pointer; }
+.invoice-template { position: relative; cursor: pointer; }
+.invoice-template > span:last-child { font-size: 11px; line-height: 1.3; text-align: center; }
+.invoice-template:focus-within { outline: 2px solid var(--site-accent-text); outline-offset: 3px; }
+.invoice-download-note { margin: 12px 0 0; color: var(--site-muted); font-size: 11px; line-height: 1.65; text-align: center; }
+
 /* The existing demos keep their behavior and printed invoice palette.
    Map their older screen-only utility colors onto the website theme. */
 .demo-workspace :is(.bg-white, [class~="bg-white/30"], [class~="bg-white/50"], [class~="bg-white/70"], .bg-zinc-50) { background-color: var(--site-paper); }

@@ -17,6 +17,18 @@ export default function Faq() {
       <div className="section-heading" data-reveal><h2>A few good<br />questions.</h2><p>For everything else, the documentation and community are a click away.</p><a className="text-link" href={REPO_URL + '#readme'}>Read the documentation <ArrowUpRight size={16} /></a></div>
       <div className="faq-list" data-reveal>{questions.map(([question, answer]) => <details key={question}><summary>{question}<Plus size={19} /></summary><p>{answer}</p></details>)}</div>
     </div></section>
-    <section id="run-locally" className="source-section"><div className="site-container source-inner" data-reveal><div><p className="eyebrow">Open by design</p><h2>Your business.<br />Your tools.</h2><p>Read the code, build from source, or help shape what comes next.</p></div><a className="site-button site-button-secondary" href={REPO_URL}>Explore Filey on GitHub <ArrowUpRight size={17} /></a></div></section>
+    <section id="run-locally" className="source-section">
+      <div className="site-container source-inner" data-reveal>
+        <div>
+          <p className="eyebrow">Open by design</p>
+          <h2>Your business.<br />Your tools.</h2>
+          <p>Download the app, explore the code, and make Filey part of your workday.</p>
+        </div>
+        <div className="source-actions">
+          <a className="site-button" href="#download">Get Filey <ArrowUpRight size={17} aria-hidden="true" /></a>
+          <a className="site-button site-button-secondary" href={REPO_URL}>Explore the source <ArrowUpRight size={17} aria-hidden="true" /></a>
+        </div>
+      </div>
+    </section>
   </>
 }
