@@ -1,36 +1,44 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import type { ReactNode } from 'react'
-import { motion, useScroll, useSpring } from 'framer-motion'
-import Navbar from '@/components/Navbar'
-import Footer from '@/components/Footer'
-import { initSmoothScroll } from '@/lib/scroll'
+import Navbar from './Navbar'
+import Footer from './Footer'
 
-/**
- * App shell — fixed Navbar + scroll progress + page slot + Footer.
- * Owns the fixed-nav offset (pt-16) per the Navbar positioning contract;
- * the full-bleed hero opts out inside the page with -mt-16.
- * Also the Lenis smooth-scroll root (disabled for reduced-motion / <768px).
- */
 export default function Layout({ children }: { children: ReactNode }) {
-  const { scrollYProgress } = useScroll()
-  const scaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 30, restDelta: 0.001 })
-
+  const root = useRef<HTMLDivElement>(null)
   useEffect(() => {
-    const cleanup = initSmoothScroll()
-    return cleanup
+    // Native fragment navigation runs before React has mounted these sections.
+    const hash = window.location.hash
+    if (!hash) return
+    let id: string
+    try { id = decodeURIComponent(hash.slice(1)) } catch { return }
+    let active = true
+    let frame = 0
+    void document.fonts.ready.then(() => {
+      if (!active) return
+      frame = requestAnimationFrame(() => {
+        if (active && window.location.hash === hash)
+          document.getElementById(id)?.scrollIntoView({ behavior: 'instant', block: 'start' })
+      })
+    })
+    return () => { active = false; cancelAnimationFrame(frame) }
   }, [])
-
-  return (
-    <div className="relative min-h-[100dvh] bg-background text-foreground">
-      {/* thin scroll-progress bar, above the navbar */}
-      <motion.div
-        className="fixed inset-x-0 top-0 z-[60] h-0.5 origin-left bg-amber-400"
-        style={{ scaleX }}
-        aria-hidden
-      />
-      <Navbar />
-      <main className="relative pt-16">{children}</main>
-      <Footer />
-    </div>
-  )
+  useEffect(() => {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return
+        entry.target.classList.add('is-visible')
+        observer.unobserve(entry.target)
+      })
+    }, { threshold: 0.08 })
+    const elements = root.current?.querySelectorAll('[data-reveal]') ?? []
+    elements.forEach(element => { element.classList.add('reveal-ready'); observer.observe(element) })
+    return () => { observer.disconnect(); elements.forEach(element => element.classList.remove('reveal-ready')) }
+  }, [])
+  return <div className="site-root" ref={root}>
+    <a className="skip-link" href="#main">Skip to content</a>
+    <Navbar />
+    <main id="main">{children}</main>
+    <Footer />
+  </div>
 }

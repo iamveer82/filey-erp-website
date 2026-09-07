@@ -1,0 +1,53 @@
+.freedom-dialog[data-slot="dialog-content"] {
+  width: min(100% - 2rem, 29rem);
+  max-height: calc(100dvh - 2rem);
+  overflow-y: auto;
+  gap: 1.75rem;
+  padding: clamp(1.25rem, 4vw, 2rem);
+  border: 1px solid var(--site-line, #dededb);
+  border-radius: 16px;
+  background: var(--site-paper, #fff);
+  color: var(--site-text, #20201e);
+  box-shadow: none;
+}
+.freedom-heading { padding-right: 1.75rem; }
+.freedom-heading [data-slot="dialog-title"] {
+  font-size: clamp(1.5rem, 4vw, 1.8rem);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -.035em;
+  text-wrap: balance;
+}
+.freedom-heading [data-slot="dialog-description"] {
+  margin-top: .75rem;
+  color: var(--site-muted, #62625c);
+  font-size: .9375rem;
+  line-height: 1.65;
+}
+.freedom-fields { display: grid; min-width: 0; gap: 1.15rem; border: 0; padding: 0; }
+.freedom-fields label { display: grid; gap: .45rem; font-size: .875rem; font-weight: 500; }
+.freedom-optional { color: var(--site-muted, #62625c); font-weight: 400; }
+.freedom-fields input {
+  width: 100%;
+  min-width: 0;
+  min-height: 48px;
+  border: 1px solid var(--site-line, #dededb);
+  border-radius: 10px;
+  background: var(--site-bg, #f8f8f5);
+  color: var(--site-text, #20201e);
+  padding: .7rem .85rem;
+  font: inherit;
+  font-weight: 400;
+}
+.freedom-fields input::placeholder { color: var(--site-muted, #62625c); }
+.freedom-fields input:focus-visible { outline: 2px solid var(--site-text, #20201e); outline-offset: 2px; }
+.freedom-fields:disabled { opacity: .65; }
+.freedom-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.75rem; }
+.freedom-actions > button { flex: 1 1 auto; }
+.freedom-dialog .freedom-close { position: absolute; top: .75rem; right: .75rem; width: 36px; min-height: 36px; padding: 0; }
+.freedom-done { width: 100%; }
+.freedom-error { margin-top: 1rem; color: #b42318; font-size: .875rem; line-height: 1.5; }
+.freedom-dialog button:disabled { opacity: .55; cursor: wait; }
+@media (prefers-reduced-motion: reduce) {
+  .freedom-dialog[data-slot="dialog-content"] { animation: none; }
+}

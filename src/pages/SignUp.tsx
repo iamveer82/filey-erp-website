@@ -24,7 +24,7 @@ import { detectOS } from '@/lib/os'
 type Step = 'form' | 'code' | 'done'
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-const LOGO_SRC = `${import.meta.env.BASE_URL}filey-logo.png`
+const LOGO_SRC = `${import.meta.env.BASE_URL}filey-mark.png`
 
 function Field({
   id,
@@ -237,7 +237,7 @@ export default function SignUp() {
               <button
                 type="submit"
                 disabled={busy}
-                className="btn-gradient flex h-11 w-full items-center justify-center gap-2 rounded-lg text-sm font-semibold text-[#1A1206] transition-all duration-200 active:scale-[0.98] disabled:opacity-60"
+                className="site-button w-full"
               >
                 {busy && <Loader2 className="h-4 w-4 animate-spin" />}
                 {busy ? 'Creating…' : 'Create account'}
@@ -273,7 +273,7 @@ export default function SignUp() {
               <button
                 type="submit"
                 disabled={busy || code.length < 6}
-                className="btn-gradient flex h-11 w-full items-center justify-center gap-2 rounded-lg text-sm font-semibold text-[#1A1206] transition-all duration-200 active:scale-[0.98] disabled:opacity-60"
+                className="site-button w-full"
               >
                 {busy && <Loader2 className="h-4 w-4 animate-spin" />}
                 {busy ? 'Verifying…' : 'Verify'}
@@ -301,17 +301,17 @@ export default function SignUp() {
               </div>
               <a
                 href={installerForOS(release, os)}
-                className="btn-gradient flex h-11 w-full items-center justify-center gap-2 rounded-lg text-sm font-semibold text-[#1A1206] transition-all duration-200 active:scale-[0.98]"
+                className="site-button w-full"
               >
                 <Download className="h-[18px] w-[18px]" />
                 Download for {osLabel(os)}
               </a>
-              <Link
-                to="/#download"
+              <a
+                href="/#download"
                 className="block text-center text-xs font-medium text-zinc-500 hover:text-zinc-900"
               >
                 Other platforms and install options
-              </Link>
+              </a>
             </div>
           )}
         </div>
@@ -319,9 +319,9 @@ export default function SignUp() {
         {step !== 'done' && (
           <p className="mt-4 text-center text-xs text-zinc-500">
             Already have an account?{' '}
-            <Link to="/#download" className="font-medium text-zinc-900">
+            <a href="/#download" className="font-medium text-zinc-900">
               Sign in from the desktop app
-            </Link>
+            </a>
           </p>
         )}
 

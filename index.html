@@ -1,32 +1,37 @@
 <!doctype html>
-<html lang="en" class="dark">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Filey ERP — Invoicing, CRM & Inventory for small business</title>
+    <title>Filey ERP | Invoicing, CRM & Inventory, Together</title>
     <meta
       name="description"
-      content="Filey ERP is a desktop ERP & CRM for small businesses — FTA-compliant invoicing, orders, inventory and a drag-and-drop sales pipeline. Offline-first. Free to start."
+      content="Bring invoices, customers, inventory and Filey AI into one desktop workspace. Explore Filey ERP, try the interactive demo and download for your computer."
     />
     <meta name="theme-color" content="#FAFAFA" />
-    <meta property="og:title" content="Filey ERP — Invoicing, CRM & Inventory for small business" />
+    <meta property="og:title" content="Filey ERP | Everything your business needs, in one place" />
     <meta
       property="og:description"
-      content="Filey ERP is a desktop ERP & CRM for small businesses — FTA-compliant invoicing, orders, inventory and a drag-and-drop sales pipeline. Offline-first. Free to start."
+      content="A clearer way to run your business. Invoices, customers, inventory and Filey AI in one desktop workspace."
     />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="/og-cover.png" />
-    <link rel="icon" type="image/png" href="/filey-logo.png" />
-    <link rel="apple-touch-icon" href="/filey-logo.png" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
-      rel="stylesheet"
-    />
+    <meta property="og:image" content="https://gofiley.com/filey-mark.png" />
+    <meta property="og:url" content="https://gofiley.com/" />
+    <meta name="twitter:card" content="summary" />
+    <link rel="canonical" href="https://gofiley.com/" />
+    <link rel="icon" type="image/png" href="/filey-mark.png" />
+    <link rel="apple-touch-icon" href="/filey-mark.png" />
+    <link rel="preload" href="/inter-latin-variable.woff2" as="font" type="font/woff2" crossorigin />
+    <script>
+      try {
+        const saved = localStorage.getItem('filey-site-theme');
+        document.documentElement.dataset.theme = saved === 'dark' || saved === 'light' ? saved : matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      } catch { document.documentElement.dataset.theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; }
+    </script>
   </head>
   <body>
     <div id="root"></div>
+    <noscript><p>Filey ERP brings invoices, CRM and inventory to your desktop. Enable JavaScript to explore the interactive website, or <a href="https://github.com/iamveer82/Filey-erp/releases/latest">download the latest release</a>.</p></noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

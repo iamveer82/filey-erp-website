@@ -286,7 +286,7 @@ export default function DemoDashboard({ running }: { running: boolean }) {
               <span className="absolute h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60 motion-reduce:hidden" />
               <span className="relative h-1.5 w-1.5 rounded-full bg-emerald-400" />
             </span>
-            live
+            Sample
           </span>
         </div>
         <ul>

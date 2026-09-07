@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
 import { Download, Minus, Plus, Printer, X } from 'lucide-react'
 import { toast } from 'sonner'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
@@ -25,26 +24,6 @@ const STARTER_LINES: LineItem[] = [
 
 const priceOf = (name: string): number => CATALOG.find((c) => c.name === name)?.price ?? 0
 
-/* ------------------------------- pop number ------------------------------ */
-
-/** Number that pops (150ms) whenever its formatted value changes. */
-function PopNumber({ value, className }: { value: string; className?: string }) {
-  return (
-    <AnimatePresence mode="popLayout" initial={false}>
-      <motion.span
-        key={value}
-        initial={{ opacity: 0, scale: 1.14 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.15 }}
-        className={cn('inline-block', className)}
-      >
-        {value}
-      </motion.span>
-    </AnimatePresence>
-  )
-}
-
 /* ------------------------------ invoice paper ---------------------------- */
 
 interface PaperProps {
@@ -69,16 +48,16 @@ function InvoicePaper({ template, customer, lines, subtotal, discountPct, discou
     <>
       <div className="flex items-center justify-between py-1">
         <span className={cn('text-[10.5px]', navy ? 'opacity-70' : 'opacity-60')}>Subtotal</span>
-        <span className="text-[11px] tabular-nums"><PopNumber value={fmtNum2(subtotal)} /></span>
+        <span className="text-[11px] tabular-nums">{fmtNum2(subtotal)}</span>
       </div>
       <div className="flex items-center justify-between py-1">
         <span className={cn('text-[10.5px]', navy ? 'opacity-70' : 'opacity-60')}>Discount ({discountPct}%)</span>
-        <span className="text-[11px] tabular-nums">−<PopNumber value={fmtNum2(discount)} /></span>
+        <span className="text-[11px] tabular-nums">−{fmtNum2(discount)}</span>
       </div>
       {vatOn && (
         <div className="flex items-center justify-between py-1">
           <span className={cn('text-[10.5px]', navy ? 'opacity-70' : 'opacity-60')}>VAT 5%</span>
-          <span className="text-[11px] tabular-nums"><PopNumber value={fmtNum2(vat)} /></span>
+          <span className="text-[11px] tabular-nums">{fmtNum2(vat)}</span>
         </div>
       )}
     </>
@@ -171,7 +150,7 @@ function InvoicePaper({ template, customer, lines, subtotal, discountPct, discou
               <div className="flex items-center gap-3 rounded-full bg-[#0E9F6E]/10 px-4 py-1.5">
                 <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#0E9F6E]">Total</span>
                 <span className="text-[14px] font-semibold tabular-nums text-[#0E9F6E]">
-                  <PopNumber value={fmtAED2(total)} />
+                  {fmtAED2(total)}
                 </span>
               </div>
             </div>
@@ -184,7 +163,7 @@ function InvoicePaper({ template, customer, lines, subtotal, discountPct, discou
                 Total
               </span>
               <span className="text-[14px] font-bold tabular-nums" style={{ color: accent }}>
-                <PopNumber value={fmtAED2(total)} />
+                {fmtAED2(total)}
               </span>
             </div>
           </div>
@@ -252,15 +231,9 @@ export default function DemoInvoicing() {
           <span className="text-[10px] text-zinc-400">{lines.length} / {CATALOG.length}</span>
         </div>
         <div className="mt-1.5 space-y-2">
-          <AnimatePresence initial={false}>
             {lines.map((l) => (
-              <motion.div
+              <div
                 key={l.id}
-                layout
-                initial={{ opacity: 0, y: -8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.96 }}
-                transition={{ duration: 0.2 }}
                 className="flex items-center gap-1.5"
               >
                 <Select value={l.name} onValueChange={(name) => updateLine(l.id, { name })}>
@@ -309,9 +282,8 @@ export default function DemoInvoicing() {
                 >
                   <X className="h-3.5 w-3.5" />
                 </button>
-              </motion.div>
+              </div>
             ))}
-          </AnimatePresence>
         </div>
         <button
           type="button"
@@ -342,7 +314,7 @@ export default function DemoInvoicing() {
         {/* VAT switch */}
         <div className="mt-4 flex items-center justify-between rounded-lg border border-zinc-200 bg-white px-3 py-2.5">
           <label className="text-[10px] uppercase tracking-[0.12em] text-zinc-400" htmlFor="inv-vat">
-            VAT 5% (FTA)
+            VAT 5%
           </label>
           <Switch id="inv-vat" checked={vatOn} onCheckedChange={setVatOn} />
         </div>
@@ -384,21 +356,21 @@ export default function DemoInvoicing() {
         <div className="mt-4 rounded-lg border border-zinc-200 bg-white p-3">
           <div className="flex items-center justify-between py-0.5 text-[12px]">
             <span className="text-zinc-400">Subtotal</span>
-            <span className="tabular-nums text-zinc-900"><PopNumber value={fmtAED2(totals.subtotal)} /></span>
+            <span className="tabular-nums text-zinc-900">{fmtAED2(totals.subtotal)}</span>
           </div>
           <div className="flex items-center justify-between py-0.5 text-[12px]">
             <span className="text-zinc-400">Discount ({discountPct}%)</span>
-            <span className="tabular-nums text-zinc-900">−<PopNumber value={fmtAED2(totals.discount)} /></span>
+            <span className="tabular-nums text-zinc-900">−{fmtAED2(totals.discount)}</span>
           </div>
           <div className={cn('flex items-center justify-between py-0.5 text-[12px]', !vatOn && 'opacity-40')}>
             <span className="text-zinc-400">VAT 5%</span>
-            <span className="tabular-nums text-zinc-900"><PopNumber value={fmtAED2(totals.vat)} /></span>
+            <span className="tabular-nums text-zinc-900">{fmtAED2(totals.vat)}</span>
           </div>
           <div className="my-1.5 h-px bg-zinc-100" />
           <div className="flex items-center justify-between">
             <span className="text-[12px] font-semibold text-zinc-900">Total</span>
             <span className="text-[20px] font-semibold tabular-nums text-amber-400">
-              <PopNumber value={fmtAED2(totals.total)} />
+              {fmtAED2(totals.total)}
             </span>
           </div>
         </div>
@@ -423,15 +395,8 @@ export default function DemoInvoicing() {
       </div>
 
       {/* ------------------------------ right: live paper ------------------------------ */}
-      <div className="flex items-start justify-center rounded-xl border border-zinc-200/40 bg-white/30 p-4 lg:p-6" style={{ perspective: '1200px' }}>
-        <motion.div
-          key={template}
-          initial={{ rotateY: -90, opacity: 0.3 }}
-          animate={{ rotateY: 0, opacity: 1 }}
-          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          style={{ transformStyle: 'preserve-3d' }}
-          className="w-full max-w-[400px]"
-        >
+      <div className="flex items-start justify-center rounded-xl border border-zinc-200/40 bg-white/30 p-4 lg:p-6">
+        <div className="w-full max-w-[400px]">
           <div className="aspect-[1/1.414] max-h-[560px] w-full overflow-hidden rounded-lg bg-paper text-paper-ink shadow-[0_18px_50px_-12px_rgba(0,0,0,0.55)]">
             <InvoicePaper
               template={template}
@@ -445,7 +410,7 @@ export default function DemoInvoicing() {
               total={totals.total}
             />
           </div>
-        </motion.div>
+        </div>
       </div>
     </div>
   )

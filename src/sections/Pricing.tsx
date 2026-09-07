@@ -1,149 +1,25 @@
 import { useState } from 'react'
-import { Check } from 'lucide-react'
-import Reveal from '@/components/Reveal'
+import { ArrowUpRight, Check } from 'lucide-react'
 import FreedomContact from '@/components/FreedomContact'
-import { cn } from '@/lib/utils'
-
-/* ---------------------------------- data ---------------------------------- */
-
-// Free keeps cloud; offline is what you buy. The free card used to list
-// "Offline mode" as included, which contradicted the plan it is upselling.
-// The invoice count is kept in step with FREE_LIMITS in the app.
-const FREE_FEATURES = [
-  '5 invoices / month',
-  'Cloud sync & backup included',
-  'Invoicing, CRM & inventory',
-  'Filey AI agent — drafts, lookups, answers',
-  'Community support',
-]
-
-const FREEDOM_FEATURES = [
-  'Unlimited invoices',
-  'Works fully offline — data stays on your device',
-  'Filey AI agent — unlimited, with tools & memory',
-  'WhatsApp integration — voice notes & PDF sharing',
-  'Cloud sync on demand, whenever you want it',
-  '2 device slots',
-  'All 40+ FTA-compliant templates',
-  'PDF toolkit — merge, split, compress, watermark, OCR',
-  'Multi-currency — AED, INR, SAR with automatic tax rules',
-  'Payroll, cheques & bank accounts',
-  'Reports & statements of account',
-  'Automatic updates',
-  'Priority support',
-]
-
-/* ------------------------------- feature list ------------------------------ */
-
-function FeatureList({ items }: { items: string[] }) {
-  return (
-    <ul className="mt-8 border-t border-zinc-100">
-      {items.map((f) => (
-        <li
-          key={f}
-          className="flex items-start gap-3 border-b border-zinc-100 py-3 text-sm leading-[1.55] text-zinc-600"
-        >
-          <Check className="mt-0.5 h-4 w-4 shrink-0 text-amber-500" aria-hidden />
-          {f}
-        </li>
-      ))}
-    </ul>
-  )
-}
-
-/* --------------------------------- section --------------------------------- */
 
 export default function Pricing() {
-  // Freedom has no checkout while Stripe is out of the loop — the CTA opens a
-  // form that emails the owner instead of sending people to a download.
-  const [leadOpen, setLeadOpen] = useState(false)
-
-  return (
-    <section id="pricing" className="relative border-t border-zinc-200 py-28 lg:py-40">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        {/* centered header — SectionHeader rhythm, light */}
-        <Reveal className="mx-auto mb-14 max-w-3xl text-center lg:mb-20" y={24} duration={0.9} start="top 80%">
-          <p className="font-mono text-xs font-medium uppercase tracking-[0.18em] text-amber-600">
-            {'// '}03 — pricing
-          </p>
-          <h2 className="mt-4 font-display text-[clamp(2.25rem,5vw,4rem)] font-semibold leading-[1.0] tracking-[-0.03em] text-zinc-900">
-            Simple, honest pricing.
-          </h2>
-          <p className="mx-auto mt-5 max-w-2xl text-[clamp(1.0625rem,1.4vw,1.25rem)] leading-[1.6] text-zinc-600">
-            Start free. Upgrade once — own it forever. No subscriptions.
-          </p>
-        </Reveal>
-
-        <div className="mx-auto grid max-w-4xl grid-cols-1 gap-5 md:grid-cols-2">
-          {/* ------------------------------- Free ------------------------------- */}
-          <Reveal delay={0.1} className="h-full">
-            <div className="flex h-full flex-col rounded-xl border border-zinc-200 bg-white p-8 shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
-              <div className="flex items-center justify-between">
-                <h3 className="font-display text-lg font-semibold text-zinc-900">Free</h3>
-              </div>
-              <p className="mt-6 font-display text-5xl font-semibold tracking-[-0.03em] text-zinc-900">$0</p>
-              <p className="mt-2 font-mono text-[11px] uppercase tracking-[0.14em] text-zinc-400">forever</p>
-
-              <FeatureList items={FREE_FEATURES} />
-
-              <div className="mt-auto pt-8">
-                <a
-                  href="#download"
-                  className="inline-flex h-11 w-full items-center justify-center rounded-lg border border-zinc-300 text-sm font-semibold text-zinc-900 transition-colors duration-200 hover:border-amber-500 hover:bg-amber-50 active:scale-[0.98]"
-                >
-                  Download free
-                </a>
-              </div>
-            </div>
-          </Reveal>
-
-          {/* ------------------------------ Freedom ------------------------------ */}
-          <Reveal delay={0.2} className="h-full">
-            <div className="relative flex h-full flex-col rounded-xl border border-amber-400 bg-white p-8 shadow-[0_8px_40px_-12px_rgba(245,158,11,0.25)]">
-              <span className="btn-gradient absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full px-3 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.12em] text-[#1A1206]">
-                Most popular
-              </span>
-              <div className="flex items-center justify-between">
-                <h3 className="font-display text-lg font-semibold text-zinc-900">Freedom</h3>
-                <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-amber-600">
-                  One-time payment
-                </span>
-              </div>
-              <p className="mt-6 font-display text-5xl font-semibold tracking-[-0.03em] text-zinc-900">
-                AED 1,499
-              </p>
-              <p className="mt-2 font-mono text-[11px] uppercase tracking-[0.14em] text-zinc-400">
-                pay once, own it forever
-              </p>
-
-              <FeatureList items={FREEDOM_FEATURES} />
-
-              <div className="mt-auto pt-8">
-                <button
-                  onClick={() => setLeadOpen(true)}
-                  className={cn(
-                    'btn-gradient inline-flex h-11 w-full items-center justify-center rounded-lg text-sm font-semibold text-[#1A1206]',
-                    'transition-all duration-200 hover:shadow-[0_0_28px_rgba(251,191,36,0.25)] active:scale-[0.98]',
-                  )}
-                >
-                  Get Freedom — AED 1,499 once
-                </button>
-                <p className="mt-3 text-center font-mono text-[10.5px] text-zinc-400">
-                  Lifetime license · 30-day money-back guarantee
-                </p>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-
-        <Reveal delay={0.3} y={16}>
-          <p className="mt-8 text-center font-mono text-[11px] text-zinc-400">
-            Prices in AED. VAT may apply at checkout.
-          </p>
-        </Reveal>
-
-        <FreedomContact open={leadOpen} onClose={() => setLeadOpen(false)} />
+  const [contact, setContact] = useState(false)
+  return <section id="pricing" className="site-section pricing-section">
+    <div className="site-container">
+      <div className="section-heading centered" data-reveal><h2>Start free.<br />Make it yours.</h2><p>Room to begin. A one-time upgrade when you need more.</p></div>
+      <div className="pricing-grid" data-reveal>
+        <article className="price-plan"><div className="plan-heading"><h3>Free</h3><span>For getting started</span></div><p className="price">AED 0<span>Free to start</span></p>
+          <ul>{['5 cloud invoices each month', 'CRM, inventory and core business tools', 'Cloud workspace and backup', 'Connect your own AI provider', 'Community support'].map(item => <li key={item}><Check size={16} />{item}</li>)}</ul>
+          <a href="#download" className="site-button site-button-secondary">Download free <ArrowUpRight size={16} /></a>
+          <p className="plan-note">Unlimited local invoicing is planned for the next desktop update.</p>
+        </article>
+        <article className="price-plan freedom-plan"><div className="plan-heading"><h3>Freedom</h3><span>Yours for the long run</span></div><p className="price">AED 1,499<span>One-time license</span></p>
+          <ul>{['Unlimited invoicing', 'Local mode and cloud options', 'Two device slots', 'Documents without the Filey watermark', 'App updates and priority support'].map(item => <li key={item}><Check size={16} />{item}</li>)}</ul>
+          <button onClick={() => setContact(true)} className="site-button">Ask about Freedom <ArrowUpRight size={16} /></button>
+          <p className="plan-note">AI, messaging and other external services may have separate provider costs.</p>
+        </article>
       </div>
-    </section>
-  )
+      <p className="pricing-fine">Prices in AED. VAT may apply at checkout. Lifetime license · 30-day money-back guarantee.</p>
+    </div><FreedomContact open={contact} onClose={() => setContact(false)} />
+  </section>
 }

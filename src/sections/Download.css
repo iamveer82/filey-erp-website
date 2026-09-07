@@ -1,0 +1,27 @@
+.download-section { border-top: 1px solid var(--site-line); }
+.download-layout { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2.5rem, 8vw, 8rem); align-items: start; }
+.download-eyebrow { margin: 0 0 1rem; color: var(--site-muted); font-size: .82rem; font-weight: 600; }
+.download-intro h2 { max-width: 10ch; margin: 0; font-size: clamp(2.5rem, 4.6vw, 4.75rem); line-height: 1.04; font-weight: 600; letter-spacing: -.035em; text-wrap: balance; }
+.download-lead { max-width: 31ch; margin: 1.5rem 0 0; color: var(--site-muted); font-size: 1.08rem; line-height: 1.65; }
+.download-wordmark { display: flex; align-items: center; gap: 1rem; margin: 2.75rem 0 2rem; color: var(--site-text); }
+.download-wordmark img { width: 64px; height: 64px; object-fit: contain; border-radius: 18px; }
+.download-wordmark span { font-size: 4rem; font-weight: 600; letter-spacing: -.04em; line-height: 1; }
+.download-platform { display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 1rem; padding: 1.75rem 0; border-bottom: 1px solid var(--site-line); }
+.download-platform:first-child { padding-top: 0; }
+.download-platform > svg { margin-top: .3rem; color: var(--site-text); }
+.download-platform h3 { margin: 0; font-size: 1.3rem; line-height: 1.3; font-weight: 600; letter-spacing: -.02em; }
+.download-platform p { margin: .45rem 0 0; color: var(--site-muted); font-size: .85rem; line-height: 1.55; }
+.download-actions { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1rem; }
+.download-actions:empty { display: none; }
+.download-actions .site-button { font-size: .83rem; min-height: 42px; padding: .65rem 1rem; }
+.download-size { font-size: .72rem; font-weight: 400; color: var(--site-muted); white-space: nowrap; }
+.download-platform .download-platform-note { margin-top: .85rem; font-size: .75rem; }
+.download-release-note { margin: 1.5rem 0 0; max-width: 62ch; color: var(--site-muted); font-size: .79rem; line-height: 1.65; }
+.download-release-note a { color: var(--site-text); text-decoration: underline; text-underline-offset: .2em; }
+@media (max-width: 760px) {
+  .download-layout { grid-template-columns: minmax(0, 1fr); gap: 2.75rem; }
+  .download-intro h2 { max-width: 13ch; }
+  .download-wordmark { margin: 2rem 0 1.25rem; }
+  .download-wordmark img { width: 52px; height: 52px; border-radius: 14px; }
+  .download-wordmark span { font-size: 3.25rem; }
+}

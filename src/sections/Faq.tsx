@@ -1,68 +1,22 @@
-import Reveal from '@/components/Reveal'
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
+import { ArrowUpRight, Plus } from 'lucide-react'
+import { REPO_URL } from '@/lib/constants'
 
-const QA = [
-  {
-    q: 'What can the AI agent do?',
-    a: 'The built-in agent can draft invoices and purchase orders from plain-English descriptions, chase overdue payments on WhatsApp, merge and split PDFs, look up any record, and answer questions about your business. It has full tool access — everything you can do in the app, it can do for you.',
-  },
-  {
-    q: 'Does the AI agent work on WhatsApp?',
-    a: 'Yes. Pair your WhatsApp number and the agent answers your messages, sends PDFs and voice replies, and transcribes your voice notes. You can run your business from your phone.',
-  },
-  {
-    q: 'Is Filey ERP a subscription?',
-    a: 'No. The Free plan costs nothing forever — 5 invoices a month, with cloud sync and backup included. Freedom is a single one-time payment of AED 1,499: pay once and own your license forever, updates included.',
-  },
-  {
-    q: 'What happens when I hit 5 invoices in a month?',
-    a: "Nothing scary — your data stays put and everything keeps working; you just can't create new invoices until the month rolls over or you upgrade to Freedom for unlimited invoicing.",
-  },
-  {
-    q: 'Does it work without internet?',
-    a: 'Yes. Filey is offline-first: your data lives in a local database on your machine and every core feature works with no connection at all. The AI agent needs an internet connection to reach the language model.',
-  },
-  {
-    q: 'Is there a macOS version?',
-    a: 'We ship signed Windows and Linux installers. On macOS you can build from source in about ten minutes — the Run locally section above walks through it.',
-  },
-  {
-    q: 'Is my data private?',
-    a: 'Completely. Your business data never leaves your device unless you choose to connect your own cloud workspace. The PDF toolkit processes files 100% locally, and your AI key stays in your browser — requests go straight from your device to the provider.',
-  },
+const questions = [
+  ['Can I use Filey for free?', 'Yes. The published Free plan includes core tools and 5 cloud invoices each month. The next desktop update is being prepared with unlimited local invoicing on Free. Freedom removes the invoice limit and adds the licensed features shown above.'],
+  ['What works without an internet connection?', 'Local mode stores business records on your device and supports core document and record workflows. Hosted AI, email, messaging and cloud synchronization need a connection. Local-mode availability depends on the installed version and license.'],
+  ['What can Filey AI do?', 'Filey AI can look up records, draft invoices and purchase orders, and use supported tools in your workspace. Actions follow your account permissions and agent approval settings. Connect a supported AI provider; its usage limits and charges still apply.'],
+  ['Can I send an invoice on WhatsApp?', 'Filey supports invoice messaging workflows. A chat link can prepare a message; attaching or sending a PDF depends on the desktop bridge, device sharing support or a configured business provider. Provider channels must be connected before automated delivery can work.'],
+  ['Which countries does Filey support?', 'Filey supports multiple currencies. The next update adds explicit country and tax-profile settings for India, the UAE, Saudi Arabia, the EU and more. Currency and tax country are separate choices. Check local requirements before issuing tax documents.'],
+  ['Are the website previews my real business data?', 'No. The interactive preview uses sample records in this browser tab. It does not create invoices in your Filey account or connect to an AI service. Download the desktop app to use your own workspace.'],
+  ['Which computers can run Filey?', 'Published downloads are available for Windows x64, Linux x64 and Apple Silicon macOS when those installers are present in the latest release. Use the download section for the actual available packages.'],
 ]
 
 export default function Faq() {
-  return (
-    <section id="faq" className="relative border-t border-zinc-200 py-28 lg:py-40">
-      <div className="mx-auto max-w-3xl px-5 sm:px-8">
-        {/* centered header — SectionHeader rhythm, light */}
-        <Reveal className="mx-auto mb-10 max-w-3xl text-center lg:mb-12" y={24} duration={0.9} start="top 80%">
-          <p className="font-mono text-xs font-medium uppercase tracking-[0.18em] text-amber-600">
-            {'// '}06 — faq
-          </p>
-          <h2 className="mt-4 font-display text-[clamp(2.25rem,5vw,4rem)] font-semibold leading-[1.0] tracking-[-0.03em] text-zinc-900">
-            Fair questions.
-          </h2>
-        </Reveal>
-        <Accordion type="single" collapsible>
-          {QA.map((item, i) => (
-            <Reveal key={item.q} delay={i * 0.08} y={24} duration={0.6}>
-              <AccordionItem
-                value={`item-${i}`}
-                className="rounded-lg border-zinc-200 px-4 transition-colors duration-200 data-[state=open]:bg-white"
-              >
-                <AccordionTrigger className="py-5 font-display text-[17px] font-semibold text-zinc-900 hover:no-underline">
-                  {item.q}
-                </AccordionTrigger>
-                <AccordionContent className="pb-6 text-[15px] leading-[1.65] text-zinc-600">
-                  {item.a}
-                </AccordionContent>
-              </AccordionItem>
-            </Reveal>
-          ))}
-        </Accordion>
-      </div>
-    </section>
-  )
+  return <>
+    <section id="faq" className="site-section faq-section"><div className="site-container faq-layout">
+      <div className="section-heading" data-reveal><h2>A few good<br />questions.</h2><p>For everything else, the documentation and community are a click away.</p><a className="text-link" href={REPO_URL + '#readme'}>Read the documentation <ArrowUpRight size={16} /></a></div>
+      <div className="faq-list" data-reveal>{questions.map(([question, answer]) => <details key={question}><summary>{question}<Plus size={19} /></summary><p>{answer}</p></details>)}</div>
+    </div></section>
+    <section id="run-locally" className="source-section"><div className="site-container source-inner" data-reveal><div><p className="eyebrow">Open by design</p><h2>Your business.<br />Your tools.</h2><p>Read the code, build from source, or help shape what comes next.</p></div><a className="site-button site-button-secondary" href={REPO_URL}>Explore Filey on GitHub <ArrowUpRight size={17} /></a></div></section>
+  </>
 }
