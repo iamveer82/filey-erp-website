@@ -34,13 +34,13 @@ The site uses React 19, TypeScript and Vite 7. React Router serves `/`, `/signup
 - `src/pages/Home.tsx` composes `Hero`, `ProductStory`, `Pricing`, `Download` and `Faq`.
 - `src/components/Layout.tsx` supplies navigation, footer and progressive section reveals.
 - `src/site.css` defines the shared light/dark palette, typography, pill buttons and responsive layouts. `Hero.css`, `LiveDemo.css`, `Download.css` and `FreedomContact.css` handle their respective sections.
-- `src/sections/ProductStory.tsx` contains product, AI-example and next-update content, including the interactive demo.
+- `src/sections/ProductStory.tsx` contains product, AI-example and released-feature content, including the interactive demo.
 - `src/sections/LiveDemo.tsx` supplies a desktop-style sidebar, section search and an internally scrolling workspace. It starts on Overview and connects its invoice actions to the invoice list/editor. The fixed workspace height prevents later page anchors from moving when lazy sections load.
 - `src/lib/useLatestRelease.ts` resolves published desktop installers. `src/lib/constants.ts` holds public project links.
 - `src/pages/SignUp.tsx` and `src/lib/signup.ts` implement email/password registration and email-code verification. Registration connects to Supabase; the demo does not.
 - `src/components/FreedomContact.tsx` sends an explicitly submitted enquiry to the existing `lead-contact` Supabase function. It is a contact flow, not an online checkout.
 
-The demos reproduce the current ERP working tree's Overview, Invoicing, CRM and Inventory layouts using sample records. The shared demo tokens and navigation follow the desktop app's `src/index.css` and `src/components/Layout.tsx`; individual screens follow their corresponding ERP page files. Changes reset when switching demo sections; they are not saved to an ERP account. The preview is labelled as the next desktop update, since public installers can have older screens. AI examples are illustrative and make no provider requests.
+The demos present Overview, Invoicing, CRM and Inventory workflows using sample records. The shared demo tokens and navigation follow the desktop app's `src/index.css` and `src/components/Layout.tsx`; individual screens follow their corresponding ERP page files. Changes reset when switching demo sections; they are not saved to an ERP account. This is an interactive tour, not a complete browser version of the desktop app. AI examples are illustrative and make no provider requests.
 
 ## Assets and motion
 
@@ -63,11 +63,11 @@ Email delivery, enabled auth methods, templates and rate limits are configured i
 
 ## Downloads and release status
 
-As verified on **7 September 2026**, the latest public desktop release is [v2.10.2](https://github.com/iamveer82/Filey-erp/releases/tag/v2.10.2). It includes Windows x64 `.exe`/`.msi`, Linux x64 `.deb`/`.rpm`, and an Apple Silicon macOS `.dmg`. Do not infer an AppImage or an Intel Mac package from platform names.
+The latest verified public desktop release is [v2.11.0](https://github.com/iamveer82/Filey-erp/releases/tag/v2.11.0). It includes Windows x64 `.exe`/`.msi`, Linux x64 `.deb`/`.rpm`, and an unsigned Apple Silicon macOS `.dmg`. Do not infer an AppImage or an Intel Mac package from platform names.
 
 The site reads the [GitHub latest-release API](https://api.github.com/repos/iamveer82/Filey-erp/releases/latest), sharing one request across consumers. Buttons and sizes come from actual assets in that response. If the API fails or an installer is missing, the fallback is the [latest release page](https://github.com/iamveer82/Filey-erp/releases/latest), never an invented or pinned installer URL. No GitHub token is needed.
 
-The redesigned CRM, Reports-only section insights, connected Overview charts, unlimited local invoicing on Free, and expanded country/tax settings described as **coming in the next update** belong to the ERP working tree and are not features newly delivered by the v2.10.2 installers. Keep that distinction until a corresponding desktop release has been built, validated and published. Website changes do not build, upload or publish desktop installers, run ERP migrations, or activate hosted email configuration.
+The redesigned CRM, Today follow-ups, linked quotations/invoices, connected Overview charts, unlimited local invoicing on Free, improved document/PDF tools and country/tax settings are available in v2.11.0. The website's feature, pricing and FAQ copy reflects that release. Provider accounts and keys remain user-configured, and country settings do not imply complete statutory localization. Website changes do not build or publish desktop installers, run ERP migrations, or activate hosted email configuration.
 
 ## Deployment
 
@@ -82,4 +82,4 @@ Review and validate changes on a branch. If Vercel creates a branch preview, che
 - [Desktop app repository and documentation](https://github.com/iamveer82/Filey-erp)
 - [Desktop releases](https://github.com/iamveer82/Filey-erp/releases)
 - [Issues and feedback](https://github.com/iamveer82/Filey-erp/issues)
-- [Desktop app license: AGPL-3.0](https://github.com/iamveer82/Filey-erp/blob/main/LICENSE)
+- [Desktop app license: Apache-2.0](https://github.com/iamveer82/Filey-erp/blob/main/LICENSE)

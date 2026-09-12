@@ -15,14 +15,14 @@ runInNewContext(ts.transpileModule(readFileSync(new URL('../src/lib/useLatestRel
   require: name => name === 'react' ? {} : { REPO_URL: repo, LATEST_RELEASE_URL: releases },
 })
 const { parseLatestRelease, installerForOS } = exports
-const asset = name => ({ name, size: 1048576, browser_download_url: `${repo}/releases/download/v2.10.2/${name}` })
+const asset = name => ({ name, size: 1048576, browser_download_url: `${repo}/releases/download/v2.11.0/${name}` })
 
 test('uses actual published assets and sizes, including Apple Silicon', () => {
-  const release = parseLatestRelease({ tag_name: 'v2.10.2', assets: [
-    asset('Filey.ERP_2.10.2_x64-setup.exe'), asset('Filey.ERP_2.10.2_x64_en-US.msi'),
-    asset('Filey.ERP_2.10.2_amd64.deb'), asset('Filey.ERP-2.10.2-1.x86_64.rpm'), asset('Filey.ERP_2.10.2_aarch64.dmg'),
+  const release = parseLatestRelease({ tag_name: 'v2.11.0', assets: [
+    asset('Filey.ERP_2.11.0_x64-setup.exe'), asset('Filey.ERP_2.11.0_x64_en-US.msi'),
+    asset('Filey.ERP_2.11.0_amd64.deb'), asset('Filey.ERP-2.11.0-1.x86_64.rpm'), asset('Filey.ERP_2.11.0_aarch64.dmg'),
   ] })
-  assert.equal(release.version, '2.10.2')
+  assert.equal(release.version, '2.11.0')
   assert.equal(release.live, true)
   assert.equal(release.windowsExe.size, '1.0 MB')
   assert.equal(release.macDmg.architecture, 'Apple Silicon')
@@ -32,7 +32,7 @@ test('uses actual published assets and sizes, including Apple Silicon', () => {
 })
 
 test('does not require Windows assets or invent absent platform packages', () => {
-  const release = parseLatestRelease({ tag_name: 'v2.10.2', assets: [asset('Filey.ERP-2.10.2-1.x86_64.rpm')] })
+  const release = parseLatestRelease({ tag_name: 'v2.11.0', assets: [asset('Filey.ERP-2.11.0-1.x86_64.rpm')] })
   assert.equal(release.live, true)
   assert.equal(release.linuxDeb.available, false)
   assert.equal(release.windowsExe.url, releases)
@@ -52,8 +52,8 @@ test('falls back to the releases page without stale versions or sizes', () => {
 })
 
 test('ignores signatures, malformed assets and links outside the release repository', () => {
-  const release = parseLatestRelease({ assets: [null, asset('Filey.ERP_2.10.2_x64-setup.exe.sig'),
-    { ...asset('Filey.ERP_2.10.2_x64-setup.exe'), browser_download_url: 'https://other.example/app.exe' },
+  const release = parseLatestRelease({ assets: [null, asset('Filey.ERP_2.11.0_x64-setup.exe.sig'),
+    { ...asset('Filey.ERP_2.11.0_x64-setup.exe'), browser_download_url: 'https://other.example/app.exe' },
   ] })
   assert.equal(release.live, false)
   assert.equal(installerForOS(release, 'windows'), releases)

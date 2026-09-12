@@ -8,7 +8,7 @@ export default function Footer() {
       <div className="footer-links">
         <div><h3>Product</h3><a href="#features">Features</a><a href="#demo">Live demo</a><a href="#pricing">Pricing</a><a href="#download">Download</a></div>
         <div><h3>Resources</h3><a href={REPO_URL + '#readme'}>Documentation <ArrowUpRight size={13} /></a><a href={ISSUES_URL}>Help & feedback <ArrowUpRight size={13} /></a><a href={RELEASES_URL}>Release notes <ArrowUpRight size={13} /></a><a href="#faq">FAQ</a></div>
-        <div><h3>Open source</h3><a href={REPO_URL}>GitHub <ArrowUpRight size={13} /></a><a href={LICENSE_URL}>AGPL-3.0 license <ArrowUpRight size={13} /></a><a href="#run-locally">Build from source</a></div>
+        <div><h3>Open source</h3><a href={REPO_URL}>GitHub <ArrowUpRight size={13} /></a><a href={LICENSE_URL}>Apache-2.0 license <ArrowUpRight size={13} /></a><a href="#run-locally">Build from source</a></div>
       </div>
       <div className="footer-bottom"><span>© {new Date().getFullYear()} Filey ERP. All rights reserved.</span><span>Built for the work you do.</span></div>
     </div>

@@ -82,7 +82,7 @@ export default function LiveDemo() {
           </div>
         </div>
         <p id="demo-limits" className="demo-limits">
-          Preview of the next desktop update. Sample changes reset when you switch sections. Your real business data stays in the app.
+          Interactive tour with sample data. Sample changes reset when you switch sections. Your real business data stays in the app.
         </p>
       </div>
     </section>

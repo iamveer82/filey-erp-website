@@ -9,9 +9,9 @@ export default function Pricing() {
       <div className="section-heading centered" data-reveal><h2>Start free.<br />Make it yours.</h2><p>Room to begin. A one-time upgrade when you need more.</p></div>
       <div className="pricing-grid" data-reveal>
         <article className="price-plan"><div className="plan-heading"><h3>Free</h3><span>For getting started</span></div><p className="price">AED 0<span>Free to start</span></p>
-          <ul>{['5 cloud invoices each month', 'CRM, inventory and core business tools', 'Cloud workspace and backup', 'Connect your own AI provider', 'Community support'].map(item => <li key={item}><Check size={16} />{item}</li>)}</ul>
+          <ul>{['Unlimited local invoicing', '5 cloud invoices each month', 'CRM, inventory and core business tools', 'Separate local and cloud workspaces', 'Local AI models or your own provider key', 'Community support'].map(item => <li key={item}><Check size={16} />{item}</li>)}</ul>
           <a href="#download" className="site-button site-button-secondary">Download free <ArrowUpRight size={16} /></a>
-          <p className="plan-note">Unlimited local invoicing is planned for the next desktop update.</p>
+          <p className="plan-note">Core local tools are free. Hosted AI, messaging and other external services may have separate provider costs.</p>
         </article>
         <article className="price-plan freedom-plan"><div className="plan-heading"><h3>Freedom</h3><span>Yours for the long run</span></div><p className="price">AED 1,499<span>One-time license</span></p>
           <ul>{['Unlimited invoicing', 'Local mode and cloud options', 'Two device slots', 'Documents without the Filey watermark', 'App updates and priority support'].map(item => <li key={item}><Check size={16} />{item}</li>)}</ul>
