@@ -2,7 +2,7 @@ import { ArrowUpRight, Plus } from 'lucide-react'
 import { REPO_URL } from '@/lib/constants'
 
 const questions = [
-  ['Can I use Filey for free?', 'Yes. Free includes unlimited local invoicing, core ERP and CRM tools, and 5 cloud invoices each month. Freedom removes the cloud invoice limit and adds the licensed features shown above. External services may have their own charges.'],
+  ['Can I use Filey for free?', 'Yes. Free gives you the whole ERP and CRM on your own device, with 5 invoices a month. Cloud is $1/month and adds sync across your devices with no invoice cap; Freedom is a one-time AED 1,499 licence for unlimited offline use on two machines. External services may have their own charges.'],
   ['What works without an internet connection?', 'Local mode is included on Free and keeps business records on your device for core document and record workflows. Hosted AI, email, messaging and cloud synchronization need a connection. Local and cloud workspaces keep separate records; you choose when to transfer data.'],
   ['What can Filey AI do?', 'Filey AI can look up records, draft invoices and purchase orders, and use supported tools in your workspace. CRM records can prepare contextual requests for your review. Actions follow your account permissions and agent approval settings. Use a supported local model or your own provider key; hosted usage limits and charges still apply.'],
   ['Can I send an invoice on WhatsApp?', 'Filey supports invoice messaging workflows. A chat link can prepare a message; attaching or sending a PDF depends on the desktop bridge, device sharing support or a configured business provider. Provider channels must be connected before automated delivery can work.'],
