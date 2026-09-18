@@ -49,7 +49,7 @@ export default function Download() {
             <div className="download-actions"><InstallerLink installer={release.linuxDeb} label="Download .deb" /><InstallerLink installer={release.linuxRpm} label=".rpm" /></div>
           </div>
         </div>
-        <p className="download-release-note">The redesigned CRM, unlimited local invoicing on Free, connected reports and improved document tools are now available. Already using Filey? Check for updates in the desktop app, or install the latest package above.</p>
+        <p className="download-release-note">The redesigned CRM, the free Basic plan, connected reports and improved document tools are now available. Already using Filey? Check for updates in the desktop app, or install the latest package above.</p>
         {!release.live && <p className="download-release-note">Installer details are unavailable right now. <a href={LATEST_RELEASE_URL}>Browse GitHub releases</a> to choose a download.</p>}
       </div>
     </div>

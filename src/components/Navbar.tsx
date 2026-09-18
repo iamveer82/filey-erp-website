@@ -2,7 +2,7 @@ import { useRef, useState } from 'react'
 import { Menu, X, Sun, Moon, ArrowUpRight } from 'lucide-react'
 import { Link } from 'react-router'
 
-const links = [['Features', '#features'], ['Demo', '#demo'], ['Pricing', '#pricing'], ['Download', '#download'], ['FAQ', '#faq']]
+const links = [['Features', '/#features'], ['Demo', '/#demo'], ['Pricing', '/#pricing'], ['Download', '/#download'], ['FAQ', '/#faq']]
 
 export default function Navbar() {
   const [open, setOpen] = useState(false)
@@ -16,7 +16,7 @@ export default function Navbar() {
   }
   return <header className="site-nav" onKeyDown={event => { if (event.key === 'Escape' && open) { setOpen(false); menuButton.current?.focus() } }}>
     <div className="site-container nav-inner">
-      <a className="wordmark" href="#top" aria-label="Filey ERP home" onClick={() => setOpen(false)}>
+      <a className="wordmark" href="/#top" aria-label="Filey ERP home" onClick={() => setOpen(false)}>
         <img src="/filey-mark.png" alt="" width="44" height="44" /><span>Filey<span className="wordmark-erp"> ERP</span></span>
       </a>
       <nav className="nav-desktop" aria-label="Primary">{links.map(([name, url]) => <a href={url} key={url}>{name}</a>)}</nav>

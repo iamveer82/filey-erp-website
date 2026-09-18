@@ -55,7 +55,7 @@ export default function ProductStory() {
         <div className="update-layout" data-reveal>
           <div className="workspace-card">
             <div className="storage-visual" aria-hidden="true"><Laptop size={72} strokeWidth={1} /><div className="storage-connection"><span /><img src="/filey-mark.png" width="90" height="90" alt="" /><span /></div><Cloud size={68} strokeWidth={1} /></div>
-            <h3>Your desktop. Your choice.</h3><p>Use a local workspace or a connected cloud workspace. Keep each store separate and choose when to transfer data.</p><span className="workspace-note">Unlimited local invoicing is included on Free.</span>
+            <h3>Your desktop. Your choice.</h3><p>Use a local workspace or a connected cloud workspace. Keep each store separate and choose when to transfer data.</p><span className="workspace-note">Local workspaces are free on Basic.</span>
           </div>
           <div className="update-details">
             <article><span className="update-icon"><Users size={22} /></span><div><h3>A CRM that keeps the context.</h3><p>Companies, contacts and deals with linked quotations and invoices. A Today queue for follow-ups, plus custom fields and reviewed bulk edits.</p></div></article>
