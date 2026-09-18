@@ -17,3 +17,23 @@ html{scroll-behavior:smooth;scroll-padding-top:90px}body{margin:0;background:var
 @media(max-width:800px){.site-section{padding-block:84px}.site-container{width:calc(100% - 40px)}.nav-inner{height:64px;gap:16px}.nav-desktop{display:none}.nav-toggle{display:grid}.nav-actions{gap:5px}.nav-mobile{display:grid;padding:10px 24px 24px;border-top:1px solid var(--site-line)}.nav-mobile>a{display:flex;justify-content:space-between;padding:14px 2px;font-size:15px}.section-heading{margin-bottom:40px}.capability-grid{grid-template-columns:repeat(2,1fr);gap:36px 22px}.workflow{margin:50px auto}.ai-layout,.update-layout,.countries-layout,.faq-layout{grid-template-columns:1fr;gap:42px}.ai-layout .section-heading{max-width:520px}.ai-example blockquote{min-height:85px}.workspace-card{padding:26px}.storage-visual{height:160px}.storage-connection span{width:45px}.storage-visual>svg{width:68px}.countries-layout{margin-top:85px}.country-paper{max-width:550px}.pricing-grid{gap:15px}.price-plan{padding:25px}.price{font-size:35px}.price-plan ul{font-size:11px}.source-inner{align-items:flex-start;flex-direction:column}.footer-links{margin-left:0;margin-bottom:40px}.footer-top{align-items:flex-start;flex-direction:column;gap:8px}.footer-top p{margin:0}.faq-section{padding-top:28px}}
 @media(max-width:540px){.site-container{width:calc(100% - 36px)}.site-section{padding-block:66px}.section-heading h2{font-size:36px}.section-heading>p:not(.eyebrow){font-size:15px}.wordmark{font-size:19px}.wordmark-erp{font-size:13px}.nav-signup{padding:8px 12px!important;font-size:11px!important}.nav-actions .icon-button{width:30px}.workflow>div{font-size:11px;gap:12px}.workflow>div>svg:first-child{width:22px}.workflow-arrow{width:13px;right:-6px}.capability-grid p{font-size:12px}.capability-grid h3{font-size:14px}.capability-grid{gap:28px 18px}.ai-example{padding:24px}.example-select button{font-size:10px;padding:7px 10px}.ai-example blockquote{font-size:27px}.example-steps p{font-size:11px}.storage-connection span{width:18px}.storage-visual>svg{width:58px}.storage-connection img{width:90px;height:90px}.workspace-card h3{font-size:23px}.country-paper{padding:28px}.country-tabs button{padding:8px 10px}.pricing-grid{grid-template-columns:1fr;gap:22px}.price-plan{padding:30px}.price-plan ul{font-size:13px}.price{font-size:42px}.plan-note{min-height:0}.footer-links{gap:20px;grid-template-columns:1fr 1fr}.footer-bottom{flex-direction:column;gap:8px}.site-footer{padding-top:45px}.source-section{padding:65px 0}.country-paper dl{gap:15px}.faq-section{padding-top:15px}}
 .plan-link{border:0;background:none;padding:0;font:inherit;color:var(--site-accent-text);text-decoration:underline;cursor:pointer}
+.buy-form{display:grid;gap:10px;width:100%;margin-top:auto}
+.buy-form label{font-size:11px;color:var(--site-muted)}
+.buy-form input{width:100%;padding:11px 13px;font:inherit;font-size:13px;border:1px solid var(--site-line);border-radius:10px;background:var(--site-paper);color:var(--site-text)}
+.buy-form input:focus-visible{outline:2px solid var(--site-accent);outline-offset:1px}
+.buy-form input:disabled{opacity:.6}
+.buy-form .site-button{width:100%}
+.buy-error{font-size:12px;color:#b42318;margin:0}
+.buy-hint{font-size:11px;color:var(--site-muted);margin:0}
+.buy-spin{animation:buy-spin 1s linear infinite}
+@keyframes buy-spin{to{transform:rotate(360deg)}}
+.thanks-page{padding:110px 0 90px}
+.thanks-page .site-container{max-width:640px}
+.thanks-badge{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--site-accent-text);border:1px solid var(--site-line);border-radius:999px;padding:6px 13px;margin:0 0 22px}
+.thanks-page h1{font-size:clamp(32px,5vw,48px);letter-spacing:-.04em;margin:0 0 14px}
+.thanks-lead{font-size:15px;color:var(--site-muted);margin:0 0 34px}
+.thanks-steps{display:grid;gap:16px;padding-left:20px;margin:0 0 30px;font-size:14px;line-height:1.65}
+.thanks-steps strong{font-weight:550}
+.thanks-note{font-size:12px;line-height:1.8;color:var(--site-muted);border-top:1px solid var(--site-line);padding-top:22px;margin:0 0 30px}
+.thanks-actions{display:flex;flex-wrap:wrap;gap:12px}
+@media(max-width:540px){.thanks-page{padding:80px 0 60px}.thanks-actions .site-button{width:100%}}
