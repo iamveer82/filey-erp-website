@@ -36,7 +36,7 @@ export default function Pricing() {
           <p className="plan-note">{PAID.ultra.note} <button type="button" className="plan-link" onClick={() => setContact(true)}>Questions first?</button></p>
         </article>
       </div>
-      <p className="pricing-fine">Billed in USD. Tax added at checkout by Dodo Payments, our merchant of record. Lifetime license · 30-day money-back guarantee.</p>
+      <p className="pricing-fine">Prices in US dollars. Dodo Payments, our merchant of record, may show the total in your local currency with tax added at checkout. Ultra is a lifetime license with a 30-day money-back guarantee.</p>
     </div><FreedomContact open={contact} onClose={() => setContact(false)} />
   </section>
 }
