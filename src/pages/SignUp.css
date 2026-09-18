@@ -65,3 +65,6 @@
   .signup-heading h1 { font-size: 26px; }
   .signup-otp [data-slot=input-otp-group] { gap: 5px; }
 }
+/* Login's "sign in with a code" toggle and the signed-in card's secondary actions. */
+form > .signup-resend, .signup-complete > .signup-resend { display: flex; align-items: center; justify-content: center; width: 100%; margin-top: 8px; }
+.signup-error a { color: inherit; font-weight: 550; text-decoration: underline; text-underline-offset: 3px; }

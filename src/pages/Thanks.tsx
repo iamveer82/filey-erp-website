@@ -1,5 +1,6 @@
 import { Link, useSearchParams } from 'react-router'
 import { Check, Download } from 'lucide-react'
+import { useSession } from '@/lib/auth'
 
 // Where Dodo sends a buyer after payment — from the website store, or from a
 // Buy button inside the app (`from=app`, which opened this in the browser).
@@ -13,6 +14,7 @@ export default function Thanks() {
   const pro = ['cloud', 'pro'].includes(params.get('plan') ?? '')
   const name = pro ? 'Pro' : 'Ultra'
   const fromApp = params.get('from') === 'app'
+  const session = useSession()
   // Dodo appends the outcome to the return URL; a declined card lands here too.
   const failed = /fail|cancel/i.test(params.get('status') ?? '')
 
@@ -44,7 +46,9 @@ export default function Thanks() {
       ) : (
         <ol className="thanks-steps">
           <li><strong>Open Filey</strong> — download it below if this is a new machine.</li>
-          <li><strong>Create your account, or sign in, with the email you just paid with.</strong> That address is what your purchase is attached to.</li>
+          {session
+            ? <li><strong>Sign in as {session.email}.</strong> Your purchase is attached to that account.</li>
+            : <li><strong>Sign in with the account you paid from.</strong> Your purchase is attached to it.</li>}
           <li><strong>That's it.</strong> {name} switches on by itself — Settings → Billing will show your plan.</li>
         </ol>
       )}

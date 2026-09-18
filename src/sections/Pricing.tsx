@@ -8,9 +8,8 @@ import { BASIC, PAID, type Plan } from '@/lib/plans'
 // Basic is the whole app locally with a monthly invoice allowance. Pro is
 // $5 a month for sync. Ultra buys the local app outright, forever.
 //
-// Paid plans are bought right here with no account: BuyPlan asks for an
-// email, the dodo edge function opens Dodo's hosted checkout, and the
-// purchase is held against that email until the buyer signs in to Filey.
+// Paid plans need a Filey account: BuyPlan sends a signed-in visitor straight
+// to Dodo's hosted checkout, and everyone else to sign up first.
 function Features({ plan }: { plan: Plan }) {
   return <ul>{plan.features.map(item => <li key={item}><Check size={16} />{item}</li>)}</ul>
 }
@@ -28,12 +27,12 @@ export default function Pricing() {
         </article>
         <article className="price-plan"><div className="plan-heading"><h3>{PAID.pro.name}</h3><span>{PAID.pro.tagline}</span></div><p className="price">{PAID.pro.price}<span>{PAID.pro.period}</span></p>
           <Features plan={PAID.pro} />
-          <BuyPlan plan={PAID.pro.sku} label={PAID.pro.cta} />
+          <BuyPlan plan="pro" label={PAID.pro.cta} />
           <p className="plan-note">{PAID.pro.note}</p>
         </article>
         <article className="price-plan freedom-plan"><div className="plan-heading"><h3>{PAID.ultra.name}</h3><span>{PAID.ultra.tagline}</span></div><p className="price">{PAID.ultra.price}<span>{PAID.ultra.period}</span></p>
           <Features plan={PAID.ultra} />
-          <BuyPlan plan={PAID.ultra.sku} label={PAID.ultra.cta} primary />
+          <BuyPlan plan="ultra" label={PAID.ultra.cta} primary />
           <p className="plan-note">{PAID.ultra.note} <button type="button" className="plan-link" onClick={() => setContact(true)}>Questions first?</button></p>
         </article>
       </div>

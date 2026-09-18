@@ -10,8 +10,9 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Sign-up is its own bare screen — no marketing nav or footer. */}
-        <Route path="/signup" element={<div className="auth-site"><Suspense fallback={<p className="not-found" role="status">Loading signup…</p>}><SignUp /></Suspense></div>} />
+        {/* Sign-up and sign-in are their own bare screens — no marketing nav or footer. */}
+        <Route path="/signup" element={<div className="auth-site"><Suspense fallback={<p className="not-found" role="status">Loading signup…</p>}><SignUp key="signup" mode="signup" /></Suspense></div>} />
+        <Route path="/login" element={<div className="auth-site"><Suspense fallback={<p className="not-found" role="status">Loading sign in…</p>}><SignUp key="login" mode="login" /></Suspense></div>} />
         {/* Where Dodo returns a buyer after payment. */}
         <Route path="/thanks" element={<Layout><Suspense fallback={<p className="not-found" role="status">Loading…</p>}><Thanks /></Suspense></Layout>} />
         <Route

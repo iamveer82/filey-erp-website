@@ -1,11 +1,13 @@
 import { useRef, useState } from 'react'
 import { Menu, X, Sun, Moon, ArrowUpRight } from 'lucide-react'
 import { Link } from 'react-router'
+import { signOut, useSession } from '@/lib/auth'
 
 const links = [['Features', '/#features'], ['Demo', '/#demo'], ['Pricing', '/#pricing'], ['Download', '/#download'], ['FAQ', '/#faq']]
 
 export default function Navbar() {
   const [open, setOpen] = useState(false)
+  const session = useSession()
   const menuButton = useRef<HTMLButtonElement>(null)
   const [dark, setDark] = useState(() => document.documentElement.dataset.theme === 'dark')
   function toggleTheme() {
@@ -22,13 +24,23 @@ export default function Navbar() {
       <nav className="nav-desktop" aria-label="Primary">{links.map(([name, url]) => <a href={url} key={url}>{name}</a>)}</nav>
       <div className="nav-actions">
         <button className="icon-button" onClick={toggleTheme} aria-label={dark ? 'Use light appearance' : 'Use dark appearance'}>{dark ? <Sun size={17} /> : <Moon size={17} />}</button>
-        <Link className="site-button nav-signup" to="/signup">Get started <ArrowUpRight size={15} /></Link>
+        {session
+          ? <button type="button" className="nav-signin" title={`Signed in as ${session.email}`} onClick={() => void signOut()}>Sign out</button>
+          : <Link className="nav-signin" to="/login">Sign in</Link>}
+        {session
+          ? <a className="site-button nav-signup" href="/#download">Download <ArrowUpRight size={15} /></a>
+          : <Link className="site-button nav-signup" to="/signup">Get started <ArrowUpRight size={15} /></Link>}
         <button ref={menuButton} className="icon-button nav-toggle" aria-label={open ? 'Close menu' : 'Open menu'} aria-expanded={open} aria-controls="mobile-nav" onClick={() => setOpen(!open)}>{open ? <X /> : <Menu />}</button>
       </div>
     </div>
     {open && <nav id="mobile-nav" className="nav-mobile" aria-label="Mobile navigation">
       {links.map(([name, url]) => <a href={url} key={url} onClick={() => setOpen(false)}>{name}<ArrowUpRight size={16} /></a>)}
-      <Link to="/signup" onClick={() => setOpen(false)}>Create account <ArrowUpRight size={16} /></Link>
+      {session
+        ? <button type="button" onClick={() => { setOpen(false); void signOut() }}>Sign out ({session.email}) <ArrowUpRight size={16} /></button>
+        : <>
+          <Link to="/login" onClick={() => setOpen(false)}>Sign in <ArrowUpRight size={16} /></Link>
+          <Link to="/signup" onClick={() => setOpen(false)}>Create account <ArrowUpRight size={16} /></Link>
+        </>}
     </nav>}
   </header>
 }

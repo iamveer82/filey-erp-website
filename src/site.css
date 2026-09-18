@@ -37,3 +37,7 @@ html{scroll-behavior:smooth;scroll-padding-top:90px}body{margin:0;background:var
 .buy-hint{font-size:11px;color:var(--site-muted);margin:0}
 .buy-spin{animation:buy-spin 1s linear infinite}
 @keyframes buy-spin{to{transform:rotate(360deg)}}
+.nav-signin{border:0;background:none;padding:8px 10px;font-size:13px;color:var(--site-muted);white-space:nowrap}
+.nav-signin:hover{color:var(--site-text)}
+.nav-mobile>button{display:flex;justify-content:space-between;padding:14px 2px;font-size:15px;border:0;background:none;color:inherit;text-align:left;width:100%}
+@media(max-width:800px){.nav-signin{display:none}}

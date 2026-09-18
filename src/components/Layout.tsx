@@ -9,6 +9,19 @@ export default function Layout({ children }: { children: ReactNode }) {
     // Native fragment navigation runs before React has mounted these sections.
     const hash = window.location.hash
     if (!hash) return
+    // The deployed dodo function returns signed-in buyers to the app's old
+    // route (#/settings?section=license|billing&checkout=…); forward them to
+    // the page that means something here. Harmless once it returns /thanks.
+    const legacy = hash.match(/^#\/settings\?section=(license|billing)&checkout=(success|cancel)/)
+    if (legacy) {
+      const status = hash.match(/[?&]status=([a-z_]+)/)?.[1]
+      window.location.replace(
+        legacy[2] === 'cancel'
+          ? '/#pricing'
+          : `/thanks?plan=${legacy[1] === 'license' ? 'freedom' : 'cloud'}${status ? `&status=${status}` : ''}`
+      )
+      return
+    }
     let id: string
     try { id = decodeURIComponent(hash.slice(1)) } catch { return }
     let active = true

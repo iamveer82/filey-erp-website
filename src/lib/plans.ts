@@ -1,6 +1,5 @@
 // The three plans, named as they are inside the app: Basic, Pro, Ultra.
-// `sku` is what the payment backend calls a plan — "cloud" and "freedom"
-// predate the names, and changing them would orphan every past purchase.
+// lib/auth.ts maps pro/ultra onto the backend's older cloud/freedom names.
 
 export type PaidPlan = 'pro' | 'ultra'
 
@@ -22,9 +21,8 @@ export const BASIC: Plan = {
   note: 'Everything runs on this machine. Hosted AI, messaging and other external services may have separate provider costs.',
 }
 
-export const PAID: Record<PaidPlan, Plan & { sku: 'cloud' | 'freedom'; cta: string }> = {
+export const PAID: Record<PaidPlan, Plan & { cta: string }> = {
   pro: {
-    sku: 'cloud',
     cta: 'Get Pro',
     name: 'Pro',
     tagline: 'Work from anywhere',
@@ -34,7 +32,6 @@ export const PAID: Record<PaidPlan, Plan & { sku: 'cloud' | 'freedom'; cta: stri
     note: 'Your subscription follows your account, not your machine. Cancel any time from Billing inside the app.',
   },
   ultra: {
-    sku: 'freedom',
     cta: 'Get Ultra',
     name: 'Ultra',
     tagline: 'Yours for the long run',
