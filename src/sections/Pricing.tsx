@@ -1,13 +1,16 @@
 import { useState } from 'react'
 import { ArrowUpRight, Check } from 'lucide-react'
 import FreedomContact from '@/components/FreedomContact'
+import BuyPlan from '@/components/BuyPlan'
 import { BASIC, PAID, type Plan } from '@/lib/plans'
 
 // Three plans, one decision: work on this device, or work everywhere.
 // Basic is the whole app locally with a monthly invoice allowance. Pro is
 // $5 a month for sync. Ultra buys the local app outright, forever.
 //
-// Paid buttons go straight to Dodo's hosted checkout — see lib/plans.ts.
+// Paid plans are bought right here with no account: BuyPlan asks for an
+// email, the dodo edge function opens Dodo's hosted checkout, and the
+// purchase is held against that email until the buyer signs in to Filey.
 function Features({ plan }: { plan: Plan }) {
   return <ul>{plan.features.map(item => <li key={item}><Check size={16} />{item}</li>)}</ul>
 }
@@ -25,12 +28,12 @@ export default function Pricing() {
         </article>
         <article className="price-plan"><div className="plan-heading"><h3>{PAID.pro.name}</h3><span>{PAID.pro.tagline}</span></div><p className="price">{PAID.pro.price}<span>{PAID.pro.period}</span></p>
           <Features plan={PAID.pro} />
-          <a href={PAID.pro.checkout} className="site-button site-button-secondary">{PAID.pro.cta} <ArrowUpRight size={16} /></a>
+          <BuyPlan plan={PAID.pro.sku} label={PAID.pro.cta} />
           <p className="plan-note">{PAID.pro.note}</p>
         </article>
         <article className="price-plan freedom-plan"><div className="plan-heading"><h3>{PAID.ultra.name}</h3><span>{PAID.ultra.tagline}</span></div><p className="price">{PAID.ultra.price}<span>{PAID.ultra.period}</span></p>
           <Features plan={PAID.ultra} />
-          <a href={PAID.ultra.checkout} className="site-button">{PAID.ultra.cta} <ArrowUpRight size={16} /></a>
+          <BuyPlan plan={PAID.ultra.sku} label={PAID.ultra.cta} primary />
           <p className="plan-note">{PAID.ultra.note} <button type="button" className="plan-link" onClick={() => setContact(true)}>Questions first?</button></p>
         </article>
       </div>

@@ -1,15 +1,8 @@
 // The three plans, named as they are inside the app: Basic, Pro, Ultra.
-//
-// Paid plans are sold through Dodo Payments' hosted checkout (static payment
-// links on the live products), so a buy button goes straight to payment. No
-// account is needed: the webhook parks the purchase against the email the
-// buyer types at checkout, and the app collects it the first time they sign in
-// with that address. Product ids: Filey-erp docs/dodo-payments.md.
+// `sku` is what the payment backend calls a plan — "cloud" and "freedom"
+// predate the names, and changing them would orphan every past purchase.
 
 export type PaidPlan = 'pro' | 'ultra'
-
-const checkout = (product: string, plan: PaidPlan) =>
-  `https://checkout.dodopayments.com/buy/${product}?quantity=1&redirect_url=${encodeURIComponent(`https://gofiley.com/thanks?plan=${plan}`)}`
 
 export interface Plan {
   name: string
@@ -29,9 +22,9 @@ export const BASIC: Plan = {
   note: 'Everything runs on this machine. Hosted AI, messaging and other external services may have separate provider costs.',
 }
 
-export const PAID: Record<PaidPlan, Plan & { checkout: string; cta: string }> = {
+export const PAID: Record<PaidPlan, Plan & { sku: 'cloud' | 'freedom'; cta: string }> = {
   pro: {
-    checkout: checkout('pdt_0NnqAUoNM0pPYUuGHkiR5', 'pro'),
+    sku: 'cloud',
     cta: 'Get Pro',
     name: 'Pro',
     tagline: 'Work from anywhere',
@@ -41,7 +34,7 @@ export const PAID: Record<PaidPlan, Plan & { checkout: string; cta: string }> = 
     note: 'Your subscription follows your account, not your machine. Cancel any time from Billing inside the app.',
   },
   ultra: {
-    checkout: checkout('pdt_0NnqAUlBQ5P8F8IERLZOF', 'ultra'),
+    sku: 'freedom',
     cta: 'Get Ultra',
     name: 'Ultra',
     tagline: 'Yours for the long run',

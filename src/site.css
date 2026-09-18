@@ -27,3 +27,13 @@ html{scroll-behavior:smooth;scroll-padding-top:90px}body{margin:0;background:var
 .thanks-note{font-size:12px;line-height:1.8;color:var(--site-muted);border-top:1px solid var(--site-line);padding-top:22px;margin:0 0 30px}
 .thanks-actions{display:flex;flex-wrap:wrap;gap:12px}
 @media(max-width:540px){.thanks-page{padding:80px 0 60px}.thanks-actions .site-button{width:100%}}
+.buy-form{display:grid;gap:10px;width:100%;margin-top:auto}
+.buy-form label{font-size:11px;color:var(--site-muted)}
+.buy-form input{width:100%;padding:11px 13px;font:inherit;font-size:13px;border:1px solid var(--site-line);border-radius:10px;background:var(--site-paper);color:var(--site-text)}
+.buy-form input:focus-visible{outline:2px solid var(--site-accent);outline-offset:1px}
+.buy-form input:disabled{opacity:.6}
+.buy-form .site-button{width:100%}
+.buy-error{font-size:12px;color:#b42318;margin:0}
+.buy-hint{font-size:11px;color:var(--site-muted);margin:0}
+.buy-spin{animation:buy-spin 1s linear infinite}
+@keyframes buy-spin{to{transform:rotate(360deg)}}
