@@ -44,6 +44,24 @@ type Mode = 'signup' | 'login'
 type Step = 'form' | 'code' | 'done'
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+// Fetching the code means leaving this page for the inbox — and a phone that
+// switches to its mail app often reloads the tab on the way back. Remember
+// that a code is on its way, so the visitor lands on the code step again
+// instead of an empty form.
+const PENDING = 'filey-site-pending-code'
+function pendingCode(mode: Mode): string | null {
+  try {
+    const p = JSON.parse(sessionStorage.getItem(PENDING) ?? 'null') as { mode: Mode; email: string } | null
+    return p?.mode === mode ? p.email : null
+  } catch { return null }
+}
+function rememberCode(mode: Mode, email: string | null) {
+  try {
+    if (email) sessionStorage.setItem(PENDING, JSON.stringify({ mode, email }))
+    else sessionStorage.removeItem(PENDING)
+  } catch { /* private window: the form simply starts over */ }
+}
 const LOGO_SRC = '/filey-mark.png'
 const message = (e: unknown) => (e instanceof Error ? e.message : String(e))
 
@@ -76,10 +94,10 @@ export default function SignUp({ mode }: { mode: Mode }) {
   const [params] = useSearchParams()
   const plan = (['pro', 'ultra'] as PaidPlan[]).find((p) => p === params.get('plan'))
   const session = useSession()
-  const [step, setStep] = useState<Step>(() => (getSession() ? 'done' : 'form'))
+  const [step, setStep] = useState<Step>(() => (getSession() ? 'done' : pendingCode(mode) ? 'code' : 'form'))
   const [withCode, setWithCode] = useState(false)
   const [created, setCreated] = useState(false)
-  const [email, setEmail] = useState('')
+  const [email, setEmail] = useState(() => pendingCode(mode) ?? '')
   const [password, setPassword] = useState('')
   const [confirm, setConfirm] = useState('')
   const [code, setCode] = useState('')
@@ -138,10 +156,12 @@ export default function SignUp({ mode }: { mode: Mode }) {
       if (mode === 'signup') {
         await signUp(email, password)
         setStep('code')
+        rememberCode(mode, email.trim())
         setCooldown(RESEND_COOLDOWN)
       } else if (codeLogin) {
         await sendLoginCode(email)
         setStep('code')
+        rememberCode(mode, email.trim())
         setCooldown(RESEND_COOLDOWN)
       } else {
         await signIn(email, password)
@@ -167,6 +187,7 @@ export default function SignUp({ mode }: { mode: Mode }) {
       } else {
         await verifyLoginCode(email, code)
       }
+      rememberCode(mode, null)
       setBusy(false)
       await finish()
     } catch (e2) {
@@ -380,6 +401,7 @@ export default function SignUp({ mode }: { mode: Mode }) {
                 disabled={busy}
                 onClick={() => {
                   setStep('form')
+                  rememberCode(mode, null)
                   setCode('')
                   setErr(null)
                 }}
