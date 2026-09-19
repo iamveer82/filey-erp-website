@@ -28,7 +28,7 @@ export const PAID: Record<PaidPlan, Plan & { cta: string }> = {
     tagline: 'Work from anywhere',
     price: '$5',
     period: 'Per month, cancel any time',
-    features: ['Sync every device you sign in on', 'Filey on the web — any browser, any computer', 'Unlimited invoices — no monthly cap', 'Your team shares one workspace', 'Backed up off your machine', 'Conflicting edits held for review, never lost'],
+    features: ['Cloud sync on up to 5 registered devices', 'Filey on the web — any browser, any computer', 'Unlimited invoices — no monthly cap', 'Your team shares one workspace', 'Backed up off your machine', 'Conflicting edits held for review, never lost'],
     note: 'Your subscription follows your account, not your machine. Cancel any time from Billing inside the app.',
   },
   ultra: {

@@ -21,7 +21,7 @@ export default function Thanks() {
   if (failed) return <div className="thanks-page">
     <div className="site-container">
       <h1>That payment didn't go through.</h1>
-      <p className="thanks-lead">Nothing was charged. You can try again with another card, or pick a different plan.</p>
+      <p className="thanks-lead">Checkout was not completed. Check your payment status before trying again.</p>
       <div className="thanks-actions">
         <a className="site-button" href="/#pricing">Back to plans</a>
       </div>
@@ -30,8 +30,8 @@ export default function Thanks() {
 
   return <div className="thanks-page">
     <div className="site-container">
-      <p className="thanks-badge"><Check size={15} /> Payment received</p>
-      <h1>Filey {name} is yours.</h1>
+      <p className="thanks-badge"><Check size={15} /> Checkout finished</p>
+      <h1>Your Filey {name} purchase</h1>
       <p className="thanks-lead">
         {pro
           ? 'Sync, unlimited invoices and one shared workspace for your team.'
@@ -54,13 +54,14 @@ export default function Thanks() {
       )}
 
       <p className="thanks-note">
-        Your receipt comes by email from Dodo Payments, who handle billing and tax for Filey.
+        Your plan activates after Dodo Payments confirms payment. Check your account for the current status; your receipt arrives by email.
         Paid with a different address than you use in Filey? Sign in with the one you paid
         with, or send us the receipt and we'll move it across.
       </p>
 
       <div className="thanks-actions">
         {!fromApp && <a className="site-button" href="/#download"><Download size={16} /> Download Filey</a>}
+        <Link className="site-button" to="/account">View account and payment status</Link>
         <Link className={fromApp ? 'site-button' : 'site-button site-button-secondary'} to="/">Back to gofiley.com</Link>
       </div>
     </div>

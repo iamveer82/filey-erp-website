@@ -12,7 +12,7 @@ const SUPABASE_URL =
 const ANON_KEY =
   (import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined) ||
   'sb_publishable_seG6PypmkIEN9FYKY9Of6w_UGNTGAgv'
-const DODO_FN = 'https://voyrjqgaypiylwskkwpr.functions.supabase.co/dodo'
+const DODO_FN = SUPABASE_URL + '/functions/v1/dodo'
 
 /** Supabase rejects anything shorter (password_min_length). */
 export const MIN_PASSWORD = 8
@@ -56,7 +56,7 @@ async function post(path: string, body: unknown, token?: string, method = 'POST'
     throw new Error(friendly(errorOf(e)))
   }
   const data = await res.json().catch(() => ({}))
-  if (!res.ok) throw new Error(friendly(data?.msg || data?.error_description || data?.message || ''))
+  if (!res.ok) throw Object.assign(new Error(friendly(data?.msg || data?.error_description || data?.message || '')), { status: res.status })
   return data
 }
 
@@ -131,9 +131,14 @@ async function freshToken(): Promise<string | null> {
   if (s.expires_at - Date.now() / 1000 > 60) return s.access_token
   try {
     return save({ ...(await post('token?grant_type=refresh_token', { refresh_token: s.refresh_token })), user: { email: s.email } }, s.signed_in_at ?? 0).access_token
-  } catch {
-    store(null)
-    return null
+  } catch (error) {
+    // A temporary network/server failure must not sign the customer out.
+    const status = (error as { status?: number }).status
+    if (status === 400 || status === 401 || status === 403) {
+      store(null)
+      return null
+    }
+    throw error
   }
 }
 
@@ -258,6 +263,15 @@ export interface Account {
 type AuthUser = { id: string; email?: string; created_at?: string; last_sign_in_at?: string }
 type Org = { name?: string; plan?: string; plan_status?: string; current_period_end?: string; cloud_grandfathered?: boolean; owner_id?: string }
 
+async function rpc(name: string, token: string): Promise<unknown> {
+  const res = await fetch(SUPABASE_URL + '/rest/v1/rpc/' + name, {
+    method: 'POST', headers: { apikey: ANON_KEY, Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' },
+    body: '{}',
+  })
+  if (!res.ok) throw new Error("Couldn't load your workspace. Please try again.")
+  return res.json()
+}
+
 export async function getAccount(): Promise<Account> {
   const token = await freshToken()
   if (!token) throw new SignInRequired('Sign in to see your account.')
@@ -266,10 +280,13 @@ export async function getAccount(): Promise<Account> {
     store(null)
     throw new SignInRequired('Your session ended. Sign in again.')
   }
+  if (!res.ok) throw new Error("Couldn't load your account. Try again.")
   const user = (await res.json()) as AuthUser
+  await rpc('filey_claim_entitlements', token)
+  const [orgId, web] = await Promise.all([rpc('current_org', token), rpc('filey_cloud_access', token)])
   const [profiles, orgs, licences] = await Promise.all([
     rest<{ name?: string; company?: string }>(`profiles?select=name,company&id=eq.${user.id}`, token),
-    rest<Org>('organizations?select=name,plan,plan_status,current_period_end,cloud_grandfathered,owner_id&limit=1', token),
+    rest<Org>('organizations?select=name,plan,plan_status,current_period_end,cloud_grandfathered,owner_id&id=eq.' + encodeURIComponent(String(orgId)) + '&limit=1', token),
     rest<{ id: string; created_at: string }>('licenses?select=id,created_at&status=eq.active&order=created_at&limit=1', token),
   ])
   const org = orgs[0] ?? {}
@@ -298,7 +315,7 @@ export async function getAccount(): Promise<Account> {
     pro,
     ultra,
     grandfathered,
-    web: !!pro || !!ultra || grandfathered,
+    web: web === true,
   }
 }
 
