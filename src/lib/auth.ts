@@ -40,11 +40,11 @@ function friendly(message: string): string {
 
 const errorOf = (e: unknown) => (e instanceof Error ? e.message : String(e))
 
-async function post(path: string, body: unknown, token?: string) {
+async function post(path: string, body: unknown, token?: string, method = 'POST') {
   let res: Response
   try {
     res = await fetch(`${SUPABASE_URL}/auth/v1/${path}`, {
-      method: 'POST',
+      method,
       headers: {
         apikey: ANON_KEY,
         'Content-Type': 'application/json',
@@ -68,6 +68,8 @@ export interface Session {
   /** Unix seconds. */
   expires_at: number
   email: string
+  /** When they last proved who they are (ms) — refreshes keep it. */
+  signed_in_at?: number
 }
 
 const KEY = 'filey-site-session'
@@ -91,13 +93,14 @@ function store(s: Session | null) {
 
 type TokenResponse = { access_token?: string; refresh_token?: string; expires_at?: number; expires_in?: number; user?: { email?: string } }
 
-function save(data: TokenResponse): Session {
+function save(data: TokenResponse, signedInAt = Date.now()): Session {
   if (!data.access_token || !data.refresh_token) throw new Error('Signed in, but no session came back. Try signing in again.')
   const s: Session = {
     access_token: data.access_token,
     refresh_token: data.refresh_token,
     expires_at: data.expires_at ?? Math.floor(Date.now() / 1000) + (data.expires_in ?? 3600),
     email: data.user?.email ?? '',
+    signed_in_at: signedInAt,
   }
   store(s)
   return s
@@ -127,7 +130,7 @@ async function freshToken(): Promise<string | null> {
   if (!s) return null
   if (s.expires_at - Date.now() / 1000 > 60) return s.access_token
   try {
-    return save({ ...(await post('token?grant_type=refresh_token', { refresh_token: s.refresh_token })), user: { email: s.email } }).access_token
+    return save({ ...(await post('token?grant_type=refresh_token', { refresh_token: s.refresh_token })), user: { email: s.email } }, s.signed_in_at ?? 0).access_token
   } catch {
     store(null)
     return null
@@ -200,4 +203,130 @@ export async function checkout(plan: PaidPlan): Promise<void> {
   }
   if (!res.ok || !body?.url) throw new Error(body?.error || 'Checkout is unavailable right now. Please try again.')
   window.location.href = body.url
+}
+
+/** Filey on the web — the ERP itself, for Pro and Ultra. */
+export const APP_URL = 'https://app.gofiley.com'
+
+/** Dodo's customer portal: card, invoices, cancelling Pro. */
+export async function openBillingPortal(): Promise<void> {
+  const token = await freshToken()
+  if (!token) throw new SignInRequired('Sign in to manage billing.')
+  const res = await fetch(DODO_FN, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+    body: JSON.stringify({ action: 'portal' }),
+  }).catch((e) => { throw new Error(friendly(errorOf(e))) })
+  const body = await res.json().catch(() => ({}))
+  if (!res.ok || !body?.url) throw new Error(body?.error || 'Billing is unavailable right now.')
+  window.location.href = body.url
+}
+
+/* ---------------- the account page ---------------- */
+
+/** Read rows the signed-in account may see. RLS scopes every table to the
+ *  account's own profile, workspace and licence. */
+async function rest<T>(path: string, token: string): Promise<T[]> {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
+    headers: { apikey: ANON_KEY, Authorization: `Bearer ${token}` },
+  })
+  if (res.status === 401) {
+    store(null)
+    throw new SignInRequired('Your session ended. Sign in again.')
+  }
+  if (!res.ok) throw new Error("Couldn't load your account. Try again in a moment.")
+  return res.json()
+}
+
+export interface Account {
+  email: string
+  createdAt: string | null
+  lastSignIn: string | null
+  name: string
+  company: string
+  workspace: string
+  /** Pro: a live subscription on the workspace. */
+  pro: { status: string; renews: string | null } | null
+  /** Ultra: the licence this account bought, and the devices using it. */
+  ultra: { since: string; devices: { name: string; since: string; active: boolean }[] } | null
+  /** Workspaces that had free cloud before it became Pro keep it. */
+  grandfathered: boolean
+  /** May open Filey on the web. */
+  web: boolean
+}
+
+type AuthUser = { id: string; email?: string; created_at?: string; last_sign_in_at?: string }
+type Org = { name?: string; plan?: string; plan_status?: string; current_period_end?: string; cloud_grandfathered?: boolean; owner_id?: string }
+
+export async function getAccount(): Promise<Account> {
+  const token = await freshToken()
+  if (!token) throw new SignInRequired('Sign in to see your account.')
+  const res = await fetch(`${SUPABASE_URL}/auth/v1/user`, { headers: { apikey: ANON_KEY, Authorization: `Bearer ${token}` } })
+  if (res.status === 401) {
+    store(null)
+    throw new SignInRequired('Your session ended. Sign in again.')
+  }
+  const user = (await res.json()) as AuthUser
+  const [profiles, orgs, licences] = await Promise.all([
+    rest<{ name?: string; company?: string }>(`profiles?select=name,company&id=eq.${user.id}`, token),
+    rest<Org>('organizations?select=name,plan,plan_status,current_period_end,cloud_grandfathered,owner_id&limit=1', token),
+    rest<{ id: string; created_at: string }>('licenses?select=id,created_at&status=eq.active&order=created_at&limit=1', token),
+  ])
+  const org = orgs[0] ?? {}
+  const licence = licences[0]
+  const devices = licence
+    ? await rest<{ device_name?: string; activated_at: string; deactivated_at?: string | null }>(
+        `license_devices?select=device_name,activated_at,deactivated_at&license_id=eq.${licence.id}&order=activated_at`,
+        token,
+      )
+    : []
+  // Same rule as resolveTier() in the app: any paid plan, live or in grace.
+  const pro = org.plan && org.plan !== 'free' && ['active', 'trialing', 'past_due'].includes(org.plan_status ?? '')
+    ? { status: org.plan_status ?? 'active', renews: org.current_period_end ?? null }
+    : null
+  const ultra = licence
+    ? { since: licence.created_at, devices: devices.map((d) => ({ name: d.device_name || 'Device', since: d.activated_at, active: !d.deactivated_at })) }
+    : null
+  const grandfathered = !!org.cloud_grandfathered
+  return {
+    email: user.email ?? getSession()?.email ?? '',
+    createdAt: user.created_at ?? null,
+    lastSignIn: user.last_sign_in_at ?? null,
+    name: profiles[0]?.name && profiles[0].name !== 'User' ? profiles[0].name : '',
+    company: profiles[0]?.company ?? '',
+    workspace: org.name ?? '',
+    pro,
+    ultra,
+    grandfathered,
+    web: !!pro || !!ultra || grandfathered,
+  }
+}
+
+const RECENT_MS = 10 * 60 * 1000
+
+/** Signed in within the last few minutes — by password or by emailed code. */
+export const signedInRecently = (s: Session | null) => !!s?.signed_in_at && Date.now() - s.signed_in_at < RECENT_MS
+
+/** Change the password. A session left open on a shared computer must not be
+ *  enough to take the account over, so it needs the current password — unless
+ *  they proved themselves minutes ago, which is also the only way someone who
+ *  forgot it (and signed in with a code) can set a new one. */
+export async function changePassword(current: string, next: string): Promise<void> {
+  const s = getSession()
+  if (!s) throw new SignInRequired('Sign in to change your password.')
+  if (next.length < MIN_PASSWORD) throw new Error(`The new password needs at least ${MIN_PASSWORD} characters.`)
+  let token: string | null
+  if (current) {
+    try {
+      token = (await signIn(s.email, current)).access_token
+    } catch {
+      throw new Error("Your current password isn't right.")
+    }
+  } else if (signedInRecently(s)) {
+    token = await freshToken()
+  } else {
+    throw new Error('Enter your current password. Forgot it? Sign out, sign in with a code, then set a new one here.')
+  }
+  if (!token) throw new SignInRequired('Your session ended. Sign in again.')
+  await post('user', { password: next }, token, 'PUT')
 }

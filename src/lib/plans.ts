@@ -28,7 +28,7 @@ export const PAID: Record<PaidPlan, Plan & { cta: string }> = {
     tagline: 'Work from anywhere',
     price: '$5',
     period: 'Per month, cancel any time',
-    features: ['Sync every device you sign in on', 'Unlimited invoices — no monthly cap', 'Your team shares one workspace', 'Backed up off your machine', 'Conflicting edits held for review, never lost'],
+    features: ['Sync every device you sign in on', 'Filey on the web — any browser, any computer', 'Unlimited invoices — no monthly cap', 'Your team shares one workspace', 'Backed up off your machine', 'Conflicting edits held for review, never lost'],
     note: 'Your subscription follows your account, not your machine. Cancel any time from Billing inside the app.',
   },
   ultra: {
@@ -37,8 +37,8 @@ export const PAID: Record<PaidPlan, Plan & { cta: string }> = {
     tagline: 'Yours for the long run',
     price: '$100',
     period: 'One-time license',
-    features: ['Unlimited invoicing, no monthly cap', 'Works fully offline — no network to check in with', 'Two device slots', 'Documents without the Filey watermark', 'App updates and priority support'],
-    note: 'Add Pro for $5/month if you want sync as well.',
+    features: ['Unlimited invoicing, no monthly cap', 'Works fully offline — no network to check in with', 'Two device slots', 'Filey on the web — any browser, any computer', 'Documents without the Filey watermark', 'App updates and priority support'],
+    note: 'Pay once. Updates and Filey on the web included.',
   },
 }
 

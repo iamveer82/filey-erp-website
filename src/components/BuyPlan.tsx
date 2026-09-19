@@ -8,7 +8,7 @@ import type { PaidPlan } from '@/lib/plans'
 // is simply there the next time the buyer opens the app. Signed in → straight
 // to Dodo's checkout. Signed out → create an account (or sign in) first; that
 // page carries on to the checkout by itself.
-export default function BuyPlan({ plan, label, primary }: { plan: PaidPlan; label: string; primary?: boolean }) {
+export default function BuyPlan({ plan, label, primary, quiet }: { plan: PaidPlan; label: string; primary?: boolean; quiet?: boolean }) {
   const session = useSession()
   const navigate = useNavigate()
   const [busy, setBusy] = useState(false)
@@ -35,6 +35,6 @@ export default function BuyPlan({ plan, label, primary }: { plan: PaidPlan; labe
       {busy ? <>Opening checkout <Loader2 size={15} className="buy-spin" /></> : <>{label} <ArrowUpRight size={16} /></>}
     </button>
     {error && <p className="buy-error" role="alert">{error}</p>}
-    <p className="buy-hint">{session ? `Signed in as ${session.email}` : 'Create a free account first — it takes a minute.'}</p>
+    {!quiet && <p className="buy-hint">{session ? `Signed in as ${session.email}` : 'Create a free account first — it takes a minute.'}</p>}
   </div>
 }

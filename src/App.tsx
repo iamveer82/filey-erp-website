@@ -5,6 +5,7 @@ import Home from '@/pages/Home'
 
 const SignUp = lazy(() => import('@/pages/SignUp'))
 const Thanks = lazy(() => import('@/pages/Thanks'))
+const Account = lazy(() => import('@/pages/Account'))
 
 export default function App() {
   return (
@@ -13,6 +14,7 @@ export default function App() {
         {/* Sign-up and sign-in are their own bare screens — no marketing nav or footer. */}
         <Route path="/signup" element={<div className="auth-site"><Suspense fallback={<p className="not-found" role="status">Loading signup…</p>}><SignUp key="signup" mode="signup" /></Suspense></div>} />
         <Route path="/login" element={<div className="auth-site"><Suspense fallback={<p className="not-found" role="status">Loading sign in…</p>}><SignUp key="login" mode="login" /></Suspense></div>} />
+        <Route path="/account" element={<Layout><Suspense fallback={<p className="not-found" role="status">Loading your account…</p>}><Account /></Suspense></Layout>} />
         {/* Where Dodo returns a buyer after payment. */}
         <Route path="/thanks" element={<Layout><Suspense fallback={<p className="not-found" role="status">Loading…</p>}><Thanks /></Suspense></Layout>} />
         <Route

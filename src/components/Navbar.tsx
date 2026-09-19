@@ -25,10 +25,12 @@ export default function Navbar() {
       <div className="nav-actions">
         <button className="icon-button" onClick={toggleTheme} aria-label={dark ? 'Use light appearance' : 'Use dark appearance'}>{dark ? <Sun size={17} /> : <Moon size={17} />}</button>
         {session
-          ? <button type="button" className="nav-signin" title={`Signed in as ${session.email}`} onClick={() => void signOut()}>Sign out</button>
+          ? <Link className="nav-signin" to="/account" title={`Signed in as ${session.email}`}>Account</Link>
           : <Link className="nav-signin" to="/login">Sign in</Link>}
         {session
-          ? <a className="site-button nav-signup" href="/#download">Download <ArrowUpRight size={15} /></a>
+          // Filey on the web: /account sends Pro and Ultra straight in, and shows
+          // everyone else what the web app needs.
+          ? <Link className="site-button nav-signup" to="/account?open=1">Open Filey <ArrowUpRight size={15} /></Link>
           : <Link className="site-button nav-signup" to="/signup">Get started <ArrowUpRight size={15} /></Link>}
         <button ref={menuButton} className="icon-button nav-toggle" aria-label={open ? 'Close menu' : 'Open menu'} aria-expanded={open} aria-controls="mobile-nav" onClick={() => setOpen(!open)}>{open ? <X /> : <Menu />}</button>
       </div>
@@ -36,7 +38,11 @@ export default function Navbar() {
     {open && <nav id="mobile-nav" className="nav-mobile" aria-label="Mobile navigation">
       {links.map(([name, url]) => <a href={url} key={url} onClick={() => setOpen(false)}>{name}<ArrowUpRight size={16} /></a>)}
       {session
-        ? <button type="button" onClick={() => { setOpen(false); void signOut() }}>Sign out ({session.email}) <ArrowUpRight size={16} /></button>
+        ? <>
+          <Link to="/account?open=1" onClick={() => setOpen(false)}>Open Filey <ArrowUpRight size={16} /></Link>
+          <Link to="/account" onClick={() => setOpen(false)}>Account <ArrowUpRight size={16} /></Link>
+          <button type="button" onClick={() => { setOpen(false); void signOut() }}>Sign out ({session.email}) <ArrowUpRight size={16} /></button>
+        </>
         : <>
           <Link to="/login" onClick={() => setOpen(false)}>Sign in <ArrowUpRight size={16} /></Link>
           <Link to="/signup" onClick={() => setOpen(false)}>Create account <ArrowUpRight size={16} /></Link>

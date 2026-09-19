@@ -1,5 +1,5 @@
 import { useEffect, useState, type FormEvent, type ReactNode } from 'react'
-import { Link, useSearchParams } from 'react-router'
+import { Link, useNavigate, useSearchParams } from 'react-router'
 import {
   AlertCircle,
   ArrowLeft,
@@ -93,6 +93,10 @@ function Field({
 export default function SignUp({ mode }: { mode: Mode }) {
   const [params] = useSearchParams()
   const plan = (['pro', 'ultra'] as PaidPlan[]).find((p) => p === params.get('plan'))
+  // Where to go once signed in. Only the account page — never an arbitrary
+  // URL, or this page becomes an open redirect.
+  const next = ['/account', '/account?open=1'].find((p) => p === params.get('next')) ?? null
+  const navigate = useNavigate()
   const session = useSession()
   const [step, setStep] = useState<Step>(() => (getSession() ? 'done' : pendingCode(mode) ? 'code' : 'form'))
   const [withCode, setWithCode] = useState(false)
@@ -114,6 +118,11 @@ export default function SignUp({ mode }: { mode: Mode }) {
     return () => clearTimeout(t)
   }, [cooldown])
 
+  // Already signed in and sent here to reach the account page: go there.
+  useEffect(() => {
+    if (session && next && !plan) navigate(next, { replace: true })
+  }, [session, next, plan, navigate])
+
   // Signed out in another tab while this one said "signed in": show the form.
   const view: Step = step === 'done' && !session ? 'form' : step
 
@@ -123,6 +132,10 @@ export default function SignUp({ mode }: { mode: Mode }) {
 
   /** Signed in. A plan brought them here, so carry on to paying for it. */
   const finish = async () => {
+    if (!plan && next) {
+      navigate(next, { replace: true })
+      return
+    }
     setStep('done')
     if (!plan) return
     setBusy(true)
@@ -470,6 +483,7 @@ export default function SignUp({ mode }: { mode: Mode }) {
                     <Download size={18} aria-hidden="true" />
                     Choose your download
                   </a>
+                  <Link to="/account" className="signup-resend">Your account</Link>
                   <a href="/#pricing" className="signup-resend">See plans</a>
                 </>
               )}
