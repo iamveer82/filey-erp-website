@@ -211,8 +211,7 @@ export async function checkout(plan: PaidPlan): Promise<void> {
 }
 
 /** Filey on the web — the ERP itself, for Pro and Ultra. */
-// Switch this to app.gofiley.com after its DNS record is verified.
-export const APP_URL = 'https://filey-erp.vercel.app'
+export const APP_URL = 'https://app.gofiley.com'
 
 /** Dodo's customer portal: card, invoices, cancelling Pro. */
 export async function openBillingPortal(): Promise<void> {
