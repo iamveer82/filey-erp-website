@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { ArrowRight, ArrowUpRight, Check, FileText, Package, Users, ChartNoAxesCombined, Laptop, Cloud, ShieldCheck, BookOpen } from 'lucide-react'
 import LiveDemo from './LiveDemo'
-import { RELEASES_URL } from '@/lib/constants'
+import { LATEST_RELEASE_URL } from '@/lib/constants'
 
 const examples = [
   { label: 'Draft an invoice', request: 'Create an invoice for my customer using the products in this order.', steps: ['Find the saved customer and order.', 'Prepare a draft with the linked products.', 'Open the invoice for your review.'] },
@@ -67,7 +67,7 @@ export default function ProductStory() {
           <div className="section-heading"><h2>Made for business.<br />Wherever you are.</h2><p>Configure country-specific tax fields and choose a currency for each document. Your saved settings stay with the document.</p><div className="country-tabs" role="group" aria-label="Country features">{regions.map((item, i) => <button aria-pressed={i === region} key={item.code} onClick={() => setRegion(i)}>{item.name}</button>)}</div></div>
           <article className="country-paper" aria-live="polite"><span className="country-code" aria-hidden="true">{country.code}</span><h3>{country.name}</h3><dl><div><dt>Tax fields</dt><dd>{country.tax}</dd></div><div><dt>Currency</dt><dd>{country.currency}</dd></div></dl><p>{country.detail}</p><span className="small-note">Document configuration, not certified tax filing. Review your local requirements.</span></article>
         </div>
-        <a className="text-link update-link" href={`${RELEASES_URL}/tag/v2.11.0`}>Read the 2.11.0 release notes <ArrowUpRight size={16} /></a>
+        <a className="text-link update-link" href={LATEST_RELEASE_URL}>Read the release notes <ArrowUpRight size={16} /></a>
       </div>
     </section>
   </>
