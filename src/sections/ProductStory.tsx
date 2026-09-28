@@ -51,15 +51,15 @@ export default function ProductStory() {
     </section>
     <section id="whats-new" className="site-section next-update">
       <div className="site-container">
-        <div className="section-heading" data-reveal><p className="eyebrow">Now available · Filey 2.11.0</p><h2>More connected.<br />Still unmistakably Filey.</h2><p>A redesigned CRM, simpler document tools and connected reports. Ready for your next working day.</p></div>
+        <div className="section-heading" data-reveal><p className="eyebrow">The latest in Filey</p><h2>More connected.<br />Still unmistakably Filey.</h2><p>Private team chats, a customizable CRM and simpler document tools. Ready for your next working day.</p></div>
         <div className="update-layout" data-reveal>
           <div className="workspace-card">
             <div className="storage-visual" aria-hidden="true"><Laptop size={72} strokeWidth={1} /><div className="storage-connection"><span /><img src="/filey-mark.png" width="90" height="90" alt="" /><span /></div><Cloud size={68} strokeWidth={1} /></div>
-            <h3>Your desktop. Your choice.</h3><p>Use a local workspace or a connected cloud workspace. Keep each store separate and choose when to transfer data.</p><span className="workspace-note">Local workspaces are free on Basic.</span>
+            <h3>Your desktop. Your choice.</h3><p>Keep working locally or turn on cloud storage to transfer your device records. Download cloud changes before returning to local mode.</p><span className="workspace-note">Unlimited local invoices on free Basic.</span>
           </div>
           <div className="update-details">
             <article><span className="update-icon"><Users size={22} /></span><div><h3>A CRM that keeps the context.</h3><p>Companies, contacts and deals with linked quotations and invoices. A Today queue for follow-ups, plus custom fields and reviewed bulk edits.</p></div></article>
-            <article><span className="update-icon"><ChartNoAxesCombined size={22} /></span><div><h3>Reports with a clear purpose.</h3><p>Section insights collected in Reports. Overview charts connected to your actual invoice, receipt and expense records.</p></div></article>
+            <article><span className="update-icon"><Users size={22} /></span><div><h3>A space for your team.</h3><p>Private conversations and shared channels, with images and documents in the chat. Invite by code or email, approve requests and choose each member’s access.</p></div></article>
             <article><span className="update-icon"><FileText size={22} /></span><div><h3>Less work in every document.</h3><p>A compact invoice editor, letters you can rename, clearer PDF editing tools and attachment previews before sharing.</p></div></article>
           </div>
         </div>
