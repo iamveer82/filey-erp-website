@@ -15,7 +15,7 @@ export default function Download() {
   const release = useLatestRelease()
   const windows = release.windowsExe.available || release.windowsMsi.available
   const linux = release.linuxDeb.available || release.linuxRpm.available
-  const mac = release.macDmg?.available
+  const mac = release.macDmg?.available || release.macIntelDmg?.available
 
   return <section id="download" className="site-section download-section" aria-labelledby="download-title">
     <div className="site-container download-layout">
@@ -38,8 +38,8 @@ export default function Download() {
         </div>
         <div className="download-platform">
           <Apple size={24} strokeWidth={1.5} aria-hidden="true" />
-          <div><h3>macOS</h3><p>{mac ? release.macDmg?.architecture || 'Desktop installer' : 'Check the latest release for availability.'}</p>
-            <div className="download-actions"><InstallerLink installer={release.macDmg} label="Download .dmg" /></div>
+          <div><h3>macOS</h3><p>{mac ? 'Choose the installer for your Mac.' : 'Check the latest release for availability.'}</p>
+            <div className="download-actions"><InstallerLink installer={release.macDmg} label="Apple Silicon .dmg" /><InstallerLink installer={release.macIntelDmg} label="Intel .dmg" /></div>
             {mac && <p className="download-platform-note">See release notes for macOS installation requirements.</p>}
           </div>
         </div>
@@ -49,7 +49,7 @@ export default function Download() {
             <div className="download-actions"><InstallerLink installer={release.linuxDeb} label="Download .deb" /><InstallerLink installer={release.linuxRpm} label=".rpm" /></div>
           </div>
         </div>
-        <p className="download-release-note">The redesigned CRM, the free Basic plan, connected reports and improved document tools are now available. Already using Filey? Check for updates in the desktop app, or install the latest package above.</p>
+        <p className="download-release-note">Private team chats, shared channels, images and documents. Up to 20 cloud devices, unlimited local invoices, country-aware forms and a more focused invoice editor. Check for updates in the desktop app, or install the latest package above.</p>
         {!release.live && <p className="download-release-note">Installer details are unavailable right now. <a href={LATEST_RELEASE_URL}>Browse GitHub releases</a> to choose a download.</p>}
       </div>
     </div>

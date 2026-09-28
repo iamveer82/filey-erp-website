@@ -10,15 +10,17 @@ const source = ts.transpileModule(readFileSync(new URL('../src/pages/SignUp.tsx'
 
 function mount() {
   const state = [], calls = [], exports = {}
-  let cursor = 0, finishSignup, finishVerify
+  let cursor = 0, finishSignup, finishVerify, session = null
   const signupPending = new Promise(resolve => { finishSignup = resolve })
   const verifyPending = new Promise(resolve => { finishVerify = resolve })
   const jsx = (type, props) => ({ type, props })
   const backend = {
     MIN_PASSWORD: 8, RESEND_COOLDOWN: 60,
     signUp: (...args) => { calls.push(['signup', ...args]); return signupPending },
-    verifyOtp: (...args) => { calls.push(['verify', ...args]); return verifyPending },
-    resendOtp: (...args) => { calls.push(['resend', ...args]); return Promise.resolve() },
+    verifySignupCode: (...args) => { calls.push(['verify', ...args]); return verifyPending.then(() => { session = { email: args[0] } }) },
+    resendSignupCode: (...args) => { calls.push(['resend', ...args]); return Promise.resolve() },
+    getSession: () => session,
+    useSession: () => session,
   }
   runInNewContext(source, {
     exports,
@@ -27,19 +29,19 @@ function mount() {
         useEffect: () => {},
         useState: initial => {
           const index = cursor++
-          if (!(index in state)) state[index] = initial
+          if (!(index in state)) state[index] = typeof initial === 'function' ? initial() : initial
           return [state[index], value => { state[index] = typeof value === 'function' ? value(state[index]) : value }]
         },
       }
       if (name === 'react/jsx-runtime') return { jsx, jsxs: jsx, Fragment: 'fragment' }
-      if (name === '@/lib/signup') return backend
+      if (name === '@/lib/auth') return backend
       if (name === '@/lib/constants') return { REPO_URL: 'https://github.com/iamveer82/Filey-erp' }
-      if (name === 'react-router') return { Link: 'a' }
+      if (name === 'react-router') return { Link: 'a', useNavigate: () => () => {}, useSearchParams: () => [new URLSearchParams()] }
       if (name === '@/components/ui/input-otp') return { InputOTP: 'otp', InputOTPGroup: 'otp-group', InputOTPSlot: 'otp-slot' }
       return {}
     },
   })
-  return { calls, finishSignup, finishVerify, render: () => { cursor = 0; return exports.default() } }
+  return { calls, finishSignup, finishVerify, render: () => { cursor = 0; return exports.default({ mode: 'signup' }) } }
 }
 
 function find(tree, predicate) {
