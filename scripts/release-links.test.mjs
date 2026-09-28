@@ -41,6 +41,17 @@ test('does not require Windows assets or invent absent platform packages', () =>
   assert.equal(installerForOS(release, 'windows'), releases)
 })
 
+test('keeps Intel and Apple Silicon downloads separate regardless of asset order', () => {
+  const intel = asset('Filey.ERP_3.0.9_x64.dmg')
+  const arm = asset('Filey.ERP_3.0.9_aarch64.dmg')
+  const release = parseLatestRelease({ tag_name: 'v3.0.9', assets: [intel, arm] })
+  assert.equal(release.macDmg.url, arm.browser_download_url)
+  assert.equal(release.macIntelDmg.url, intel.browser_download_url)
+  const intelOnly = parseLatestRelease({ tag_name: 'v3.0.9', assets: [intel] })
+  assert.equal(intelOnly.macDmg, null)
+  assert.equal(installerForOS(intelOnly, 'macos'), intel.browser_download_url)
+})
+
 test('falls back to the releases page without stale versions or sizes', () => {
   for (const input of [null, {}, { assets: [] }, { assets: 'invalid' }]) {
     const release = parseLatestRelease(input)

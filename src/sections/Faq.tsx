@@ -2,13 +2,13 @@ import { ArrowUpRight, Plus } from 'lucide-react'
 import { REPO_URL } from '@/lib/constants'
 
 const questions = [
-  ['Can I use Filey for free?', 'Yes. Basic is free and gives you the whole ERP and CRM on your own device, with 5 invoices a month. Pro is $5/month and adds sync across your devices with no invoice cap; Ultra is a one-time $100 licence for unlimited offline use on two machines. External services may have their own charges.'],
+  ['Can I use Filey for free?', 'Yes. Basic is free and gives you the whole ERP and CRM on your own device, with unlimited local invoices. The separate Basic web allowance is 5 invoices a month. Pro is $5/month and adds cloud sync on up to 20 devices with no invoice cap; Ultra is a one-time $100 licence with two offline activation slots. External services may have their own charges.'],
   ['What works without an internet connection?', 'Local mode is included on Basic and keeps business records on your device for core document and record workflows. Hosted AI, email, messaging and cloud synchronization need a connection. Local and cloud workspaces keep separate records; you choose when to transfer data.'],
   ['What can Filey AI do?', 'Filey AI can look up records, draft invoices and purchase orders, and use supported tools in your workspace. CRM records can prepare contextual requests for your review. Actions follow your account permissions and agent approval settings. Use a supported local model or your own provider key; hosted usage limits and charges still apply.'],
   ['Can I send an invoice on WhatsApp?', 'Filey supports invoice messaging workflows. A chat link can prepare a message; attaching or sending a PDF depends on the desktop bridge, device sharing support or a configured business provider. Provider channels must be connected before automated delivery can work.'],
   ['Which countries does Filey support?', 'Filey includes country and tax-profile settings for India, the UAE, Saudi Arabia, EU member states and more. Document currency and tax country are separate choices. The accounting ledger remains AED, and country settings do not provide certified tax filing or complete statutory localization.'],
   ['Are the website previews my real business data?', 'No. The interactive preview uses sample records in this browser tab. It does not create invoices in your Filey account or connect to an AI service. Download the desktop app to use your own workspace.'],
-  ['Which computers can run Filey?', 'Published downloads are available for Windows x64, Linux x64 and Apple Silicon macOS when those installers are present in the latest release. Use the download section for the actual available packages.'],
+  ['Which computers can run Filey?', 'Published downloads are available for Windows x64, Linux x64, Apple Silicon Macs and Intel Macs when those installers are present in the latest release. Use the download section to choose the package for your computer.'],
 ]
 
 export default function Faq() {

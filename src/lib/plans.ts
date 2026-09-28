@@ -17,7 +17,7 @@ export const BASIC: Plan = {
   tagline: 'For getting started',
   price: '$0',
   period: 'Free, on your device',
-  features: ['The whole ERP and CRM on your device', '5 invoices each month', 'Inventory, accounting and PDF tools', 'Local backups you control', 'Local AI models or your own provider key', 'Community support'],
+  features: ['The whole ERP and CRM on your device', 'Unlimited local invoices', 'Inventory, accounting and PDF tools', 'Local backups you control', 'Local AI models or your own provider key', 'Community support'],
   note: 'Everything runs on this machine. Hosted AI, messaging and other external services may have separate provider costs.',
 }
 
@@ -28,7 +28,7 @@ export const PAID: Record<PaidPlan, Plan & { cta: string }> = {
     tagline: 'Work from anywhere',
     price: '$5',
     period: 'Per month, cancel any time',
-    features: ['Cloud sync on up to 5 registered devices', 'Filey on the web — any browser, any computer', 'Unlimited invoices — no monthly cap', 'Your team shares one workspace', 'Backed up off your machine', 'Conflicting edits held for review, never lost'],
+    features: ['Cloud sync on up to 20 registered devices', 'Filey on the web — any browser, any computer', 'Unlimited invoices — no monthly cap', 'Team chats, channels and shared files', 'Backed up off your machine', 'Choose device or cloud changes when edits conflict'],
     note: 'Your subscription follows your account, not your machine. Cancel any time from Billing inside the app.',
   },
   ultra: {

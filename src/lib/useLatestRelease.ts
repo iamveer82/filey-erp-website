@@ -20,6 +20,7 @@ export interface LatestRelease {
   linuxDeb: Installer
   linuxRpm: Installer
   macDmg: Installer | null
+  macIntelDmg: Installer | null
   live: boolean
 }
 
@@ -27,7 +28,7 @@ const unavailable: Installer = { url: LATEST_RELEASE_URL, size: '', available: f
 const FALLBACK: LatestRelease = {
   version: '', releaseUrl: LATEST_RELEASE_URL,
   windowsExe: unavailable, windowsMsi: unavailable,
-  linuxDeb: unavailable, linuxRpm: unavailable, macDmg: null, live: false,
+  linuxDeb: unavailable, linuxRpm: unavailable, macDmg: null, macIntelDmg: null, live: false,
 }
 
 /** Never invent an installer filename or mix assets from different releases. */
@@ -54,20 +55,21 @@ export function parseLatestRelease(value: unknown): LatestRelease {
   const windowsMsi = pick(/_x64_en-US\.msi$/)
   const linuxDeb = pick(/_amd64\.deb$/)
   const linuxRpm = pick(/\.x86_64\.rpm$/)
-  const macDmg = pick(/\.dmg$/)
-  if (!windowsExe && !windowsMsi && !linuxDeb && !linuxRpm && !macDmg) return FALLBACK
+  const macDmg = pick(/_(?:aarch64|arm64)\.dmg$/)
+  const macIntelDmg = pick(/_(?:x64|x86_64)\.dmg$/)
+  if (!windowsExe && !windowsMsi && !linuxDeb && !linuxRpm && !macDmg && !macIntelDmg) return FALLBACK
   return {
     version: 'tag_name' in value && typeof value.tag_name === 'string' ? value.tag_name.replace(/^v/, '') : '',
     releaseUrl: LATEST_RELEASE_URL,
     windowsExe: windowsExe ?? unavailable, windowsMsi: windowsMsi ?? unavailable,
-    linuxDeb: linuxDeb ?? unavailable, linuxRpm: linuxRpm ?? unavailable, macDmg, live: true,
+    linuxDeb: linuxDeb ?? unavailable, linuxRpm: linuxRpm ?? unavailable, macDmg, macIntelDmg, live: true,
   }
 }
 
 export function installerForOS(release: LatestRelease, os: OS): string {
   if (os === 'windows') return release.windowsExe.available ? release.windowsExe.url : release.windowsMsi.available ? release.windowsMsi.url : release.releaseUrl
   if (os === 'linux') return release.linuxDeb.available ? release.linuxDeb.url : release.linuxRpm.available ? release.linuxRpm.url : release.releaseUrl
-  return release.macDmg?.url ?? release.releaseUrl
+  return release.macDmg?.url ?? release.macIntelDmg?.url ?? release.releaseUrl
 }
 
 // One request shared by the hero, downloads and sign-up screens in this page.
