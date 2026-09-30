@@ -39,7 +39,7 @@ export default function ProductStory() {
       <div className="site-container ai-layout">
         <div className="section-heading" data-reveal><p className="eyebrow">Meet Filey AI</p><h2>A little help.<br />A lot less admin.</h2><p>Ask in your own words. Filey AI works with your records and supported tools, within the permissions you choose.</p>
           <div className="ai-support"><span><ShieldCheck size={18} /> Your permissions</span><span><BookOpen size={18} /> Saved instructions</span></div>
-          <p className="small-note">Use a supported local model or connect your own AI provider. Hosted usage limits and provider charges apply.</p>
+          <p className="small-note">Use a supported local model, your own provider key or optional Coin for paid OpenRouter models. Choose the model and see its usage cost; 1 Coin = US$1.</p>
         </div>
         <div className="ai-example" data-reveal>
           <div className="example-select" role="group" aria-label="AI request examples">{examples.map((item, i) => <button key={item.label} aria-pressed={i === example} onClick={() => setExample(i)}>{item.label}</button>)}</div>
@@ -59,8 +59,9 @@ export default function ProductStory() {
           </div>
           <div className="update-details">
             <article><span className="update-icon"><Users size={22} /></span><div><h3>A CRM that keeps the context.</h3><p>Companies, contacts and deals with linked quotations and invoices. A Today queue for follow-ups, plus custom fields and reviewed bulk edits.</p></div></article>
-            <article><span className="update-icon"><Users size={22} /></span><div><h3>A space for your team.</h3><p>Private conversations and shared channels, with images and documents in the chat. Invite by code or email, approve requests and choose each member’s access.</p></div></article>
+            <article><span className="update-icon"><Users size={22} /></span><div><h3>A space for your team.</h3><p>Private conversations and shared channels, with images and documents in the chat. Invite by a six-character code or email, approve requests and choose each member’s access.</p></div></article>
             <article><span className="update-icon"><FileText size={22} /></span><div><h3>Less work in every document.</h3><p>A compact invoice editor, letters you can rename, clearer PDF editing tools and attachment previews before sharing.</p></div></article>
+            <article><span className="update-icon"><Users size={22} /></span><div><h3>A profile that feels like you.</h3><p>Choose your avatar’s shape and colour independently, keep a default or use your own photo. Set your look in Account &amp; Profile.</p></div></article>
           </div>
         </div>
         <div className="countries-layout" data-reveal>

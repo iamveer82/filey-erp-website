@@ -18,7 +18,7 @@ export const BASIC: Plan = {
   price: '$0',
   period: 'Free, on your device',
   features: ['The whole ERP and CRM on your device', 'Unlimited local invoices', 'Inventory, accounting and PDF tools', 'Local backups you control', 'Local AI models or your own provider key', 'Community support'],
-  note: 'Everything runs on this machine. Hosted AI, messaging and other external services may have separate provider costs.',
+  note: 'Unlimited local invoices are free. Basic also includes 5 new cloud invoices a month. Hosted AI, messaging and other external services may have separate provider costs.',
 }
 
 export const PAID: Record<PaidPlan, Plan & { cta: string }> = {
