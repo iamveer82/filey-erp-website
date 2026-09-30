@@ -15,6 +15,8 @@ import {
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp'
 import {
   MIN_PASSWORD,
+  APP_URL,
+  MfaRequired,
   RESEND_COOLDOWN,
   checkout,
   getSession,
@@ -109,6 +111,7 @@ export default function SignUp({ mode }: { mode: Mode }) {
   const [showConfirm, setShowConfirm] = useState(false)
   const [busy, setBusy] = useState(false)
   const [err, setErr] = useState<string | null>(null)
+  const [needsVerification, setNeedsVerification] = useState(false)
   const [fieldErr, setFieldErr] = useState<Record<string, string>>({})
   const [cooldown, setCooldown] = useState(0)
 
@@ -139,10 +142,12 @@ export default function SignUp({ mode }: { mode: Mode }) {
     setStep('done')
     if (!plan) return
     setBusy(true)
+    setNeedsVerification(false)
     try {
       await checkout(plan) // navigates away to Dodo
     } catch (e2) {
       setErr(message(e2))
+      setNeedsVerification(e2 instanceof MfaRequired)
       setBusy(false)
     }
   }
@@ -228,6 +233,7 @@ export default function SignUp({ mode }: { mode: Mode }) {
     setStep('form')
     setCreated(false)
     setErr(null)
+    setNeedsVerification(false)
   }
 
   const heading =
@@ -252,7 +258,7 @@ export default function SignUp({ mode }: { mode: Mode }) {
         Signed in as <strong>{session?.email || email}</strong>
       </>
     ) : mode === 'signup' ? (
-      plan ? `Create your free Filey account, then pay for ${planName}.` : 'One account for your Filey desktop workspace.'
+      plan ? `Create your free Filey account, then pay for ${planName}.` : 'One account for Filey on desktop and the web.'
     ) : plan ? (
       `Sign in, then pay for ${planName}.`
     ) : (
@@ -287,6 +293,7 @@ export default function SignUp({ mode }: { mode: Mode }) {
               </span>
             </p>
           )}
+          {needsVerification && <a className="signup-resend" href={APP_URL}>Open Filey to verify and choose your plan</a>}
 
           {view === 'form' && (
             <form onSubmit={submitForm} noValidate aria-busy={busy}>
@@ -469,7 +476,7 @@ export default function SignUp({ mode }: { mode: Mode }) {
                   {created ? 'Account created. ' : ''}
                   {plan
                     ? `Next is ${planName} checkout with Dodo Payments. The plan attaches to this account.`
-                    : 'Use this same email in the desktop app — your workspace and plan follow your account.'}
+                    : 'Use this same email in Filey on desktop or the web. Local records stay on your device until you choose to sync them.'}
                 </p>
               </div>
               {plan ? (

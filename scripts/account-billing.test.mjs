@@ -11,9 +11,10 @@ const source = ts.transpileModule(
 
 test('account uses the current workspace and the server cloud gate for team Ultra access', async () => {
   const exports = {}, calls = []
-  const session = { access_token: 'test-session', expires_at: Date.now() / 1000 + 600, email: 'qa@filey.invalid' }
+  const token = 'header.' + Buffer.from(JSON.stringify({ sub: 'user', role: 'authenticated', aal: 'aal1' })).toString('base64url') + '.signature'
+  const session = { access_token: token, expires_at: Date.now() / 1000 + 600, email: 'qa@filey.invalid' }
   runInNewContext(source, {
-    exports, require: () => ({}), URL, Date, encodeURIComponent,
+    exports, require: () => ({}), URL, Date, atob, encodeURIComponent,
     localStorage: { getItem: () => JSON.stringify(session) },
     fetch: async (url) => {
       calls.push(url)

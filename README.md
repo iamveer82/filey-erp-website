@@ -25,11 +25,11 @@ npm run lint
 node --test scripts/*.test.mjs
 ```
 
-The checks use Node's built-in test runner and the installed TypeScript compiler. They cover installer selection and safe fallback URLs, anchor navigation, registration controls during pending requests, demo navigation, invoice totals and draft validation, chart reconciliation, CRM stages, stock movements, and the 3D paper positions. They do not contact GitHub or create accounts. The demo and scene tests import TypeScript directly, requiring Node 22.18 or newer.
+The checks use Node's built-in test runner and the installed TypeScript compiler. They cover installer selection and safe fallback URLs, account/session changes, MFA-required account actions, payment destinations, registration controls during pending requests, anchor and demo navigation, invoice totals and draft validation, chart reconciliation, CRM stages, stock movements, and the 3D paper positions. They use synthetic sessions and records; they do not contact providers, create accounts or make payments. The demo and scene tests import TypeScript directly, requiring Node 22.18 or newer.
 
 ## Structure
 
-The site uses React 19, TypeScript and Vite 7. React Router serves `/`, `/signup` and a not-found page. Tailwind and existing Radix UI components support forms and dialogs; the marketing design uses shared CSS tokens and section styles.
+The site uses React 19, TypeScript and Vite 7. React Router serves `/`, `/signup`, `/login`, `/account`, checkout return pages and a not-found page. Tailwind and existing Radix UI components support forms and dialogs; the marketing design uses shared CSS tokens and section styles.
 
 - `src/pages/Home.tsx` composes `Hero`, `ProductStory`, `Pricing`, `Download` and `Faq`.
 - `src/components/Layout.tsx` supplies navigation, footer and progressive section reveals.
@@ -37,7 +37,7 @@ The site uses React 19, TypeScript and Vite 7. React Router serves `/`, `/signup
 - `src/sections/ProductStory.tsx` contains product, AI-example and released-feature content, including the interactive demo.
 - `src/sections/LiveDemo.tsx` supplies a desktop-style sidebar, section search and an internally scrolling workspace. It starts on Overview and connects its invoice actions to the invoice list/editor. The fixed workspace height prevents later page anchors from moving when lazy sections load.
 - `src/lib/useLatestRelease.ts` resolves published desktop installers. `src/lib/constants.ts` holds public project links.
-- `src/pages/SignUp.tsx` and `src/lib/signup.ts` implement email/password registration and email-code verification. Registration connects to Supabase; the demo does not.
+- `src/pages/SignUp.tsx`, `src/pages/Account.tsx` and `src/lib/auth.ts` implement email/password registration, email-code verification and account/billing entry points. These connect to Supabase; the demo does not.
 - `src/components/FreedomContact.tsx` sends an explicitly submitted enquiry to the existing `lead-contact` Supabase function. It is a contact flow, not an online checkout.
 
 The demos present Overview, Invoicing, CRM and Inventory workflows using sample records. The shared demo tokens and navigation follow the desktop app's `src/index.css` and `src/components/Layout.tsx`; individual screens follow their corresponding ERP page files. Changes reset when switching demo sections; they are not saved to an ERP account. This is an interactive tour, not a complete browser version of the desktop app. AI examples are illustrative and make no provider requests.
@@ -61,13 +61,15 @@ Configure values in the build environment or Vercel project settings and rebuild
 
 Email delivery, enabled auth methods, templates and rate limits are configured in Supabase. The website does not configure or test those hosted settings during its build. Do not send real signup or contact submissions as part of routine UI checks.
 
+The browser sends the signed-in user's token to Supabase Auth for verification before protected account, billing or password actions. Accounts with a verified MFA factor must complete the app's existing two-step verification flow; the website provides an `app.gofiley.com` link without putting credentials in URLs. Cloud RLS and authenticated service endpoints enforce access independently of this UI. Session guards discard requests from an account that has since signed out or changed, and account details are keyed to the current session. Hosted checkout and billing redirects accept only HTTPS URLs on Dodo's own domains. These checks do not replace backend authorization.
+
 ## Downloads and release status
 
-The latest verified public desktop release is [v2.11.0](https://github.com/iamveer82/Filey-erp/releases/tag/v2.11.0). It includes Windows x64 `.exe`/`.msi`, Linux x64 `.deb`/`.rpm`, and an unsigned Apple Silicon macOS `.dmg`. Do not infer an AppImage or an Intel Mac package from platform names.
+The existing public desktop release is [v3.0.9](https://github.com/iamveer82/Filey-erp/releases/tag/v3.0.9). Downloads continue to resolve the actual installers in the public release. Do not infer an AppImage or an Intel Mac package from platform names.
 
 The site reads the [GitHub latest-release API](https://api.github.com/repos/iamveer82/Filey-erp/releases/latest), sharing one request across consumers. Buttons and sizes come from actual assets in that response. If the API fails or an installer is missing, the fallback is the [latest release page](https://github.com/iamveer82/Filey-erp/releases/latest), never an invented or pinned installer URL. No GitHub token is needed.
 
-The redesigned CRM, Today follow-ups, linked quotations/invoices, connected Overview charts, unlimited local invoicing on Free, improved document/PDF tools and country/tax settings are available in v2.11.0. The website's feature, pricing and FAQ copy reflects that release. Provider accounts and keys remain user-configured, and country settings do not imply complete statutory localization. Website changes do not build or publish desktop installers, run ERP migrations, or activate hosted email configuration.
+The website describes Basic's unlimited local invoicing and separate five-invoice monthly cloud allowance, paid plans, team approval workflows, the 20-device cloud sign-in limit and optional Filey AI Coin. Ultra's two offline activation slots are separate from registered cloud devices. The current app's profile avatars support independent shape and colour choices as well as uploaded photos. Website edits do not publish a new desktop build: v3.0.9 download links remain unchanged until a desktop release is separately published. Provider accounts and keys remain user-configured, and country settings do not imply complete statutory localization. Website changes do not run ERP migrations or activate hosted email configuration.
 
 ## Deployment
 

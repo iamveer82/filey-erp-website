@@ -5,6 +5,7 @@ import BuyPlan from '@/components/BuyPlan'
 import {
   APP_URL,
   MIN_PASSWORD,
+  MfaRequired,
   SignInRequired,
   changePassword,
   getAccount,
@@ -27,11 +28,12 @@ export default function Account() {
   const session = useSession()
   const [params] = useSearchParams()
   const navigate = useNavigate()
-  const [account, setAccount] = useState<AccountData | null>(null)
-  const [error, setError] = useState('')
-  const [expired, setExpired] = useState(false)
-  const [portalBusy, setPortalBusy] = useState(false)
-  const [portalError, setPortalError] = useState('')
+  const [loaded, setLoaded] = useState<{ token: string; account?: AccountData; error?: string; expired?: boolean; mfa?: boolean } | null>(null)
+  const visible = loaded?.token === session?.access_token ? loaded : null
+  const account = visible?.account
+  const error = visible?.error
+  const [portal, setPortal] = useState<{ token: string; busy?: boolean; error?: string; mfa?: boolean } | null>(null)
+  const portalState = portal?.token === session?.access_token ? portal : null
   // Signing out from here goes home; without this the "must be signed in"
   // redirect below wins the race and lands on the login page instead.
   const [leaving, setLeaving] = useState(false)
@@ -42,29 +44,28 @@ export default function Account() {
     getAccount()
       .then((a) => {
         if (!live) return
-        // The header's "Open Filey" lands here; with a plan, go straight in.
+        // The header's "Open Filey" lands here; the server checks web access.
         if (params.get('open') === '1' && a.web) window.location.replace(APP_URL)
-        else setAccount(a)
+        else setLoaded({ token: session.access_token, account: a })
       })
       .catch((e) => {
         if (!live) return
-        if (e instanceof SignInRequired) setExpired(true)
-        else setError(e instanceof Error ? e.message : String(e))
+        setLoaded({ token: session.access_token, expired: e instanceof SignInRequired,
+          error: e instanceof Error ? e.message : String(e), mfa: e instanceof MfaRequired })
       })
     return () => { live = false }
   }, [session, params])
 
   if (leaving) return null
-  if (!session || expired) return <Navigate to={`/login?next=${encodeURIComponent('/account' + (params.get('open') ? '?open=1' : ''))}`} replace />
+  if (!session || visible?.expired) return <Navigate to={`/login?next=${encodeURIComponent('/account' + (params.get('open') ? '?open=1' : ''))}`} replace />
 
   const manage = async () => {
-    setPortalBusy(true)
-    setPortalError('')
+    const token = session.access_token
+    setPortal({ token, busy: true })
     try {
       await openBillingPortal()
     } catch (e) {
-      setPortalError(e instanceof Error ? e.message : String(e))
-      setPortalBusy(false)
+      setPortal({ token, error: e instanceof Error ? e.message : String(e), mfa: e instanceof MfaRequired })
     }
   }
 
@@ -78,16 +79,18 @@ export default function Account() {
       </header>
 
       {error && <p className="account-error" role="alert">{error}</p>}
+      {visible?.mfa && <a className="site-button" href={APP_URL}>Open Filey to verify <ArrowUpRight size={16} /></a>}
       {!account && !error && <p className="account-loading" role="status"><Loader2 size={16} className="buy-spin" /> Loading your account…</p>}
 
       {account && <div className="account-grid">
         <section className="account-card" aria-labelledby="acct-web">
           <h2 id="acct-web"><Globe size={17} /> Filey on the web</h2>
           {account.web ? <>
-            <p>Your {account.pro || account.ultra ? planName : 'workspace'} includes Filey in the browser. Sign in there with this same email.</p>
+            <p>Open Filey in your browser with this same email. Basic includes 5 new cloud invoices a month; Pro and Ultra have no monthly invoice cap.</p>
             <a className="site-button" href={APP_URL}>Open Filey <ArrowUpRight size={16} /></a>
           </> : <>
-            <p>Filey on the web is part of Pro and Ultra. On Basic, Filey runs free on your own computer.</p>
+            <p>Cloud access is unavailable for this workspace. Basic includes unlimited local invoices and a separate allowance of 5 new cloud invoices a month. Open Filey to check your workspace and access.</p>
+            <a className="site-button" href={APP_URL}>Open Filey <ArrowUpRight size={16} /></a>
             <div className="account-actions">
               <BuyPlan plan="pro" label="Get Pro" quiet />
               <BuyPlan plan="ultra" label="Get Ultra" primary quiet />
@@ -112,12 +115,13 @@ export default function Account() {
               {account.ultra.devices.length === 0 && <li>No computer activated yet — sign in to the desktop app and it activates itself.</li>}
               {account.ultra.devices.map((d) => <li key={d.name + d.since}><Monitor size={14} /> {d.name}<span>{d.active ? `since ${date(d.since)}` : 'released'}</span></li>)}
             </ul>
-            <p className="account-note">Two device slots. Free one from Settings → Licence in the app.</p>
+            <p className="account-note">Two offline activation slots. Manage them in Settings → Devices in the app. Cloud sign-ins have a separate limit of 20 registered devices.</p>
           </>}
-          {account.pro && <button type="button" className="site-button site-button-secondary" disabled={portalBusy} onClick={() => void manage()}>
-            {portalBusy ? <>Opening <Loader2 size={15} className="buy-spin" /></> : <>Manage billing <ArrowUpRight size={16} /></>}
+          {account.pro && <button type="button" className="site-button site-button-secondary" disabled={portalState?.busy} onClick={() => void manage()}>
+            {portalState?.busy ? <>Opening <Loader2 size={15} className="buy-spin" /></> : <>Manage billing <ArrowUpRight size={16} /></>}
           </button>}
-          {portalError && <p className="buy-error" role="alert">{portalError}</p>}
+          {portalState?.error && <p className="buy-error" role="alert">{portalState.error}</p>}
+          {portalState?.mfa && <a className="account-link" href={APP_URL}>Open Filey to verify and manage billing</a>}
           {!account.pro && !account.ultra && <p className="account-note">Compare plans on the <Link to="/#pricing">pricing page</Link>.</p>}
           {account.ultra && !account.pro && <p className="account-note">Receipts for Ultra come by email from Dodo Payments.</p>}
         </section>
@@ -131,10 +135,10 @@ export default function Account() {
             <div><dt>Member since</dt><dd>{date(account.createdAt)}</dd></div>
             <div><dt>Last sign-in</dt><dd>{date(account.lastSignIn)}</dd></div>
           </dl>
-          <p className="account-note">Change your name and company in the app, under Settings → Account.</p>
+          <p className="account-note">Change your name and avatar in Settings → Account &amp; Profile. Choose an avatar shape and colour independently, or upload a photo. Edit your company in Company Details.</p>
         </section>
 
-        <PasswordCard />
+        <PasswordCard key={session.email + ':' + session.signed_in_at} />
       </div>}
 
       <button type="button" className="account-signout" onClick={() => { setLeaving(true); navigate('/'); void signOut() }}><LogOut size={15} /> Sign out</button>
@@ -151,11 +155,13 @@ function PasswordCard() {
   const [confirm, setConfirm] = useState('')
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
+  const [needsVerification, setNeedsVerification] = useState(false)
   const [done, setDone] = useState(false)
 
   const submit = async (e: FormEvent) => {
     e.preventDefault()
     setError('')
+    setNeedsVerification(false)
     setDone(false)
     if (next.length < MIN_PASSWORD) return setError(`The new password needs at least ${MIN_PASSWORD} characters.`)
     if (next !== confirm) return setError("The new passwords don't match.")
@@ -169,6 +175,7 @@ function PasswordCard() {
       setConfirm('')
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err))
+      setNeedsVerification(err instanceof MfaRequired)
     } finally {
       setBusy(false)
     }
@@ -188,6 +195,7 @@ function PasswordCard() {
       <label htmlFor="pw-confirm">Confirm new password</label>
       <input id="pw-confirm" type="password" autoComplete="new-password" required value={confirm} onChange={(e) => setConfirm(e.target.value)} disabled={busy} />
       {error && <p className="buy-error" role="alert">{error}</p>}
+      {needsVerification && <a className="account-link" href={APP_URL}>Open Filey to verify and change your password</a>}
       {done && <p className="account-ok" role="status"><Check size={14} /> Password changed. Use it next time you sign in, here and in the app.</p>}
       <button type="submit" className="site-button site-button-secondary" disabled={busy}>
         {busy ? <>Saving <Loader2 size={15} className="buy-spin" /></> : 'Change password'}
