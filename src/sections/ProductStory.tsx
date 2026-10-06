@@ -39,7 +39,7 @@ export default function ProductStory() {
       <div className="site-container ai-layout">
         <div className="section-heading" data-reveal><p className="eyebrow">Meet Filey AI</p><h2>A little help.<br />A lot less admin.</h2><p>Ask in your own words. Filey AI works with your records and supported tools, within the permissions you choose.</p>
           <div className="ai-support"><span><ShieldCheck size={18} /> Your permissions</span><span><BookOpen size={18} /> Saved instructions</span></div>
-          <p className="small-note">Use a supported local model, your own provider key or optional Coin for paid OpenRouter models. Choose the model and see its usage cost; 1 Coin = US$1.</p>
+          <p className="small-note">Use Filey AI with Coin, or connect a supported local model or your own API key. Coin is separate from your Filey plan.</p>
         </div>
         <div className="ai-example" data-reveal>
           <div className="example-select" role="group" aria-label="AI request examples">{examples.map((item, i) => <button key={item.label} aria-pressed={i === example} onClick={() => setExample(i)}>{item.label}</button>)}</div>
