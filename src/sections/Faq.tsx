@@ -1,5 +1,5 @@
 import { ArrowUpRight, Plus } from 'lucide-react'
-import { REPO_URL } from '@/lib/constants'
+import { REPO_URL, SUPPORT_EMAIL } from '@/lib/constants'
 
 const questions = [
   ['Can I use Filey for free?', 'Yes. Basic is free and gives you the whole ERP and CRM on your own device, with unlimited local invoices. The separate Basic web allowance is 5 invoices a month. Pro is $5/month and adds cloud sync on up to 20 devices with no invoice cap; Ultra is a one-time $100 licence with two offline activation slots. External services may have their own charges.'],
@@ -18,7 +18,7 @@ const questions = [
 export default function Faq() {
   return <>
     <section id="faq" className="site-section faq-section"><div className="site-container faq-layout">
-      <div className="section-heading" data-reveal><h2>A few good<br />questions.</h2><p>For everything else, the documentation and community are a click away.</p><a className="text-link" href={REPO_URL + '#readme'}>Read the documentation <ArrowUpRight size={16} /></a></div>
+      <div className="section-heading" data-reveal><h2>A few good<br />questions.</h2><p>For everything else, the documentation is a click away, or email <a href={`mailto:${SUPPORT_EMAIL}`} style={{ color: 'var(--site-text)', textDecoration: 'underline', textUnderlineOffset: 3 }}>{SUPPORT_EMAIL}</a>.</p><a className="text-link" href={REPO_URL + '#readme'}>Read the documentation <ArrowUpRight size={16} /></a></div>
       <div className="faq-list" data-reveal>{questions.map(([question, answer]) => <details key={question}><summary>{question}<Plus size={19} /></summary><p>{answer}</p></details>)}</div>
     </div></section>
     <section id="run-locally" className="source-section">

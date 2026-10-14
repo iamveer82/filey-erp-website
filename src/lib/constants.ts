@@ -4,6 +4,7 @@ export const ISSUES_URL = `${REPO_URL}/issues`
 export const LICENSE_URL = `${REPO_URL}/blob/main/LICENSE`
 export const CONTRIBUTING_URL = `${REPO_URL}/blob/main/CONTRIBUTING.md`
 export const ROADMAP_URL = `${REPO_URL}/blob/main/ROADMAP.md`
+export const SUPPORT_EMAIL = 'support@gofiley.com'
 
 export const LATEST_RELEASE_URL = `${RELEASES_URL}/latest`
 
