@@ -69,7 +69,7 @@ export default function Account() {
     }
   }
 
-  const planName = account ? [account.pro && 'Pro', account.ultra && 'Ultra'].filter(Boolean).join(' + ') || 'Basic' : ''
+  const planName = account ? [account.pro && 'Pro', account.ultra && 'Freedom'].filter(Boolean).join(' + ') || 'Basic' : ''
 
   return <div className="account-page">
     <div className="site-container">
@@ -86,14 +86,14 @@ export default function Account() {
         <section className="account-card" aria-labelledby="acct-web">
           <h2 id="acct-web"><Globe size={17} /> Filey on the web</h2>
           {account.web ? <>
-            <p>Open Filey in your browser with this same email. Basic includes 5 new cloud invoices a month; Pro and Ultra have no monthly invoice cap.</p>
+            <p>Open Filey in your browser with this same email. Basic includes 5 new cloud invoices a month; Pro and Freedom have no monthly invoice cap.</p>
             <a className="site-button" href={APP_URL}>Open Filey <ArrowUpRight size={16} /></a>
           </> : <>
             <p>Cloud access is unavailable for this workspace. Basic includes unlimited local invoices and a separate allowance of 5 new cloud invoices a month. Open Filey to check your workspace and access.</p>
             <a className="site-button" href={APP_URL}>Open Filey <ArrowUpRight size={16} /></a>
             <div className="account-actions">
               <BuyPlan plan="pro" label="Get Pro" quiet />
-              <BuyPlan plan="ultra" label="Get Ultra" primary quiet />
+              <BuyPlan plan="ultra" label="Get Freedom" primary quiet />
             </div>
             <a className="account-link" href="/#download">Download the free desktop app</a>
           </>}
@@ -107,10 +107,10 @@ export default function Account() {
               <div><dt>Pro</dt><dd>{account.pro.status === 'past_due' ? 'Payment retrying' : 'Active'}</dd></div>
               <div><dt>Renews</dt><dd>{date(account.pro.renews)}</dd></div>
             </>}
-            {account.ultra && <div><dt>Ultra since</dt><dd>{date(account.ultra.since)}</dd></div>}
+            {account.ultra && <div><dt>Freedom since</dt><dd>{date(account.ultra.since)}</dd></div>}
           </dl>
           {account.ultra && <>
-            <h3>Ultra devices</h3>
+            <h3>Freedom computers</h3>
             <ul className="account-devices">
               {account.ultra.devices.length === 0 && <li>No computer activated yet — sign in to the desktop app and it activates itself.</li>}
               {account.ultra.devices.map((d) => <li key={d.name + d.since}><Monitor size={14} /> {d.name}<span>{d.active ? `since ${date(d.since)}` : 'released'}</span></li>)}
@@ -123,7 +123,7 @@ export default function Account() {
           {portalState?.error && <p className="buy-error" role="alert">{portalState.error}</p>}
           {portalState?.mfa && <a className="account-link" href={APP_URL}>Open Filey to verify and manage billing</a>}
           {!account.pro && !account.ultra && <p className="account-note">Compare plans on the <Link to="/#pricing">pricing page</Link>.</p>}
-          {account.ultra && !account.pro && <p className="account-note">Receipts for Ultra come by email from Dodo Payments.</p>}
+          {account.ultra && !account.pro && <p className="account-note">Receipts for Freedom come by email from Dodo Payments.</p>}
         </section>
 
         <section className="account-card" aria-labelledby="acct-info">

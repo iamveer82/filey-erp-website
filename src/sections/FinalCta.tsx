@@ -65,7 +65,7 @@ export default function FinalCta() {
         </h2>
 
         <p className="fc-reveal mx-auto mt-6 max-w-xl text-[clamp(1.0625rem,1.4vw,1.25rem)] leading-[1.6] text-zinc-600">
-          Download Filey ERP free — the whole app on your device, unlimited local invoices. Add Pro for $5 a month, or own it outright with Ultra
+          Download Filey ERP and try every app free for 14 days. Own it for life with Freedom, or work in the cloud with Pro,
           whenever you&rsquo;re ready. Your AI agent is waiting.
         </p>
 

@@ -12,7 +12,7 @@ export default function Thanks() {
   const [params] = useSearchParams()
   // The backend still says cloud/freedom; the names people see are Pro/Ultra.
   const pro = ['cloud', 'pro'].includes(params.get('plan') ?? '')
-  const name = pro ? 'Pro' : 'Ultra'
+  const name = pro ? 'Pro' : 'Freedom'
   const fromApp = params.get('from') === 'app'
   const session = useSession()
   // Dodo appends the outcome to the return URL; a declined card lands here too.
