@@ -74,3 +74,5 @@ html{scroll-behavior:smooth;scroll-padding-top:90px}body{margin:0;background:var
 .account-signout{display:inline-flex;align-items:center;gap:7px;margin-top:28px;border:0;background:none;color:var(--site-muted);font-size:13px;padding:6px 0}
 .account-signout:hover{color:var(--site-text)}
 @media(max-width:800px){.account-grid{grid-template-columns:1fr}.account-page{padding:56px 0 70px}.account-card{padding:22px}.account-actions{grid-template-columns:1fr}}
+.pricing-offer{display:flex;align-items:center;gap:16px;max-width:1180px;margin:0 auto 22px;padding:18px 22px;border:1px solid var(--site-accent);border-radius:16px;background:var(--site-paper)}.pricing-offer>svg{flex:none;color:var(--site-accent-text)}.pricing-offer p{flex:1;margin:0;font-size:13px;line-height:1.6;color:var(--site-muted)}.pricing-offer strong{color:var(--site-text);font-weight:600}.pricing-offer .site-button{flex:none;min-height:40px;padding:10px 18px;font-size:12px}
+@media(max-width:640px){.pricing-offer{flex-direction:column;align-items:flex-start;padding:18px}.pricing-offer .site-button{width:100%}}

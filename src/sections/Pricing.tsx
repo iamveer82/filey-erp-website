@@ -1,8 +1,11 @@
 import { useState } from 'react'
-import { ArrowUpRight, Check } from 'lucide-react'
+import { ArrowUpRight, Check, Tag } from 'lucide-react'
 import FreedomContact from '@/components/FreedomContact'
 import BuyPlan from '@/components/BuyPlan'
 import { BASIC, PAID, type Plan } from '@/lib/plans'
+import { SUPPORT_EMAIL } from '@/lib/constants'
+
+const DISCOUNT_MAIL = `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent('Discount on a Filey plan')}`
 
 // Three plans, one decision: work on this device, or work everywhere.
 // Basic is a 14-day trial of the whole app on your computer. Pro is 36 AED a
@@ -19,6 +22,11 @@ export default function Pricing() {
   return <section id="pricing" className="site-section pricing-section">
     <div className="site-container">
       <div className="section-heading centered" data-reveal><h2>Start free.<br />Make it yours.</h2><p>Try every app free for 14 days. Then pay once to own it, or 36 AED a month to work in the cloud.</p></div>
+      <div className="pricing-offer" data-reveal>
+        <Tag size={18} aria-hidden="true" />
+        <p><strong>Looking for a better price?</strong> Contact our support team to get a discount on your plan.</p>
+        <a href={DISCOUNT_MAIL} className="site-button">Contact support <ArrowUpRight size={16} /></a>
+      </div>
       <div className="pricing-grid" data-reveal>
         <article className="price-plan"><div className="plan-heading"><h3>{BASIC.name}</h3><span>{BASIC.tagline}</span></div><p className="price">{BASIC.price}<span>{BASIC.period}</span></p>
           <Features plan={BASIC} />
