@@ -35,7 +35,7 @@ export const PAID: Record<PaidPlan, Plan & { cta: string }> = {
     cta: 'Get Freedom',
     name: 'Freedom',
     tagline: 'Yours for life',
-    price: '999 AED',
+    price: '1499 AED',
     period: 'One-time payment',
     features: ['Filey on your computer for life', 'Every app, including Word, Sheets and PDF', 'Works fully offline, your data stays on your computer', 'On 2 computers, and move it to a new PC any time', 'Regular updates and support', 'No monthly bill'],
     note: 'Pay once and own it. Accounts made before 17 October 2026 already have Freedom, free.',
