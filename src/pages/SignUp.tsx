@@ -38,7 +38,7 @@ import './SignUp.css'
  * deliberately absent — both providers are disabled in Supabase, so offering
  * them would only produce errors.
  *
- * Buying needs an account, so every Get Pro / Get Ultra button sends a
+ * Buying needs an account, so every Get Freedom button sends a
  * signed-out visitor here with ?plan=. Once they are in, finish() takes them
  * straight on to Dodo's checkout — no second click on the pricing page. */
 
@@ -94,7 +94,7 @@ function Field({
 
 export default function SignUp({ mode }: { mode: Mode }) {
   const [params] = useSearchParams()
-  const plan = (['pro', 'ultra'] as PaidPlan[]).find((p) => p === params.get('plan'))
+  const plan = (['ultra'] as PaidPlan[]).find((p) => p === params.get('plan'))
   // Where to go once signed in. Only the account page — never an arbitrary
   // URL, or this page becomes an open redirect.
   const next = ['/account', '/account?open=1'].find((p) => p === params.get('next')) ?? null
@@ -144,7 +144,7 @@ export default function SignUp({ mode }: { mode: Mode }) {
     setBusy(true)
     setNeedsVerification(false)
     try {
-      await checkout(plan) // navigates away to Dodo
+      await checkout() // navigates away to Dodo
     } catch (e2) {
       setErr(message(e2))
       setNeedsVerification(e2 instanceof MfaRequired)

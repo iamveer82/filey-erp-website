@@ -1,5 +1,4 @@
 import { useMemo, useSyncExternalStore } from 'react'
-import type { PaidPlan } from '@/lib/plans'
 
 // Accounts on the website: the same Supabase project the desktop app uses, so
 // one account works in both. Plain REST calls and a session in localStorage
@@ -235,7 +234,7 @@ function paymentUrl(value: unknown): string {
 /** Open Dodo's hosted checkout for the signed-in account. The purchase is
  *  attached to the account itself (user and workspace ids travel as checkout
  *  metadata), so the plan is already on it the next time they open Filey. */
-export async function checkout(plan: PaidPlan): Promise<void> {
+export async function checkout(): Promise<void> {
   const current = sessionGuard()
   const token = await freshToken()
   current()
@@ -244,7 +243,7 @@ export async function checkout(plan: PaidPlan): Promise<void> {
   const res = await fetch(DODO_FN, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-    body: JSON.stringify({ action: plan === 'pro' ? 'checkout_cloud' : 'checkout', from: 'web' }),
+    body: JSON.stringify({ action: 'checkout', from: 'web' }),
   }).catch((e) => { throw new Error(friendly(errorOf(e))) })
   const body = await res.json().catch(() => ({}))
   current()

@@ -1,7 +1,8 @@
-// The three plans, named as they are inside the app: Basic, Pro, Freedom.
-// lib/auth.ts maps pro/ultra onto the backend's cloud/freedom names (ultra = Freedom).
+// The plans on sale: Basic and Freedom. Pro is off sale for now; existing
+// subscribers keep their plan and can still manage billing from Account.
+// lib/auth.ts maps ultra onto the backend's freedom name (ultra = Freedom).
 
-export type PaidPlan = 'pro' | 'ultra'
+export type PaidPlan = 'ultra'
 
 export interface Plan {
   name: string
@@ -18,19 +19,10 @@ export const BASIC: Plan = {
   price: 'Free',
   period: 'For 14 days, on your computer',
   features: ['Every app: invoicing, CRM, inventory, accounting', 'Word, Sheets and PDF built in', 'Works offline, your data stays on your computer', '$1 of Filey AI to try the agent', 'Keep everything when you get Freedom'],
-  note: 'One free trial per account and per computer. After 14 days your data stays viewable, printable and exportable; Freedom or Pro unlocks creating and editing again.',
+  note: 'One free trial per account and per computer. After 14 days your data stays viewable, printable and exportable; Freedom unlocks creating and editing again.',
 }
 
 export const PAID: Record<PaidPlan, Plan & { cta: string }> = {
-  pro: {
-    cta: 'Get Pro',
-    name: 'Pro',
-    tagline: 'Work from anywhere',
-    price: '36 AED',
-    period: 'Per month, cancel any time',
-    features: ['Cloud sync on up to 20 registered devices', 'Filey on the web — any browser, any computer', 'Unlimited invoices — no monthly cap', 'Team chats, channels and shared files', 'Backed up off your machine', 'Choose device or cloud changes when edits conflict'],
-    note: 'Your subscription follows your account, not your machine. Cancel any time from Billing inside the app.',
-  },
   ultra: {
     cta: 'Get Freedom',
     name: 'Freedom',

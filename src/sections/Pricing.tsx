@@ -7,9 +7,9 @@ import { SUPPORT_EMAIL } from '@/lib/constants'
 
 const DISCOUNT_MAIL = `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent('Discount on a Filey plan')}`
 
-// Three plans, one decision: work on this device, or work everywhere.
-// Basic is a 14-day trial of the whole app on your computer. Pro is 36 AED a
-// month in the cloud. Freedom buys the local app outright, forever.
+// Two plans, one decision: try it, then own it. Basic is a 14-day trial of the
+// whole app on your computer. Freedom buys the local app outright, forever.
+// Pro is off sale for now.
 //
 // Paid plans need a Filey account: BuyPlan sends a signed-in visitor straight
 // to Dodo's hosted checkout, and everyone else to sign up first.
@@ -21,7 +21,7 @@ export default function Pricing() {
   const [contact, setContact] = useState(false)
   return <section id="pricing" className="site-section pricing-section">
     <div className="site-container">
-      <div className="section-heading centered" data-reveal><h2>Start free.<br />Make it yours.</h2><p>Try every app free for 14 days. Then pay once to own it, or 36 AED a month to work in the cloud.</p></div>
+      <div className="section-heading centered" data-reveal><h2>Start free.<br />Make it yours.</h2><p>Try every app free for 14 days. Then pay once to own it for life.</p></div>
       <div className="pricing-offer" data-reveal>
         <Tag size={18} aria-hidden="true" />
         <p><strong>Looking for a better price?</strong> Contact our support team to get a discount on your plan.</p>
@@ -32,11 +32,6 @@ export default function Pricing() {
           <Features plan={BASIC} />
           <a href="#download" className="site-button site-button-secondary">Download free <ArrowUpRight size={16} /></a>
           <p className="plan-note">{BASIC.note}</p>
-        </article>
-        <article className="price-plan"><div className="plan-heading"><h3>{PAID.pro.name}</h3><span>{PAID.pro.tagline}</span></div><p className="price">{PAID.pro.price}<span>{PAID.pro.period}</span></p>
-          <Features plan={PAID.pro} />
-          <BuyPlan plan="pro" label={PAID.pro.cta} />
-          <p className="plan-note">{PAID.pro.note}</p>
         </article>
         <article className="price-plan freedom-plan"><div className="plan-heading"><h3>{PAID.ultra.name}</h3><span>{PAID.ultra.tagline}</span></div><p className="price">{PAID.ultra.price}<span>{PAID.ultra.period}</span></p>
           <Features plan={PAID.ultra} />

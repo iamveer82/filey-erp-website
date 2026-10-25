@@ -93,14 +93,14 @@ test('verified MFA factors require app verification before account, billing or p
   for (const action of ['getAccount', 'checkout', 'openBillingPortal', 'changePassword']) {
     const app = mount(session(), path => path.endsWith('/user')
       ? response({ id: 'owner', factors: [{ status: 'verified' }] }) : undefined)
-    const args = action === 'checkout' ? ['pro'] : action === 'changePassword' ? ['', 'next-password'] : []
+    const args = action === 'checkout' ? [] : action === 'changePassword' ? ['', 'next-password'] : []
     await assert.rejects(app.auth[action](...args), error => error instanceof app.auth.MfaRequired)
     assert.deepEqual(app.calls.map(call => call.path), ['/auth/v1/user'])
     assert.equal(app.location.href, '')
   }
   const verified = mount(session('owner', 'aal2'), path => path.endsWith('/user')
     ? response({ id: 'owner', factors: [{ status: 'verified' }] }) : undefined)
-  await verified.auth.checkout('pro')
+  await verified.auth.checkout()
   assert.equal(verified.location.href, 'https://checkout.dodopayments.com/session')
 })
 
@@ -113,7 +113,7 @@ test('verified Auth identity must match token claims and malformed factor metada
   ]
   for (const [access_token, user] of cases) {
     const app = mount({ ...session(), access_token }, path => path.endsWith('/user') ? response(user) : undefined)
-    await assert.rejects(app.auth.checkout('pro'), /Couldn't verify your sign-in/)
+    await assert.rejects(app.auth.checkout(), /Couldn't verify your sign-in/)
     assert.equal(app.calls.some(call => call.path.endsWith('/dodo')), false)
   }
 })
@@ -126,7 +126,7 @@ test('checkout and portal allow only HTTPS destinations on the payment provider 
   for (const action of ['checkout', 'openBillingPortal']) {
     for (const url of invalid) {
       const app = mount(session(), path => path.endsWith('/dodo') ? response({ url }) : undefined)
-      await assert.rejects(app.auth[action]('pro'), /Payments are unavailable/)
+      await assert.rejects(app.auth[action](), /Payments are unavailable/)
       assert.equal(app.location.href, '')
     }
   }
@@ -141,7 +141,7 @@ test('a late payment response cannot redirect or sign out an account selected af
     const app = mount(session(), path => {
       if (path.endsWith('/dodo')) { started.resolve(); return pending.promise }
     })
-    const operation = app.auth.checkout('pro')
+    const operation = app.auth.checkout()
     const rejected = assert.rejects(operation, error => error instanceof app.auth.SignInRequired)
     await started.promise
     app.switchInAnotherTab(session('teammate'))

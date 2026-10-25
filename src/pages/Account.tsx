@@ -86,13 +86,12 @@ export default function Account() {
         <section className="account-card" aria-labelledby="acct-web">
           <h2 id="acct-web"><Globe size={17} /> Filey on the web</h2>
           {account.web ? <>
-            <p>Open Filey in your browser with this same email. Basic includes 5 new cloud invoices a month; Pro and Freedom have no monthly invoice cap.</p>
+            <p>Open Filey in your browser with this same email. Basic includes 5 new cloud invoices a month; Freedom has no monthly invoice cap.</p>
             <a className="site-button" href={APP_URL}>Open Filey <ArrowUpRight size={16} /></a>
           </> : <>
             <p>Cloud access is unavailable for this workspace. Basic includes unlimited local invoices and a separate allowance of 5 new cloud invoices a month. Open Filey to check your workspace and access.</p>
             <a className="site-button" href={APP_URL}>Open Filey <ArrowUpRight size={16} /></a>
             <div className="account-actions">
-              <BuyPlan plan="pro" label="Get Pro" quiet />
               <BuyPlan plan="ultra" label="Get Freedom" primary quiet />
             </div>
             <a className="account-link" href="/#download">Download the free desktop app</a>

@@ -24,7 +24,7 @@ export default function BuyPlan({ plan, label, primary, quiet }: { plan: PaidPla
     setError('')
     setNeedsVerification(false)
     try {
-      await checkout(plan) // navigates away to Dodo
+      await checkout() // navigates away to Dodo
     } catch (err) {
       if (err instanceof SignInRequired) navigate(`/login?plan=${plan}`)
       else setError(err instanceof Error ? err.message : String(err))
