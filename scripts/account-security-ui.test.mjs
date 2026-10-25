@@ -83,5 +83,5 @@ test('MFA-required account loads expose the app verification link and no private
   const tree = page.render()
   assert.match(textOf(tree), /Complete two-step verification/)
   assert.doesNotMatch(textOf(tree), /Account information|Change password|Private Owner Company/)
-  assert.ok(links(tree).some(link => link.href === 'https://app.gofiley.com' && /Open Filey to verify/.test(textOf(link.children))))
+  assert.ok(links(tree).some(link => link.href === '/#download' && /Get Filey to verify/.test(textOf(link.children))))
 })

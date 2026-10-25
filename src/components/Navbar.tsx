@@ -28,9 +28,9 @@ export default function Navbar() {
           ? <Link className="nav-signin" to="/account" title={`Signed in as ${session.email}`}>Account</Link>
           : <Link className="nav-signin" to="/login">Sign in</Link>}
         {session
-          // Filey on the web: /account sends Pro and Ultra straight in, and shows
-          // everyone else what the web app needs.
-          ? <Link className="site-button nav-signup" to="/account?open=1">Open Filey <ArrowUpRight size={15} /></Link>
+          // Cloud mode is coming soon, so the signed-in call to action points
+          // at the desktop download rather than a web app.
+          ? <Link className="site-button nav-signup" to="/#download">Download <ArrowUpRight size={15} /></Link>
           : <Link className="site-button nav-signup" to="/signup">Get started <ArrowUpRight size={15} /></Link>}
         <button ref={menuButton} className="icon-button nav-toggle" aria-label={open ? 'Close menu' : 'Open menu'} aria-expanded={open} aria-controls="mobile-nav" onClick={() => setOpen(!open)}>{open ? <X /> : <Menu />}</button>
       </div>
@@ -39,7 +39,7 @@ export default function Navbar() {
       {links.map(([name, url]) => <a href={url} key={url} onClick={() => setOpen(false)}>{name}<ArrowUpRight size={16} /></a>)}
       {session
         ? <>
-          <Link to="/account?open=1" onClick={() => setOpen(false)}>Open Filey <ArrowUpRight size={16} /></Link>
+          <Link to="/#download" onClick={() => setOpen(false)}>Download Filey <ArrowUpRight size={16} /></Link>
           <Link to="/account" onClick={() => setOpen(false)}>Account <ArrowUpRight size={16} /></Link>
           <button type="button" onClick={() => { setOpen(false); void signOut() }}>Sign out ({session.email}) <ArrowUpRight size={16} /></button>
         </>

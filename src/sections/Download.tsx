@@ -49,7 +49,7 @@ export default function Download() {
             <div className="download-actions"><InstallerLink installer={release.linuxDeb} label="Download .deb" /><InstallerLink installer={release.linuxRpm} label=".rpm" /></div>
           </div>
         </div>
-        <p className="download-release-note">Private team chats, shared channels, images and documents. Up to 20 cloud devices, unlimited local invoices, country-aware forms and a more focused invoice editor. Check for updates in the desktop app, or install the latest package above.</p>
+        <p className="download-release-note">Private team chats, shared channels, images and documents. Unlimited local invoices, country-aware forms and a more focused invoice editor. Cloud mode is coming soon. Check for updates in the desktop app, or install the latest package above.</p>
         {!release.live && <p className="download-release-note">Installer details are unavailable right now. <a href={LATEST_RELEASE_URL}>Browse GitHub releases</a> to choose a download.</p>}
       </div>
     </div>

@@ -15,7 +15,6 @@ import {
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp'
 import {
   MIN_PASSWORD,
-  APP_URL,
   MfaRequired,
   RESEND_COOLDOWN,
   checkout,
@@ -293,7 +292,7 @@ export default function SignUp({ mode }: { mode: Mode }) {
               </span>
             </p>
           )}
-          {needsVerification && <a className="signup-resend" href={APP_URL}>Open Filey to verify and choose your plan</a>}
+          {needsVerification && <a className="signup-resend" href="/#download">Get Filey to verify and choose your plan</a>}
 
           {view === 'form' && (
             <form onSubmit={submitForm} noValidate aria-busy={busy}>
@@ -476,7 +475,7 @@ export default function SignUp({ mode }: { mode: Mode }) {
                   {created ? 'Account created. ' : ''}
                   {plan
                     ? `Next is ${planName} checkout with Dodo Payments. The plan attaches to this account.`
-                    : 'Use this same email in Filey on desktop or the web. Local records stay on your device until you choose to sync them.'}
+                    : 'Use this same email in the Filey desktop app. Your records stay on your computer.'}
                 </p>
               </div>
               {plan ? (

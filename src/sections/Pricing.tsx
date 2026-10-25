@@ -52,7 +52,7 @@ export default function Pricing() {
         <article className="price-plan freedom-plan"><div className="plan-heading"><h3>{PAID.ultra.name}</h3><span>{PAID.ultra.tagline}</span></div><p className="price">{PAID.ultra.price}<span>{PAID.ultra.period}</span></p>
           <Features plan={PAID.ultra} />
           {owned
-            ? <p className="account-owned"><Check size={16} aria-hidden="true" /> You already own Freedom — purchased, active on your account.</p>
+            ? <p className="account-owned"><Check size={16} aria-hidden="true" /> You already own Freedom. There is nothing left to buy.</p>
             : <BuyPlan plan="ultra" label={PAID.ultra.cta} primary />}
           <p className="plan-note">{PAID.ultra.note} <button type="button" className="plan-link" onClick={() => setContact(true)}>Questions first?</button></p>
         </article>

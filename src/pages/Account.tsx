@@ -1,9 +1,8 @@
 import { useEffect, useState, type FormEvent } from 'react'
-import { Link, Navigate, useNavigate, useSearchParams } from 'react-router'
-import { ArrowUpRight, Check, Globe, KeyRound, Loader2, LogOut, Monitor, User } from 'lucide-react'
+import { Link, Navigate, useNavigate } from 'react-router'
+import { ArrowUpRight, Check, KeyRound, Loader2, LogOut, Monitor, User } from 'lucide-react'
 import BuyPlan from '@/components/BuyPlan'
 import {
-  APP_URL,
   MIN_PASSWORD,
   MfaRequired,
   SignInRequired,
@@ -26,7 +25,6 @@ const date = (iso: string | null | undefined) =>
 
 export default function Account() {
   const session = useSession()
-  const [params] = useSearchParams()
   const navigate = useNavigate()
   const [loaded, setLoaded] = useState<{ token: string; account?: AccountData; error?: string; expired?: boolean; mfa?: boolean } | null>(null)
   const visible = loaded?.token === session?.access_token ? loaded : null
@@ -44,9 +42,7 @@ export default function Account() {
     getAccount()
       .then((a) => {
         if (!live) return
-        // The header's "Open Filey" lands here; the server checks web access.
-        if (params.get('open') === '1' && a.web) window.location.replace(APP_URL)
-        else setLoaded({ token: session.access_token, account: a })
+        setLoaded({ token: session.access_token, account: a })
       })
       .catch((e) => {
         if (!live) return
@@ -54,10 +50,10 @@ export default function Account() {
           error: e instanceof Error ? e.message : String(e), mfa: e instanceof MfaRequired })
       })
     return () => { live = false }
-  }, [session, params])
+  }, [session])
 
   if (leaving) return null
-  if (!session || visible?.expired) return <Navigate to={`/login?next=${encodeURIComponent('/account' + (params.get('open') ? '?open=1' : ''))}`} replace />
+  if (!session || visible?.expired) return <Navigate to={`/login?next=${encodeURIComponent('/account')}`} replace />
 
   const manage = async () => {
     const token = session.access_token
@@ -79,31 +75,26 @@ export default function Account() {
       </header>
 
       {error && <p className="account-error" role="alert">{error}</p>}
-      {visible?.mfa && <a className="site-button" href={APP_URL}>Open Filey to verify <ArrowUpRight size={16} /></a>}
+      {visible?.mfa && <a className="site-button" href="/#download">Get Filey to verify <ArrowUpRight size={16} /></a>}
       {!account && !error && <p className="account-loading" role="status"><Loader2 size={16} className="buy-spin" /> Loading your account…</p>}
 
       {account && <div className="account-grid">
-        <section className="account-card" aria-labelledby="acct-web">
-          <h2 id="acct-web"><Globe size={17} /> Filey on the web</h2>
-          {account.web ? <>
-            <p>Open Filey in your browser with this same email. Basic includes 5 new cloud invoices a month; Freedom has no monthly invoice cap.</p>
-            <a className="site-button" href={APP_URL}>Open Filey <ArrowUpRight size={16} /></a>
-          </> : <>
-            <p>Cloud access is unavailable for this workspace. Basic includes unlimited local invoices and a separate allowance of 5 new cloud invoices a month. Open Filey to check your workspace and access.</p>
-            <a className="site-button" href={APP_URL}>Open Filey <ArrowUpRight size={16} /></a>
-            <div className="account-actions">
-              {account.ultra
-                ? <p className="account-owned"><Check size={15} aria-hidden="true" /> You already own Freedom �?" purchased {date(account.ultra.since)}. There is nothing left to buy.</p>
-                : <BuyPlan plan="ultra" label="Get Freedom" primary quiet />}
-            </div>
-            <a className="account-link" href="/#download">Download the free desktop app</a>
-          </>}
+        <section className="account-card" aria-labelledby="acct-app">
+          <h2 id="acct-app"><Monitor size={17} /> Filey on your computer</h2>
+          <p>Filey runs on your computer and keeps your records there. Cloud mode is coming soon.</p>
+          <a className="site-button" href="/#download">Download Filey <ArrowUpRight size={16} /></a>
+          <div className="account-actions">
+            {account.ultra
+              ? <p className="account-owned"><Check size={15} aria-hidden="true" /> You already own Freedom. Purchased {date(account.ultra.since)}, and there is nothing left to buy.</p>
+              : <BuyPlan plan="ultra" label="Get Freedom" primary quiet />}
+          </div>
+          <p className="account-note">Cloud mode is coming soon. Until then, everything stays on your computer.</p>
         </section>
 
         <section className="account-card" aria-labelledby="acct-plan">
           <h2 id="acct-plan"><Check size={17} /> Plan and billing</h2>
           <dl className="account-list">
-            <div><dt>Plan</dt><dd>{planName}{account.grandfathered && !account.pro && !account.ultra ? ' (early-access cloud)' : ''}</dd></div>
+            <div><dt>Plan</dt><dd>{planName}{account.grandfathered && !account.pro && !account.ultra ? ' (early access)' : ''}</dd></div>
             {account.pro && <>
               <div><dt>Pro</dt><dd>{account.pro.status === 'past_due' ? 'Payment retrying' : 'Active'}</dd></div>
               <div><dt>Renews</dt><dd>{date(account.pro.renews)}</dd></div>
@@ -116,13 +107,13 @@ export default function Account() {
               {account.ultra.devices.length === 0 && <li>No computer activated yet — sign in to the desktop app and it activates itself.</li>}
               {account.ultra.devices.map((d) => <li key={d.name + d.since}><Monitor size={14} /> {d.name}<span>{d.active ? `since ${date(d.since)}` : 'released'}</span></li>)}
             </ul>
-            <p className="account-note">Two offline activation slots. Manage them in Settings → Devices in the app. Cloud sign-ins have a separate limit of 20 registered devices.</p>
+            <p className="account-note">Two offline activation slots. Manage them in Settings → Devices in the app.</p>
           </>}
           {account.pro && <button type="button" className="site-button site-button-secondary" disabled={portalState?.busy} onClick={() => void manage()}>
             {portalState?.busy ? <>Opening <Loader2 size={15} className="buy-spin" /></> : <>Manage billing <ArrowUpRight size={16} /></>}
           </button>}
           {portalState?.error && <p className="buy-error" role="alert">{portalState.error}</p>}
-          {portalState?.mfa && <a className="account-link" href={APP_URL}>Open Filey to verify and manage billing</a>}
+          {portalState?.mfa && <a className="account-link" href="/#download">Get Filey to verify and manage billing</a>}
           {!account.pro && !account.ultra && <p className="account-note">Compare plans on the <Link to="/#pricing">pricing page</Link>.</p>}
           {account.ultra && !account.pro && <p className="account-note">Receipts for Freedom come by email from Dodo Payments.</p>}
         </section>
@@ -196,7 +187,7 @@ function PasswordCard() {
       <label htmlFor="pw-confirm">Confirm new password</label>
       <input id="pw-confirm" type="password" autoComplete="new-password" required value={confirm} onChange={(e) => setConfirm(e.target.value)} disabled={busy} />
       {error && <p className="buy-error" role="alert">{error}</p>}
-      {needsVerification && <a className="account-link" href={APP_URL}>Open Filey to verify and change your password</a>}
+      {needsVerification && <a className="account-link" href="/#download">Get Filey to verify and change your password</a>}
       {done && <p className="account-ok" role="status"><Check size={14} /> Password changed. Use it next time you sign in, here and in the app.</p>}
       <button type="submit" className="site-button site-button-secondary" disabled={busy}>
         {busy ? <>Saving <Loader2 size={15} className="buy-spin" /></> : 'Change password'}
