@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ArrowUpRight, Check, Tag } from 'lucide-react'
 import FreedomContact from '@/components/FreedomContact'
 import BuyPlan from '@/components/BuyPlan'
 import { BASIC, PAID, type Plan } from '@/lib/plans'
 import { SUPPORT_EMAIL } from '@/lib/constants'
+import { getAccount, useSession } from '@/lib/auth'
 
 const DISCOUNT_MAIL = `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent('Discount on a Filey plan')}`
 
@@ -19,6 +20,21 @@ function Features({ plan }: { plan: Plan }) {
 
 export default function Pricing() {
   const [contact, setContact] = useState(false)
+  const session = useSession()
+  // Someone who already paid should not be offered the same thing again: the
+  // card states the purchase instead of a buy button. Signed out, or if the
+  // account cannot be read, the buy path stays as it is.
+  const [plan, setPlan] = useState<{ token: string; owned: boolean } | null>(null)
+  const owned = !!(session && plan?.token === session.access_token && plan.owned)
+  useEffect(() => {
+    if (!session) return
+    const token = session.access_token
+    let live = true
+    getAccount()
+      .then((account) => { if (live) setPlan({ token, owned: !!account.ultra }) })
+      .catch(() => { /* unknown plan: leave the buy path in place */ })
+    return () => { live = false }
+  }, [session])
   return <section id="pricing" className="site-section pricing-section">
     <div className="site-container">
       <div className="section-heading centered" data-reveal><h2>Start free.<br />Make it yours.</h2><p>Try every app free for 14 days. Then pay once to own it for life.</p></div>
@@ -35,7 +51,9 @@ export default function Pricing() {
         </article>
         <article className="price-plan freedom-plan"><div className="plan-heading"><h3>{PAID.ultra.name}</h3><span>{PAID.ultra.tagline}</span></div><p className="price">{PAID.ultra.price}<span>{PAID.ultra.period}</span></p>
           <Features plan={PAID.ultra} />
-          <BuyPlan plan="ultra" label={PAID.ultra.cta} primary />
+          {owned
+            ? <p className="account-owned"><Check size={16} aria-hidden="true" /> You already own Freedom — purchased, active on your account.</p>
+            : <BuyPlan plan="ultra" label={PAID.ultra.cta} primary />}
           <p className="plan-note">{PAID.ultra.note} <button type="button" className="plan-link" onClick={() => setContact(true)}>Questions first?</button></p>
         </article>
       </div>

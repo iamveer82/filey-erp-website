@@ -135,6 +135,13 @@ test('checkout and portal allow only HTTPS destinations on the payment provider 
   assert.equal(app.location.href, 'https://checkout.dodopayments.com/session')
 })
 
+test('a refused checkout shows the reason instead of a dead end', async () => {
+  const app = mount(session(), path => path.endsWith('/dodo')
+    ? response({ error: 'This account already owns Freedom.' }, 409) : undefined)
+  await assert.rejects(app.auth.checkout(), /This account already owns Freedom/)
+  assert.equal(app.location.href, '')
+})
+
 test('a late payment response cannot redirect or sign out an account selected afterward', async () => {
   for (const status of [200, 401]) {
     const pending = deferred(), started = deferred()

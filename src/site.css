@@ -63,6 +63,8 @@ html{scroll-behavior:smooth;scroll-padding-top:90px}body{margin:0;background:var
 .account-note{font-size:11px!important;color:var(--site-muted)}
 .account-note a,.account-link{color:var(--site-text);text-decoration:underline;text-underline-offset:3px;font-size:12px}
 .account-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.account-owned{grid-column:1/-1;display:flex;align-items:center;gap:9px;margin:0;padding:11px 13px;border:1px solid var(--site-accent);border-radius:12px;font-size:12.5px;line-height:1.5;color:var(--site-text)}
+.account-owned svg{color:var(--site-accent-text);flex:none}
 .account-form{display:grid;gap:8px}
 .account-form label{font-size:11px;color:var(--site-muted);margin-top:4px}
 .account-form input{width:100%;padding:11px 13px;font:inherit;font-size:13px;border:1px solid var(--site-line);border-radius:10px;background:var(--site-bg);color:var(--site-text)}

@@ -92,7 +92,9 @@ export default function Account() {
             <p>Cloud access is unavailable for this workspace. Basic includes unlimited local invoices and a separate allowance of 5 new cloud invoices a month. Open Filey to check your workspace and access.</p>
             <a className="site-button" href={APP_URL}>Open Filey <ArrowUpRight size={16} /></a>
             <div className="account-actions">
-              <BuyPlan plan="ultra" label="Get Freedom" primary quiet />
+              {account.ultra
+                ? <p className="account-owned"><Check size={15} aria-hidden="true" /> You already own Freedom �?" purchased {date(account.ultra.since)}. There is nothing left to buy.</p>
+                : <BuyPlan plan="ultra" label="Get Freedom" primary quiet />}
             </div>
             <a className="account-link" href="/#download">Download the free desktop app</a>
           </>}

@@ -252,7 +252,10 @@ export async function checkout(): Promise<void> {
     throw new SignInRequired('Your session ended. Sign in again to continue.')
   }
   if (body?.code === 'mfa_required') throw new MfaRequired()
-  if (!res.ok || !body?.url) throw new Error('Checkout is unavailable right now. Please try again.')
+  // The billing function answers with a sentence people can act on ("This
+  // account already owns Freedom."), so show that instead of a dead-end
+  // message. Only fall back when the response carries no explanation at all.
+  if (!res.ok || !body?.url) throw new Error(body?.error || 'Checkout is unavailable right now. Please try again.')
   window.location.href = paymentUrl(body.url)
 }
 
