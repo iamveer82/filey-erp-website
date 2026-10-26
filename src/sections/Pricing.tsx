@@ -20,6 +20,15 @@ function Features({ plan }: { plan: Plan }) {
 
 export default function Pricing() {
   const [contact, setContact] = useState(false)
+  const [copied, setCopied] = useState(false)
+  // mailto only opens something when a default mail client is registered; on
+  // machines without one the click would do nothing visible. Copying the
+  // address on the same click gives every visitor the contact either way.
+  const copySupportEmail = () => {
+    navigator.clipboard?.writeText(SUPPORT_EMAIL)
+      .then(() => { setCopied(true); setTimeout(() => setCopied(false), 2500) })
+      .catch(() => { /* clipboard unavailable: the mailto navigation still stands */ })
+  }
   const session = useSession()
   // Someone who already paid should not be offered the same thing again: the
   // card states the purchase instead of a buy button. Signed out, or if the
@@ -41,7 +50,7 @@ export default function Pricing() {
       <div className="pricing-offer" data-reveal>
         <Tag size={18} aria-hidden="true" />
         <p><strong>Looking for a better price?</strong> Contact our support team to get a discount on your plan.</p>
-        <a href={DISCOUNT_MAIL} className="site-button">Contact support <ArrowUpRight size={16} /></a>
+        <a href={DISCOUNT_MAIL} className="site-button" onClick={copySupportEmail}>{copied ? <>{SUPPORT_EMAIL} copied <Check size={16} /></> : <>Contact support <ArrowUpRight size={16} /></>}</a>
       </div>
       <div className="pricing-grid" data-reveal>
         <article className="price-plan"><div className="plan-heading"><h3>{BASIC.name}</h3><span>{BASIC.tagline}</span></div><p className="price">{BASIC.price}<span>{BASIC.period}</span></p>
