@@ -66,7 +66,6 @@ export default function Pricing() {
           <p className="plan-note">{PAID.ultra.note} <button type="button" className="plan-link" onClick={() => setContact(true)}>Questions first?</button></p>
         </article>
       </div>
-      <p className="pricing-fine">Prices in UAE dirhams. Dodo Payments, our merchant of record, adds any applicable tax at checkout. Freedom is a lifetime license with a 30-day money-back guarantee.</p>
     </div><FreedomContact open={contact} onClose={() => setContact(false)} />
   </section>
 }
