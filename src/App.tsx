@@ -6,6 +6,11 @@ import Home from '@/pages/Home'
 const SignUp = lazy(() => import('@/pages/SignUp'))
 const Thanks = lazy(() => import('@/pages/Thanks'))
 const Account = lazy(() => import('@/pages/Account'))
+const Privacy = lazy(() => import('@/pages/Legal').then(m => ({ default: m.Privacy })))
+const Terms = lazy(() => import('@/pages/Legal').then(m => ({ default: m.Terms })))
+const Refunds = lazy(() => import('@/pages/Legal').then(m => ({ default: m.Refunds })))
+const DataDeletion = lazy(() => import('@/pages/Legal').then(m => ({ default: m.DataDeletion })))
+const legalLoading = <p className="not-found" role="status">Loading…</p>
 
 export default function App() {
   return (
@@ -17,6 +22,10 @@ export default function App() {
         <Route path="/account" element={<Layout><Suspense fallback={<p className="not-found" role="status">Loading your account…</p>}><Account /></Suspense></Layout>} />
         {/* Where Dodo returns a buyer after payment. */}
         <Route path="/thanks" element={<Layout><Suspense fallback={<p className="not-found" role="status">Loading…</p>}><Thanks /></Suspense></Layout>} />
+        <Route path="/privacy" element={<Layout><Suspense fallback={legalLoading}><Privacy /></Suspense></Layout>} />
+        <Route path="/terms" element={<Layout><Suspense fallback={legalLoading}><Terms /></Suspense></Layout>} />
+        <Route path="/refunds" element={<Layout><Suspense fallback={legalLoading}><Refunds /></Suspense></Layout>} />
+        <Route path="/data-deletion" element={<Layout><Suspense fallback={legalLoading}><DataDeletion /></Suspense></Layout>} />
         <Route
           path="/"
           element={
